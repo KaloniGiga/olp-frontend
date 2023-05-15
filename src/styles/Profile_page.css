@@ -87,6 +87,9 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .profile-section{
+    flex-direction: column;
+  }
   .profile-right-title {
     align-items: center;
   }

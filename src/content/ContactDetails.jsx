@@ -7,27 +7,28 @@ import { Link } from "react-router-dom";
 
 const ContactDetails = () => {
   const [mobileNo, setMobileNo] = useState("");
-  const [landlineNo, setLandlineNo] = useState("");
-  const [houseno, setHouseNo] = useState("");
-  const [housename, setHouseName] = useState("");
-  const [street, setStreet] = useState("");
-  const [townorpost, setTownOrPost] = useState("");
-  const [countryordistrict, setCountryOrDistrict] = useState("");
-  const [stateorprovince, setStateOrProvince] = useState("");
+  const [siblings, setSiblings] = useState("");
+  const [familymember, setFamilyMember] = useState("");
+  const [motheroccupation, setMotherOccupation] = useState("");
+  const [municipility, setMunicipility] = useState("");
+  const [fatheroccupation, setFatherOccupation] = useState("");
+  const [district, setDistrict] = useState("");
+  const [province, setProvince] = useState("");
   const [country, setCountry] = useState("");
-  const [pincodeorpostcode, setPinCodeOrPostCode] = useState("");
+  const [familytype, setFamilyType] = useState("");
+  const [unmarried, setUnmarried] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(
-      `Submitted: ${mobileNo} ${landlineNo} (${houseno})  ${housename} ${street} (${townorpost})  ${countryordistrict} ${stateorprovince} ${country}  ${pincodeorpostcode}`
+      `Submitted: ${mobileNo} ${siblings} (${familymember})  ${motheroccupation} ${municipility} (${fatheroccupation})  ${district} ${province} ${country}  ${familytype} ${unmarried}`
     );
   };
   return (
     <>
       <div className="Contact-detail-form">
         <ProgressBar />
-        <h1>"Please fill up the Contact details"</h1>
+        <h1>"Please fill up the important details"</h1>
         <div className="container">
           <div className="row">
             <form className="Contact-details" onSubmit={handleSubmit}>
@@ -41,77 +42,6 @@ const ContactDetails = () => {
                   />
                   <label>Mobile No</label>
                 </div>
-                <div className="landlineNo group">
-                  <input
-                    type="number"
-                    value={landlineNo}
-                    onChange={(event) => setLandlineNo(event.target.value)}
-                    required
-                  />{" "}
-                  <label>Landline No</label>
-                </div>
-                <div className="houseno group">
-                  <input
-                    type="number"
-                    value={houseno}
-                    onChange={(event) => setHouseNo(event.target.value)}
-                    required
-                  />{" "}
-                  <label>House No</label>
-                </div>
-                <div className="housename group">
-                  <input
-                    type="text"
-                    value={housename}
-                    onChange={(event) => setHouseName(event.target.value)}
-                    required
-                  />{" "}
-                  <label>House Name</label>
-                </div>
-              </div>
-
-              <div className="Contact-details-form-middle">
-                <div className="street group">
-                  <input
-                    type="text"
-                    value={street}
-                    onChange={(event) => setStreet(event.target.value)}
-                    required
-                  />{" "}
-                  <label>Street</label>
-                </div>
-                <div className="townorpost group">
-                  <input
-                    type="number"
-                    value={townorpost}
-                    onChange={(event) => setTownOrPost(event.target.value)}
-                    required
-                  />{" "}
-                  <label>Town/post office</label>
-                </div>
-                <div className="countryordistrict group">
-                  <input
-                    type="text"
-                    value={countryordistrict}
-                    onChange={(event) =>
-                      setCountryOrDistrict(event.target.value)
-                    }
-                    required
-                  />
-                  <label>Country/District</label>
-                </div>
-                <div className="stateorprovince group">
-                  <input
-                    type="number"
-                    value={stateorprovince}
-                    onChange={(event) => setStateOrProvince(event.target.value)}
-                    required
-                  />
-                  <label>State/Province</label>
-                </div>
-              </div>
-
-              <div className="Contact-details-form-right">
                 <div className="country group">
                   <input
                     type="text"
@@ -121,17 +51,104 @@ const ContactDetails = () => {
                   />
                   <label>Country</label>
                 </div>
-                <div className="pincodeorpostcode group">
+                <div className="municipility group">
+                  <input
+                    type="text"
+                    value={municipility}
+                    onChange={(event) => setMunicipility(event.target.value)}
+                    required
+                  />{" "}
+                  <label>municipility</label>
+                </div>
+                <div className="province group">
                   <input
                     type="number"
-                    value={pincodeorpostcode}
+                    value={province}
+                    onChange={(event) => setProvince(event.target.value)}
+                    required
+                  />
+                  <label>State/Province</label>
+                </div>
+              </div>
+
+              <div className="Contact-details-form-middle">
+              
+                <div className="district group">
+                  <input
+                    type="text"
+                    value={district}
                     onChange={(event) =>
-                      setPinCodeOrPostCode(event.target.value)
+                      setDistrict(event.target.value)
                     }
                     required
                   />
-                  <label>Pincode/postcode</label>
+                  <label>Country/District</label>
                 </div>
+                <div className="fatheroccupation group">
+                  <input
+                    type="text"
+                    value={fatheroccupation}
+                    onChange={(event) => setFatherOccupation(event.target.value)}
+                    required
+                  />{" "}
+                  <label>Father's Occupation</label>
+                </div>
+                <div className="motheroccupation group">
+                  <input
+                    type="text"
+                    value={motheroccupation}
+                    onChange={(event) => setMotherOccupation(event.target.value)}
+                    required
+                  />{" "}
+                  <label>Mother Occupation</label>
+                </div>
+                <div className="familymember group">
+                  <input
+                    type="number"
+                    value={familymember}
+                    onChange={(event) => setFamilyMember(event.target.value)}
+                    required
+                  />{" "}
+                  <label> No of family member</label>
+                </div>
+               
+              </div>
+
+              <div className="Contact-details-form-right">
+            
+                <div className="familytype group">
+                  <input
+                    type="text"
+                    value={familytype}
+                    onChange={(event) =>
+                      setFamilyType(event.target.value)
+                    }
+                    required
+                  />
+                  <label>Family Type</label>
+                </div>
+                <div className="unmarried group">
+                  <input
+                    type="text"
+                    value={unmarried}
+                    onChange={(event) =>
+                      setUnmarried(event.target.value)
+                    }
+                    required
+                  />
+                  <label>No of unmarried</label>
+                </div>
+                <div className="siblings group">
+                  <input
+                    type="number"
+                    value={siblings}
+                    onChange={(event) => setSiblings(event.target.value)}
+                    required
+                  />{" "}
+                  <label>No of siblings</label>
+                </div>
+               
+                
               </div>
             </form>
           </div>

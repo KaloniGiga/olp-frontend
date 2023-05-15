@@ -23,7 +23,14 @@ const Profile_Page = () => {
               {isTabletOrMobileFilter ? (
                 <>
                 <div className="profiles-dropdowns">
-                  
+                  <ul>
+                    <li>Rahul</li>
+                    <li>ersge</li>
+                    <li>Raedghul</li>
+                    <li>Raegrerul</li>
+                    <li>t</li>
+                    <li>Radfsdhul</li>
+                  </ul>
                 </div>
                 </>
               ) : (

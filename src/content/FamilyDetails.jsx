@@ -5,132 +5,133 @@ import { useState } from "react";
 import "../styles/FamilyDetails.css";
 import { Link } from "react-router-dom";
 const FamilyDetails = () => {
-  const [familytype, setFamilyType] = useState("");
-  const [familystatus, setFamilyStatus] = useState("");
-  const [fathername, setFatherName] = useState("");
-  const [fatherjob, setFatherJob] = useState("");
-  const [mothername, setMotherName] = useState("");
-  const [motherjob, setMotherJob] = useState("");
-  const [numoffamilymember, setNumOfFamilyMember] = useState("");
-  const [numofbrother, setNumOfBrother] = useState("");
-  const [numofsister, setNumOfSister] = useState("");
-  const [noofunmarried, setNoOfUnmarried] = useState("");
-  const [noofmarried, setNoOfMarried] = useState("");
+  const [education, setEducation] = useState("");
+  const [subject, setSubject] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [companyname, setCompanyName] = useState("");
+  const [monthlysalery, setMonthlySalery] = useState("");
+  const [annualincome, setAnnualIncome] = useState("");
+  const [universitycollage, setUniversityCollage] = useState("");
+  const [foreign, setForeign] = useState("");
+  const [job, setJob] = useState("");
+  const [business, setBusiness] = useState("");
+  // const [noofmarried, setNoOfMarried] = useState("");
+  // const [noofmarried, setNoOfMarried] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(
-      `Submitted: ${familytype} ${familystatus} (${fathername})  ${fatherjob} ${mothername} (${motherjob})  ${numoffamilymember} ${numofbrother} ${numofsister} ${noofunmarried} ${noofmarried}`
+      `Submitted: ${education} ${subject} (${occupation})  ${companyname} ${monthlysalery} (${annualincome})  ${universitycollage} ${foreign} ${job} ${business}`
     );
   };
   return (
     <>
       <div className="Family-detail-form">
         <ProgressBar />
-        <h1>"Please fill up the Family details"</h1>
+        <h1>"Please fill up the education and occupation details"</h1>
         <div className="container">
           <div className="row">
             <form className="Family-details" onSubmit={handleSubmit}>
               <div className="Family-details-form-left">
-                <div className="familytype group">
+                <div className="education group">
                   <input
-                    type="number"
-                    value={familytype}
-                    onChange={(event) => setFamilyType(event.target.value)}
+                    type="text"
+                    value={education}
+                    onChange={(event) => setEducation(event.target.value)}
                     required
                   />
-                  <label>Family Type</label>
+                  <label>Education</label>
                 </div>
-                <div className="familystatus group">
+                <div className="subject group">
                   <input
                     type="text"
-                    value={familystatus}
-                    onChange={(event) => setFamilyStatus(event.target.value)}
+                    value={subject}
+                    onChange={(event) => setSubject(event.target.value)}
                     required
                   />{" "}
-                  <label>Family Status</label>
+                  <label>subject</label>
                 </div>
-                <div className="fathername group">
+                <div className="occupation group">
                   <input
                     type="text"
-                    value={fathername}
-                    onChange={(event) => setFatherName(event.target.value)}
+                    value={occupation}
+                    onChange={(event) => setOccupation(event.target.value)}
                     required
                   />{" "}
-                  <label>Father's Name</label>
+                  <label>occupation</label>
                 </div>
-                <div className="fatherjob group">
+                <div className="companyname group">
                   <input
                     type="text"
-                    value={fatherjob}
-                    onChange={(event) => setFatherJob(event.target.value)}
+                    value={companyname}
+                    onChange={(event) => setCompanyName(event.target.value)}
                     required
                   />{" "}
-                  <label>Father's Job</label>
+                  <label>Company Name</label>
                 </div>
               </div>
 
               <div className="Family-details-form-middle">
-                <div className="mothername group">
-                  <input
-                    type="text"
-                    value={mothername}
-                    onChange={(event) => setMotherName(event.target.value)}
-                    required
-                  />{" "}
-                  <label>Mother's Name</label>
-                </div>
-                <div className="motherjob group">
-                  <input
-                    type="text"
-                    value={motherjob}
-                    onChange={(event) => setMotherJob(event.target.value)}
-                    required
-                  />{" "}
-                  <label>Mother's Job</label>
-                </div>
-                <div className="numoffamilymember group">
+                <div className="monthlysalery group">
                   <input
                     type="number"
-                    value={numoffamilymember}
+                    value={monthlysalery}
+                    onChange={(event) => setMonthlySalery(event.target.value)}
+                    required
+                  />{" "}
+                  <label>monthlysalery</label>
+                </div>
+                <div className="annualincome group">
+                  <input
+                    type="number"
+                    value={annualincome}
+                    onChange={(event) => setAnnualIncome(event.target.value)}
+                    required
+                  />{" "}
+                  <label>annualincome</label>
+                </div>
+                <div className="universitycollage group">
+                  <input
+                    type="text"
+                    value={universitycollage}
                     onChange={(event) =>
-                      setNumOfFamilyMember(event.target.value)
+                      setUniversityCollage(event.target.value)
                     }
                     required
                   />
-                  <label>No. of family members</label>
+                  <label>university/collage</label>
                 </div>
-                <div className="numofbrother group">
+                <div className="foreign group">
                   <input
-                    type="number"
-                    value={numofbrother}
-                    onChange={(event) => setNumOfBrother(event.target.value)}
+                    type="text"
+                    value={foreign}
+                    onChange={(event) => setForeign(event.target.value)}
                     required
                   />
-                  <label>No of brothers</label>
+                  <label>foreign</label>
                 </div>
               </div>
 
               <div className="Family-details-form-right">
-                <div className="numofsister group">
+                <div className="job group">
                   <input
-                    type="number"
-                    value={numofsister}
-                    onChange={(event) => setNumOfSister(event.target.value)}
+                    type="text"
+                    value={job}
+                    onChange={(event) => setJob(event.target.value)}
                     required
                   />
-                  <label>No of sister</label>
+                  <label>job</label>
                 </div>
-                <div className="noofunmarried group">
+                <div className="business group">
                   <input
-                    type="number"
-                    value={noofunmarried}
-                    onChange={(event) => setNoOfUnmarried(event.target.value)}
+                    type="text"
+                    value={business}
+                    onChange={(event) => setBusiness(event.target.value)}
                     required
                   />
-                  <label>No of unmarried</label>
+                  <label>Business</label>
                 </div>
-                <div className="noofmarried group">
+                {/* <div className="noofmarried group">
                   <input
                     type="number"
                     value={noofmarried}
@@ -138,7 +139,7 @@ const FamilyDetails = () => {
                     required
                   />
                   <label>No of married</label>
-                </div>
+                </div> */}
               </div>
             </form>
           </div>
