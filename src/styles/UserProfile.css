@@ -109,3 +109,7 @@ cursor: pointer;
   .about-tab-left p, .about-tab-right p{
   font-size: 13px;
   }
+  .userprofile-about-photos .nav.nav-pills{
+    display: flex;
+    justify-content: start;
+  }

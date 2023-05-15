@@ -14,6 +14,7 @@ import ContactDetails from "./content/ContactDetails";
 import FamilyDetails from "./content/FamilyDetails";
 import UploadProfileSection from "./content/UploadProfileSection";
 import PreferenceDetails from "./content/PreferenceDetails";
+import MyProfilesSidebar from "./content/MyProfilesSidebar";
 
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/familydetails" element={<FamilyDetails/>}/>          
           <Route path="/uploadprofile" element={<UploadProfileSection/>}/>          
           <Route path="/preferencedetails" element={<PreferenceDetails/>}/>          
+          <Route path="/myprofile" element={<MyProfilesSidebar/>}/>          
         </Routes>
       </BrowserRouter>
     </>

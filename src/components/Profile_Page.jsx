@@ -10,7 +10,7 @@ const Profile_Page = () => {
   <div className="profiles py-4">
     <div className="container">
         <div className="profile-section position-relative">
-          <Filter/>
+          <Filter className="filtersearch"/>
             <div className='profile-right px-3'>
               <div className="profile-right-title">
                <h1>Here is your Perfect Match...</h1>
@@ -19,14 +19,6 @@ const Profile_Page = () => {
                   <div className="p1"> <p>Female, <span>18 - 25 Years</span></p></div>
                </div>
               </div>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
                 <Searchedlist/>
             </div>
         </div>

@@ -17,7 +17,6 @@ function ProgressBar() {
             to={route}
             className={`step ${index === currentRouteIndex ? 'active' : ''}`}
           >
-            {/* {index + 1} */}
           </Link>
         ))}
       </div>

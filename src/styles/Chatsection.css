@@ -3,16 +3,13 @@
     gap: 1rem;
     flex-wrap: wrap;
 }
-.profilesection{
-    flex-basis: 20%;
-}
 .messagesection{
     flex-basis: 100%;
     border-radius: 10px;
     display: flex;
     gap: 5rem;
     justify-content: space-between;
-    height: 75vh;
+    height: 77vh;
 }
 .chat-friend{
     padding: 0 1rem;
@@ -38,16 +35,15 @@
     background: #555555c2;
   }
 .chat-friend-list{
-    flex-basis: 40%;
+    flex-basis: 30%;
     padding-top: 1.2rem;
 }
 .chat{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-basis: 66%;
-    /* background-color: white; */
-    padding: 1rem;
+    flex-basis:55%;
+    position: relative;
     border-radius: 7px;
 }
 .messagesection input[type=text] {
@@ -57,7 +53,6 @@
     border-radius: 50px;
     border-bottom:2px solid #ccc;
     font-size: 15px;
-    /* background-color: white; */
     padding: 10px 20px 10px 15px;
     margin-bottom: .5rem;
   }
@@ -108,7 +103,7 @@
   border-radius: 50%;
 }
 .chat-name-data{
-  margin-left: 5px;
+ left: 5px;
   position: relative;
 }
 .chat-name-data h5{
@@ -125,10 +120,15 @@ margin:0;
 }
 .chat-box{
     padding:1rem 1.5rem;
-    height: 61vh;
+    height: 57vh;
     overflow-y: scroll;
     display:flex;
     flex-direction: column;
+    position: absolute;
+    top: 4.2rem;
+    right: 1rem;
+    left: 0;
+    bottom: 0;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -173,10 +173,8 @@ margin:0;
     max-width: 15rem;
 }
 .chat-box-left p, .chat-box-right p{
-
    border-radius: 30px;
    padding: 10px 20px;
-
 }
 .chat-box-right{
     flex-basis: 100%;
@@ -185,7 +183,7 @@ margin:0;
     gap: .8rem;
 }
 .chat-write{
-    padding: 0 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -194,17 +192,23 @@ margin:0;
 .sendIcon{
   margin-bottom: 8px;
   margin-right: 15px;
-    padding: 10px;
-   width: 47px;
-   height: 40px;
-   border-radius: 50%;
-   background-color:  #662d91;
-   color: white;
+  padding: 10px;
+  width: 47px;
+  height: 40px;
+  border-radius: 50%;
+  background-color:  #662d91;
+  color: white;
 }
 
 .photoIcon{
-    font-size: 25px;
+    font-size: 35px;
 }
 .emojiIcon{
     font-size: 22px;
+}
+.emojieselection{
+ position: absolute;
+ bottom: 4.5rem;
+ left: 2rem;
+ right: 0;
 }

@@ -38,6 +38,7 @@
 .helpsection-second-details{
     padding-top: 3rem;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
     text-align: center;
@@ -48,6 +49,7 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    white-space: nowrap;
     /* background-color: white; */
 }
 .helpsection-second-details-firstdiv i{
@@ -87,6 +89,7 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    white-space: nowrap;
     /* background-color: white; */
 }
 .helpsection-second-details-thirddiv{
@@ -96,6 +99,7 @@
      justify-content: center;
     text-align: center;
     padding-top: 1.2rem;
+    white-space: nowrap;
     /* background-color: white; */
 }
 .helpsection-second-details-thirddiv p{
@@ -110,3 +114,27 @@
     cursor: pointer;
 }
 
+@media  only screen and (max-width:992px) {
+    .helpsection-first-details-contact-title{
+        padding: 1rem 12rem;
+    }
+}
+@media  only screen and (max-width:768px) {
+    .helpsection-first-details-contact-title{
+        padding: 1rem 5rem;
+    }
+}
+@media  only screen and (max-width:400px) {
+    .helpsection-first-details-contact-title{
+        padding: 1rem 1rem;
+    }
+}
+@media  only screen and (max-width:498px) {
+    .helpsection .accordion-button::after{
+      top: 12px !important;
+    }
+    .helpsection-first-details-contact .accordion{
+        margin-left: 2rem !important;
+    }
+  
+}

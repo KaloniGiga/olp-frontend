@@ -1,5 +1,5 @@
-import React from 'react'
-import MyProfiles from './MyProfiles'
+import React, { useState } from 'react'
+import MyProfiles from './MyProfilesSidebar'
 import '../styles/Chatsection.css'
 import ChatPerson from '../components/ChatPerson'
 import {RiSendPlaneFill} from 'react-icons/ri'
@@ -9,16 +9,25 @@ import {IoIosCall,IoIosVideocam} from 'react-icons/io'
 import LayoutwithoutFooter from '../components/LayoutwithoutFooter'
 
 const ChatSection = () => {
+  const [showContent, setShowContent] = useState(false);
+  const [message, setMessage] = useState('');
 
+  const handleButtonClick = () => {
+    setShowContent(!showContent);
+  };
+  const handleSelectEmoji = (emoji) => {
+    
+    setMessage(message + emoji);
+  };
   return (
     <>
     <LayoutwithoutFooter>
      <div className="container">
      <div className="chatsection py-5">
          <div className="messagesection">
-          <div className="profilesection">  
+          {/* <div className="profilesection">  
          <MyProfiles/>        
-         </div>
+         </div> */}
           <div className="chat-friend-list">
           <h2>Chat</h2>
             <form>
@@ -39,7 +48,7 @@ const ChatSection = () => {
               </div>
            
           </div>
-          <div className="chat">
+          <div className="chat mt-4">
              <div className="chat-name">
                   <div className="chat-name-userdata">
                   <img src="https://www.circumcisionpro.co.uk/wp-content/uploads/2021/05/avatar-profile-picture.jpg" alt="chat-profile" />
@@ -90,10 +99,20 @@ const ChatSection = () => {
                </div>
              </div>
              </div>
+            {showContent && (
+            <div className='emojieselection'>
+          <button onClick={() => handleSelectEmoji('😀')}>😀</button>
+          <button onClick={() => handleSelectEmoji('😍')}>😍</button>
+          <button onClick={() => handleSelectEmoji('👍')}>👍</button>
+          <button onClick={() => handleSelectEmoji('❤️')}>❤️</button>
+           </div>
+           )}
              <div className="chat-write">
               <CiImageOn className='photoIcon'/>
-             <BsEmojiSmile className='emojiIcon'/>
-             <input type="text" placeholder='Write a message...'/>
+            <div className="emojisection">
+            <BsEmojiSmile  className='emojiIcon' onClick={handleButtonClick}/>
+            </div>
+             <input type="text"value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Write a message...'/>
              <RiSendPlaneFill className='sendIcon'/>
             </div>
           </div>

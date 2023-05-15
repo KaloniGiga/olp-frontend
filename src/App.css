@@ -1,27 +1,25 @@
 
 /*------------------------------------------------ Navbar CSS ---------------------------------------- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
+.Navbar {
+    width: 100%;
+    display: flex ;
+    justify-content:space-between;
+    align-items: center;
     height: 10vh;
-    padding:0 3rem;
+    padding:0 4rem;
     background-image: linear-gradient(170deg, #ec1c24, #ff1f70, #ed177e, #662d91);
   }
-  .navbar-toggle{
-    display: none;
-  }
+
   .navbar-logo img {
     width: 6em;
   }
-  .navbar-items{
+  .Navbar-items{
     display: flex;
     margin-top: 1vh;
     column-gap: 2rem;
-    align-items: center;
-    flex-wrap: wrap;
     list-style: none;
   }
-  .navbar-items .navbar-item a {
+  .Navbar-items .navbar-item a {
     color: white;
     text-decoration: none;
     letter-spacing: 1px;
@@ -54,64 +52,84 @@
     border: 0px solid;
     border-radius: 8px;
     background-color: white;
-   
   }
   .nav-btn:hover{
     color: rgb(235, 30, 30);
     transition:all 0.21s ease-in-out;
   }
+.sidenavbar {
+ display: none !important;
+}
+.navbar-toggle{
+  display: none !important;
+}
 
   /*------------------------------------------------ Navbar Responsive CSS ----------------------------------------- */
 
   @media screen and (max-width: 768px) {
-    .navbar{
-      transition: 0.5s height ease-in-out;
-    }
-    .navbar.expanded{
-      height: 100vh;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-    }
-    .navbar.expanded .navbar-items{
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        row-gap: 1rem;
-        transition: 0.8s all ease-in-out;
-    }
-    .navbar.expanded .navbar-logo{
-    position: absolute;
-    top: .8rem;
-    left: 3rem;
-    }
-    .navbar.expanded .navbar-toggle{
-     position: absolute;
-     top: .8rem;
-     right: 3rem;
-    }
-      .navbar-toggle{
+    .navbar-toggle{
        display: flex;
        font-size: 30px;
        color: rgb(222, 222, 222);
-       padding: 6px;
-       outline: 1px solid rgb(222, 222, 222);
        border-radius: 10px;
        cursor: pointer;
+    }
+    .sidenavbar {
+      display: block !important;
+     }
+     .navbar-toggle{
+      display: block !important;
     }
     .navbar-toggle:hover{
     font-size: 30px;
     color: rgb(255, 255, 255);
-    outline: 1px solid rgb(255, 255, 255);
     }
-    .navbar-items{
+    .Navbar-items{
      display: none;
     }
+    .sidenavblur {
+      background-color: #000;
+      bottom: -100%;
+      display: block;
+      height: 100%;
+      left: 0;
+      right: 0;
+      opacity: .5;
+      position: fixed;
+      transition: all .5s ease;
+      z-index: 200;
+  }
+  .sidenav {
+    background-color: #fff;
+    border-radius: 20px 20px 0 0;
+    bottom: -100%;
+    display: block;
+    height: 400px;
+    left: 0;
+    right: 0;
+    padding: 10px 0;
+    position: fixed;
+    transition: all .5s ease;
+    z-index: 212;
+}
+    .snbar{
+      background-color: #aaa;
+      height: 3px;
+      margin: 0 40%;
+      width: 20%;
+    }
+    .sidenavbar-items{
+      margin-top: 5rem;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      list-style: none;
+    }
+    .sidenavbar-items li{
+      margin-top: 1rem;
+      color: black;
+    }
+
   }
 
   /* -------------------------------------------- The End ---------------------------------------------------------------------- */
@@ -244,18 +262,18 @@
   }
   .second h6:first-child{
     text-align: center;
-    font-size: 16px;
+    font-size: 17px;
   }
   .secondborder {
     margin-top: 2rem;
     border-radius: 20px;
     border: 2px solid rgba(128, 128, 128, 0.29);
-    padding:2rem 3.5rem;
+    padding:1.5rem 3.5rem;
     background-color: rgb(247, 247, 247);
   }
   .secondborder .nav{
     border-bottom: 1px solid rgba(128, 128, 128, 0.608);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
   .nav.nav-pills {
     font-weight: 600;
@@ -271,7 +289,7 @@
     row-gap: 1rem;
   }
   .religion button {
-    padding:.4rem 2.5rem;
+    padding:.4rem 2rem;
     border-radius: 20px;
     color: rgb(80, 75, 75);
     border: 1px solid rgba(255, 29, 29, 0.526);
@@ -310,18 +328,32 @@
   .cool:hover::after {
     width: 100%;
   }
-  /* -------------------------------------------- Third Responsive CSS ---------------------------------------------------------------------- */
+  /* -------------------------------------------- Second Responsive CSS ---------------------------------------------------------------------- */
 
   @media screen and (max-width: 768px){
+    .religion button{
+      flex-basis: 40%;
+    }
+     .swiper.swiper-initialized.swiper-horizontal.swiper-backface-hidden{
+    padding: .5rem;
+     }
       .second .swiper-wrapper{
         display: flex;
-        gap: 2rem;
-      }
-      .second .swiper-wrapper p:last-child{
-        margin-right: 1rem;
+        text-align: center;
       }
       .secondborder{
-        padding: .5rem 1rem;
+        padding: .8rem 1rem;
+      }
+  }
+  @media screen and (max-width: 576px){
+      .second .swiper-wrapper{
+        display: flex;
+        text-align: center;
+      }
+      .religion button{
+        flex-basis: 35%;
+        padding: .3rem 1rem;
+        white-space: nowrap;
       }
   }
   
@@ -473,9 +505,9 @@
     color: red;
     background-image: none !important;
     transform: none !important;
-    position: absolute;
-    right: 9px;
-    top: 11px;
+    position: absolute !important;
+    right: 9px !important;
+    top: 9px !important;
   }
   .accordion-item:last-of-type .accordion-button.collapsed {
     border-bottom-right-radius: 40px;
@@ -488,8 +520,8 @@
     border-bottom-left-radius: 40px;
   }
   .accordion-item .accordion-body {
+    width: 100%;
     background-color: #e3e3e3;
-    padding-top: 0.5em;
     border-bottom-left-radius: 40px;
     border-bottom-right-radius: 40px;
   }
@@ -502,6 +534,9 @@
   .accordion-item {
     width: 30rem;
   }
+  .simple {
+    width: 80%;
+  }
 }
 @media only screen and (max-width:992px){
   .accordion{
@@ -511,6 +546,9 @@
   }
   .accordion-item {
     width: 30rem;
+  }
+  .simple {
+    width: 65%;
   }
 }
 @media only screen and (max-width:500px){
@@ -542,8 +580,8 @@
   .accordion-button::after {
     font-size: 20px;
     position: absolute;
-    right: 0px;
-    top: 12px;
+    right: 0px !important;
+    top: 20px !important;
 }
 }
 

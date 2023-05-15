@@ -11,13 +11,11 @@ const UploadProfileSection = (props) => {
 
   const handleCircleClick = () => {
     fileInputRef.current.click();
-
   };
   const handleFileSelect = (event) => {
     setSelectedImage(URL.createObjectURL(event.target.files[0]));
-
   };
-
+  
   return (
     <>
       <div className="UploadProfileSection">

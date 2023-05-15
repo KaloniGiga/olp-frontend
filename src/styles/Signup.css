@@ -136,7 +136,7 @@
   text-decoration: underline !important;
 }
 
-@media  screen and (max-width:992px) {
+/* @media  screen and (max-width:992px) {
 .signup{
   display: none;
 }
@@ -146,4 +146,4 @@
 .signup.animated{
   display: none;
 }
-}
+} */
