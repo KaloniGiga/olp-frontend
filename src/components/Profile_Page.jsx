@@ -20,14 +20,6 @@ const Profile_Page = () => {
                </div>
               </div>
                 <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
-                <Searchedlist/>
             </div>
         </div>
     </div>

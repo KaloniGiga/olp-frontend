@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MyProfiles from './MyProfiles'
 import '../styles/Chatsection.css'
 import ChatPerson from '../components/ChatPerson'
@@ -9,7 +9,16 @@ import {IoIosCall,IoIosVideocam} from 'react-icons/io'
 import LayoutwithoutFooter from '../components/LayoutwithoutFooter'
 
 const ChatSection = () => {
+  const [showContent, setShowContent] = useState(false);
+  const [message, setMessage] = useState('');
 
+  const handleButtonClick = () => {
+    setShowContent(!showContent);
+  };
+  const handleSelectEmoji = (emoji) => {
+    
+    setMessage(message + emoji);
+  };
   return (
     <>
     <LayoutwithoutFooter>
@@ -90,10 +99,20 @@ const ChatSection = () => {
                </div>
              </div>
              </div>
+            {showContent && (
+            <div className='emojieselection'>
+          <button onClick={() => handleSelectEmoji('😀')}>😀</button>
+          <button onClick={() => handleSelectEmoji('😍')}>😍</button>
+          <button onClick={() => handleSelectEmoji('👍')}>👍</button>
+          <button onClick={() => handleSelectEmoji('❤️')}>❤️</button>
+           </div>
+           )}
              <div className="chat-write">
               <CiImageOn className='photoIcon'/>
-             <BsEmojiSmile className='emojiIcon'/>
-             <input type="text" placeholder='Write a message...'/>
+            <div className="emojisection">
+            <BsEmojiSmile  className='emojiIcon' onClick={handleButtonClick}/>
+            </div>
+             <input type="text"value={message} onChange={(e) => setMessage(e.target.value)} placeholder='Write a message...'/>
              <RiSendPlaneFill className='sendIcon'/>
             </div>
           </div>
