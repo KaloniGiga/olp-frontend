@@ -177,9 +177,9 @@ const Fourth = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-sm-12  ">
+            <div className="col-lg-4 col-sm-12  text-center ">
               <img
-                className="simple"
+                className="simple mt-5"
                 src={simple}
                 alt="fourth_img"
               />

@@ -15,6 +15,7 @@ const VerticalSlider = () => {
     <>
       <div className="swipe">
         <Swiper
+          centeredSlides={true}
           slidesPerView={3}
           spaceBetween={30}
           direction="vertical"
@@ -34,7 +35,12 @@ const VerticalSlider = () => {
               direction:"horizontal",
               slidesPerView: 1,
             },
-            1024: {
+            768: {
+              direction:"horizontal",
+              slidesPerView: 2,
+              centeredSlides:false
+            },
+            1024:{
               direction:"vertical",
               slidesPerView: 3,
             }

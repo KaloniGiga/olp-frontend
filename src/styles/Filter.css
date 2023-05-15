@@ -1,12 +1,11 @@
 .filter{
     width: 45vh;
-   
     background-color: rgba(255, 255, 255, 0.712);
     border-radius:7px;
     }
    .refine-text{
-    border-radius: 7px 7px 0 0;
-        background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91);
+      border-radius: 7px 7px 0 0;
+      background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91);
     }
     .refine-text h6{
         text-align: center;
@@ -52,8 +51,11 @@
     }
     .form-check-input:focus {
       border: none;
-      /* border-color: #ed177e; */
       outline: 0;
       box-shadow: none;
-      /* box-shadow: 0 0 0 0.23rem #ed177e3d; */
   }
+  @media  screen and (max-width:992px) {
+    .filter{
+        display: none !important;
+    }
+}

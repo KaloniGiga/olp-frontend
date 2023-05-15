@@ -2,32 +2,32 @@
     width: 100%;
     margin-bottom: 1rem;
     display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(242, 242, 242);
+    border-radius: 10px;
+
 }
 .searchedlist-left{
-    background-color: rgb(242, 242, 242);
-    border-radius: 10px 0 0 10px;
     padding: 10px;
-    flex-basis: 25%;
+    flex-basis: 20%;
 }
 .searchedlist-left img{
     width:100%;
-    height:100%;
-    border-radius: 10px;
     object-fit:cover;
     object-position: top;
+    border-radius: 10px;
   }
-.searchedlist-middle{
+.searchedlist-right{
     border-radius: 0 10px 10px 0;
-    background-color: rgb(242, 242, 242);
     padding:0.5rem 1rem;
-    flex-basis: 100%;
+    flex-basis: 80%;
 }
-.searchedlist-middle h3{
+.searchedlist-right h3{
     font-size: 22px;
     margin-left:1rem;
   
 }
-.searchedlist-middle hr{
+.searchedlist-right hr{
     position: relative;
     top: -0.8rem;
     opacity: 20%;
@@ -36,11 +36,12 @@
 }
 .user-details{
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     padding-right: 3rem;
- 
 }
 .user-details p{
+  font-size: 16px;
     opacity: 85%;
     line-height: 1.5rem;
     margin: 0;
@@ -53,7 +54,7 @@ font-size: 14px;
 }
 .searchedlist-btn {
     padding: 6px 20px;
-    margin: 5px 0px;
+    margin: 7px 0px;
     width: 100%;
     font-size: 14px;
     color: white;
@@ -66,11 +67,11 @@ font-size: 14px;
     transition:all 0.2s ease-in-out;
   }
   .searchedlist-outline-btn{
-    margin: 8px 0px;
     width: 100%;
+    margin: 8px 0px;
     font-size: 14px;
     border: none;
-    padding: 6px 20px;
+    padding: 5px 20px;
     outline: 1px solid rgba(128, 128, 128, 0.246);
     border-radius: 10px;
     background-color: white;
@@ -78,6 +79,51 @@ font-size: 14px;
   .searchedlist-outline-btn:hover{
     color: #ec1c24;
     transition:all 0.2s ease-in-out;
+  }
+  @media  screen and (max-width:992px) {
+    .user-details{
+      padding-right: 2rem !important;
+    }
+    .profile-details .p1:last-child{
+      display: none;
+    }
+
+  }
+  @media  screen and (max-width:768px) {
+    .user-details{
+      padding-right: 0 !important;
+      justify-content: space-around;
+    }
+    .searchedlist-left{
+      display: flex;
+      align-items: center;
+      flex-basis:100%;
+    }
+
+    .searchedlist-right{
+      flex-basis: 100%;
+      justify-content: center;
+    }
+    .searchedlist-right h3{
+      font-size: 18px;
+      text-align: center;
+      margin:0rem;
+     }
+     .user-details p{
+      font-size: 13px;
+      line-height: 1.1rem;
+    }
+    .user-details-right button{
+      font-size: 12px;
+    }
+    .user-details-left{
+      text-align: start;
+      padding: 0 !important;
+    }
+    .profile-right-title h1{
+     width: 100%;
+     margin-top: 2rem;
+    }
   }
  
   

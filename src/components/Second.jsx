@@ -92,16 +92,19 @@ const Second = () => {
       >
                  <Swiper
                 slidesPerView={5}
+                loopedSlides={6}
                 spaceBetween={0}
                 centeredSlides={true}
                 slideToClickedSlide={true}
                 loop={true}
                 breakpoints={{     
                   400: {
-                    slidesPerView: 2,
-                  },
-                  600: {
                     slidesPerView: 3,
+                    loopedSlides: 4,
+                  },
+                  200: {
+                    slidesPerView: 2,
+                    loopedSlides: 3,
                   },
                 }}
                 
@@ -303,10 +306,10 @@ const Second = () => {
                     <button>Teacher</button>
                     <button>Farmer</button>
                     <button>Business man</button>
-                    <button>Project Manage</button>
+                    <button>BM</button>
+                    <button>Project Manager</button>
                     <button>Sales Manager</button>
                     <button>Doctor</button>
-                    <button>BM</button>
                     <button>CA</button>
                     <button>Graphics Designer</button>
                     <button>player</button>

@@ -20,7 +20,6 @@ const PreferenceDetails = () => {
   const handleSubmit = (event) => {
       event.preventDefault();
       console.log(`Submitted: ${familytype} ${familystatus} (${fathername})  ${fatherjob} ${mothername} (${motherjob})  ${numoffamilymember} ${numofbrother} ${numofsister} ${noofunmarried} ${noofmarried}`);
-  
     };
   return (
     <>

@@ -2,7 +2,6 @@ import React, { useRef} from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../App.css";
 import {GoThreeBars} from 'react-icons/go'
-import {RxCross1} from 'react-icons/rx'
 import logo from "../images/logo.png";
 const Header = () => {
   const sidenav = useRef();
@@ -19,12 +18,11 @@ const Header = () => {
   };
   return (
     <>
-      <header>
-      <nav className="navbar">
+      <header className="Navbar">
       <NavLink className="navbar-logo" to="/">
               <img src={logo} alt="logo" />
       </NavLink>
-      <ul className="navbar-items">
+      <ul className="Navbar-items">
                 <li className="navbar-item mt-2">
                   <NavLink
                     className="navbar-link cool-link "
@@ -50,7 +48,7 @@ const Header = () => {
             </ul>
       <div className="sidenavbar">
         <GoThreeBars onClick={sidenavs} className="navbar-toggle"/>       
-        <div ref={sidenav} className='sidenav' style={{bottom:"0px"}}>
+        <div ref={sidenav} className='sidenav'>
             <div className='snbar'></div>
             <ul className="sidenavbar-items">
                 <li className="sidenavbar-item">
@@ -77,9 +75,8 @@ const Header = () => {
                 </li>
             </ul>
         </div>
-        <div ref={sidenavblur} className='sidenavblur' onClick={sidenavss} style={{bottom:"0px"}}></div>
+        <div ref={sidenavblur} className='sidenavblur' onClick={sidenavss} ></div>
       </div>
-    </nav>
       </header>
     </>
   );

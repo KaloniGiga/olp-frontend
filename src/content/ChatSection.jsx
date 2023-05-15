@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import MyProfiles from './MyProfiles'
+import MyProfiles from './MyProfilesSidebar'
 import '../styles/Chatsection.css'
 import ChatPerson from '../components/ChatPerson'
 import {RiSendPlaneFill} from 'react-icons/ri'
@@ -25,9 +25,9 @@ const ChatSection = () => {
      <div className="container">
      <div className="chatsection py-5">
          <div className="messagesection">
-          <div className="profilesection">  
+          {/* <div className="profilesection">  
          <MyProfiles/>        
-         </div>
+         </div> */}
           <div className="chat-friend-list">
           <h2>Chat</h2>
             <form>
@@ -48,7 +48,7 @@ const ChatSection = () => {
               </div>
            
           </div>
-          <div className="chat">
+          <div className="chat mt-4">
              <div className="chat-name">
                   <div className="chat-name-userdata">
                   <img src="https://www.circumcisionpro.co.uk/wp-content/uploads/2021/05/avatar-profile-picture.jpg" alt="chat-profile" />
