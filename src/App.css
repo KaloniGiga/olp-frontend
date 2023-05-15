@@ -1,5 +1,6 @@
 
 /*------------------------------------------------ Navbar CSS ---------------------------------------- */
+
 .Navbar {
     width: 100%;
     display: flex ;
@@ -7,18 +8,22 @@
     align-items: center;
     height: 10vh;
     padding:0 4rem;
+    padding:0 4rem;
     background-image: linear-gradient(170deg, #ec1c24, #ff1f70, #ed177e, #662d91);
   }
+
 
   .navbar-logo img {
     width: 6em;
   }
+
   .Navbar-items{
     display: flex;
     margin-top: 1vh;
     column-gap: 2rem;
     list-style: none;
   }
+  
   .Navbar-items .navbar-item a {
     color: white;
     text-decoration: none;
@@ -63,6 +68,12 @@
 .navbar-toggle{
   display: none !important;
 }
+.sidenavbar {
+ display: none !important;
+}
+.navbar-toggle{
+  display: none !important;
+}
 
   /*------------------------------------------------ Navbar Responsive CSS ----------------------------------------- */
 
@@ -83,13 +94,63 @@
      .navbar-toggle{
       display: block !important;
     }
+    .sidenavbar {
+      display: block !important;
+     }
+     .navbar-toggle{
+      display: block !important;
+    }
     .navbar-toggle:hover{
     font-size: 30px;
     color: rgb(255, 255, 255);
     }
+    
     .Navbar-items{
      display: none;
     }
+    .sidenavblur {
+      background-color: #000;
+      bottom: -100%;
+      display: block;
+      height: 100%;
+      left: 0;
+      right: 0;
+      opacity: .5;
+      position: fixed;
+      transition: all .5s ease;
+      z-index: 200;
+  }
+  .sidenav {
+    background-color: #fff;
+    border-radius: 20px 20px 0 0;
+    bottom: -100%;
+    display: block;
+    height: 400px;
+    left: 0;
+    right: 0;
+    padding: 10px 0;
+    position: fixed;
+    transition: all .5s ease;
+    z-index: 212;
+}
+    .snbar{
+      background-color: #aaa;
+      height: 3px;
+      margin: 0 40%;
+      width: 20%;
+    }
+    .sidenavbar-items{
+      margin-top: 5rem;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      list-style: none;
+    }
+    .sidenavbar-items li{
+      margin-top: 1rem;
+      color: black;
+    }
+
     .sidenavblur {
       background-color: #000;
       bottom: -100%;
@@ -266,16 +327,19 @@
   .second h6:first-child{
     text-align: center;
     font-size: 17px;
+    font-size: 17px;
   }
   .secondborder {
     margin-top: 2rem;
     border-radius: 20px;
     border: 2px solid rgba(128, 128, 128, 0.29);
     padding:1.5rem 3.5rem;
+    padding:1.5rem 3.5rem;
     background-color: rgb(247, 247, 247);
   }
   .secondborder .nav{
     border-bottom: 1px solid rgba(128, 128, 128, 0.608);
+    margin-bottom: 1.5rem;
     margin-bottom: 1.5rem;
   }
   .nav.nav-pills {
@@ -292,6 +356,7 @@
     row-gap: 1rem;
   }
   .religion button {
+    padding:.4rem 2rem;
     padding:.4rem 2rem;
     border-radius: 20px;
     color: rgb(80, 75, 75);
@@ -332,8 +397,15 @@
     width: 100%;
   }
   /* -------------------------------------------- Second Responsive CSS ---------------------------------------------------------------------- */
+  /* -------------------------------------------- Second Responsive CSS ---------------------------------------------------------------------- */
 
   @media screen and (max-width: 768px){
+    .religion button{
+      flex-basis: 40%;
+    }
+     .swiper.swiper-initialized.swiper-horizontal.swiper-backface-hidden{
+    padding: .5rem;
+     }
     .religion button{
       flex-basis: 40%;
     }
@@ -343,8 +415,21 @@
       .second .swiper-wrapper{
         display: flex;
         text-align: center;
+        text-align: center;
       }
       .secondborder{
+        padding: .8rem 1rem;
+      }
+  }
+  @media screen and (max-width: 576px){
+      .second .swiper-wrapper{
+        display: flex;
+        text-align: center;
+      }
+      .religion button{
+        flex-basis: 35%;
+        padding: .3rem 1rem;
+        white-space: nowrap;
         padding: .8rem 1rem;
       }
   }
@@ -511,6 +596,9 @@
     position: absolute !important;
     right: 9px !important;
     top: 9px !important;
+    position: absolute !important;
+    right: 9px !important;
+    top: 9px !important;
   }
   .accordion-item:last-of-type .accordion-button.collapsed {
     border-bottom-right-radius: 40px;
@@ -523,6 +611,7 @@
     border-bottom-left-radius: 40px;
   }
   .accordion-item .accordion-body {
+    width: 100%;
     width: 100%;
     background-color: #e3e3e3;
     border-bottom-left-radius: 40px;
@@ -540,6 +629,9 @@
   .simple {
     width: 80%;
   }
+  .simple {
+    width: 80%;
+  }
 }
 @media only screen and (max-width:992px){
   .accordion{
@@ -549,6 +641,9 @@
   }
   .accordion-item {
     width: 30rem;
+  }
+  .simple {
+    width: 65%;
   }
   .simple {
     width: 65%;
@@ -583,6 +678,8 @@
   .accordion-button::after {
     font-size: 20px;
     position: absolute;
+    right: 0px !important;
+    top: 20px !important;
     right: 0px !important;
     top: 20px !important;
 }
