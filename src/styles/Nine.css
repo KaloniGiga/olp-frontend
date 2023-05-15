@@ -1,18 +1,18 @@
 .Nine {
   margin-top: 3rem;
 }
-.Nine-cover-img{
+.Nine-cover-img {
   position: relative;
 }
-.Nine-cover-img img:first-child{
- width: 100%;
+.Nine-cover-img img:first-child {
+  width: 100%;
 }
 .last_caption {
-position: absolute;
-top: 6rem;
-left: 0;
-right: 0;
-bottom: 0;
+  position: absolute;
+  top: 6rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .last_caption p {
   color: white;
@@ -29,10 +29,10 @@ bottom: 0;
   }
   .last_caption {
     top: 5rem;
-    }
-    .Nine-cover-img img:last-child{
-      width: 18%;
-     }
+  }
+  .Nine-cover-img img:last-child {
+    width: 18%;
+  }
 }
 @media screen and (max-width: 992px) {
   .last_caption p {
@@ -40,7 +40,7 @@ bottom: 0;
   }
   .last_caption {
     top: 3rem;
-    }
+  }
 }
 @media screen and (max-width: 768px) {
   .last_caption p {
@@ -48,10 +48,10 @@ bottom: 0;
   }
   .last_caption {
     top: 1.3rem;
-    }
-    .Nine-cover-img img:last-child{
-      width: 25%;
-     }
+  }
+  .Nine-cover-img img:last-child {
+    width: 25%;
+  }
 }
 @media screen and (max-width: 420px) {
   .last_caption p {
@@ -59,8 +59,8 @@ bottom: 0;
   }
   .last_caption {
     top: 1rem;
-    }
-    .Nine-cover-img img:last-child{
-      width: 25%;
-     }
+  }
+  .Nine-cover-img img:last-child {
+    width: 25%;
+  }
 }

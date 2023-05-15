@@ -21,8 +21,12 @@ const UserProfile = () => {
                   <p>
                     <i className="bi bi-geo-alt-fill"></i> Nepal, Kathmandu
                   </p>
-                  <Link to="/chat"> <button className="userprofile-outline-btn">
-                     <i class="bi bi-chat-dots"></i> Send Message</button></Link>
+                  <Link to="/chat">
+                    {" "}
+                    <button className="userprofile-outline-btn">
+                      <i class="bi bi-chat-dots"></i> Send Message
+                    </button>
+                  </Link>
                   <button className="searchedlist-btn">Connect</button>
                 </div>
               </div>
@@ -65,35 +69,36 @@ const UserProfile = () => {
                     role="tabpanel"
                     aria-labelledby="pills-home-tab"
                     tabindex="0"
-                  >               
-                
+                  >
                     <div className="about-tab">
-                     <div className="about-tab-left">
-                     <h2>Bio</h2>
-                     <p>"Just enjoying life and sharing my adventures with friends and family."</p>
-                     <h2>Age</h2>
-                      <p>23 Years</p>
-                      <h2>Height</h2>
-                      <p>5.9 ft.</p>
-                      <h2>Religion</h2>
-                      <p>Hindu</p>
-                      <h2>Caste</h2>
-                      <p>Magar</p>
-                     </div>
-                     <div className="about-tab-right">
-                     <h2>Education</h2>
-                      <p>BCA</p>
-                     <h2>Profession</h2>
-                      <p>Web Developer</p>
-                      <h2>Marital Status</h2>
-                      <p>Never Married</p>
-                      <h2>Income</h2>
-                      <p>Rs. 2 lakh per Month</p>
-                      <h2>State</h2>
-                      <p>Bagmati</p>
-                     </div>
+                      <div className="about-tab-left">
+                        <h2>Bio</h2>
+                        <p>
+                          "Just enjoying life and sharing my adventures with
+                          friends and family."
+                        </p>
+                        <h2>Age</h2>
+                        <p>23 Years</p>
+                        <h2>Height</h2>
+                        <p>5.9 ft.</p>
+                        <h2>Religion</h2>
+                        <p>Hindu</p>
+                        <h2>Caste</h2>
+                        <p>Magar</p>
+                      </div>
+                      <div className="about-tab-right">
+                        <h2>Education</h2>
+                        <p>BCA</p>
+                        <h2>Profession</h2>
+                        <p>Web Developer</p>
+                        <h2>Marital Status</h2>
+                        <p>Never Married</p>
+                        <h2>Income</h2>
+                        <p>Rs. 2 lakh per Month</p>
+                        <h2>State</h2>
+                        <p>Bagmati</p>
+                      </div>
                     </div>
-                  
                   </div>
                   <div
                     className="tab-pane fade"
@@ -102,7 +107,7 @@ const UserProfile = () => {
                     aria-labelledby="pills-profile-tab"
                     tabindex="0"
                   >
-                   <Gallery/>
+                    <Gallery />
                   </div>
                 </div>
               </div>

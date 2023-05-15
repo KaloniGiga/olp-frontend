@@ -5,7 +5,7 @@ const Fifth = () => {
   return (
     <>
       <div className="fifth">
-        <img src={s2} alt="cover2" className="w-100 "/>
+        <img src={s2} alt="cover2" className="w-100 " />
         <div className="sec_cover"></div>
         <div className="sec_caption">
           <h2>Life Partners, What we need</h2>

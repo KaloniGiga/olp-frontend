@@ -5,184 +5,183 @@ import "swiper/css";
 import "swiper/css/pagination";
 import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
 const Second = () => {
   const isDesktopOrLaptop = useMediaQuery({
-    query: '(min-width: 1224px)'
-  })
-  const isTabletOrMobile = useMediaQuery({ query: '(min-width: 768px)' })
+    query: "(min-width: 1224px)",
+  });
+  const isTabletOrMobile = useMediaQuery({ query: "(min-width: 768px)" });
   return (
     <>
       <div className="second">
         <div className="container">
-            <h6>Choose Your best Matches through tags</h6>
+          <h6>Choose Your best Matches through tags</h6>
           <div className="secondborder">
             <div className="row">
-            {isTabletOrMobile ?  (
-            <div
-                className="nav nav-pills "
-                role="tablist"
-                aria-orientation="vertical"
-              >
-                <p
-                  className="nav-link active cool  "
-                  id="v-pills-Religion-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-Religion"
-                  aria-controls="v-pills-Religion"
+              {isTabletOrMobile ? (
+                <div
+                  className="nav nav-pills "
+                  role="tablist"
+                  aria-orientation="vertical"
                 >
-                  Religion
-                </p>
+                  <p
+                    className="nav-link active cool  "
+                    id="v-pills-Religion-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-Religion"
+                    aria-controls="v-pills-Religion"
+                  >
+                    Religion
+                  </p>
 
-                <p
-                  className="nav-link cool"
-                  id="v-pills-Caste-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-Caste"
-                  aria-controls="v-pills-Caste"
+                  <p
+                    className="nav-link cool"
+                    id="v-pills-Caste-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-Caste"
+                    aria-controls="v-pills-Caste"
+                  >
+                    Caste
+                  </p>
+
+                  <p
+                    className="nav-link cool"
+                    id="v-pills-City-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-City"
+                    aria-controls="v-pills-City"
+                  >
+                    City
+                  </p>
+
+                  <p
+                    className="nav-link cool"
+                    id="v-pills-Status-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-Status"
+                    aria-controls="v-pills-Status"
+                  >
+                    Status
+                  </p>
+
+                  <p
+                    className="nav-link cool"
+                    id="v-pills-Country-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-Country"
+                    aria-controls="v-pills-Country"
+                  >
+                    Country
+                  </p>
+
+                  <p
+                    className="nav-link cool"
+                    id="v-pills-Occupation-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-pills-Occupation"
+                    aria-controls="v-pills-Occupation"
+                  >
+                    Occupation
+                  </p>
+                </div>
+              ) : (
+                <div
+                  className="nav nav-pills "
+                  role="tablist"
+                  aria-orientation="vertical"
                 >
-                  Caste
-                </p>
+                  <Swiper
+                    slidesPerView={5}
+                    loopedSlides={6}
+                    spaceBetween={0}
+                    centeredSlides={true}
+                    slideToClickedSlide={true}
+                    loop={true}
+                    breakpoints={{
+                      400: {
+                        slidesPerView: 3,
+                        loopedSlides: 4,
+                      },
+                      200: {
+                        slidesPerView: 2,
+                        loopedSlides: 3,
+                      },
+                    }}
+                  >
+                    <SwiperSlide>
+                      <p
+                        className="nav-link active"
+                        id="v-pills-Religion-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-Religion"
+                        aria-controls="v-pills-Religion"
+                      >
+                        Religion
+                      </p>
+                    </SwiperSlide>
 
-                <p
-                  className="nav-link cool"
-                  id="v-pills-City-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-City"
-                  aria-controls="v-pills-City"
-                >
-                  City
-                </p>
+                    <SwiperSlide>
+                      <p
+                        className="nav-link"
+                        id="v-pills-Caste-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-Caste"
+                        aria-controls="v-pills-Caste"
+                      >
+                        Caste
+                      </p>
+                    </SwiperSlide>
 
-                <p
-                  className="nav-link cool"
-                  id="v-pills-Status-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-Status"
-                  aria-controls="v-pills-Status"
-                >
-                  Status
-                </p>
+                    <SwiperSlide>
+                      <p
+                        className="nav-link"
+                        id="v-pills-City-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-City"
+                        aria-controls="v-pills-City"
+                      >
+                        City
+                      </p>
+                    </SwiperSlide>
 
-                <p
-                  className="nav-link cool"
-                  id="v-pills-Country-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-Country"
-                  aria-controls="v-pills-Country"
-                >
-                  Country
-                </p>
+                    <SwiperSlide>
+                      <p
+                        className="nav-link"
+                        id="v-pills-Status-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-Status"
+                        aria-controls="v-pills-Status"
+                      >
+                        Status
+                      </p>
+                    </SwiperSlide>
 
-                <p
-                  className="nav-link cool"
-                  id="v-pills-Occupation-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#v-pills-Occupation"
-                  aria-controls="v-pills-Occupation"
-                >
-                  Occupation
-                </p>
+                    <SwiperSlide>
+                      <p
+                        className="nav-link"
+                        id="v-pills-Country-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-Country"
+                        aria-controls="v-pills-Country"
+                      >
+                        Country
+                      </p>
+                    </SwiperSlide>
 
-              </div>) : (
-        <div
-        className="nav nav-pills "
-        role="tablist"
-        aria-orientation="vertical"
-      >
-                 <Swiper
-                slidesPerView={5}
-                loopedSlides={6}
-                spaceBetween={0}
-                centeredSlides={true}
-                slideToClickedSlide={true}
-                loop={true}
-                breakpoints={{     
-                  400: {
-                    slidesPerView: 3,
-                    loopedSlides: 4,
-                  },
-                  200: {
-                    slidesPerView: 2,
-                    loopedSlides: 3,
-                  },
-                }}
-                
-              >
-        <SwiperSlide>
-        <p
-          className="nav-link active"
-          id="v-pills-Religion-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-Religion"
-          aria-controls="v-pills-Religion"
-        >
-          Religion
-        </p>
-        </SwiperSlide>
-
-        <SwiperSlide>
-        <p
-          className="nav-link"
-          id="v-pills-Caste-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-Caste"
-          aria-controls="v-pills-Caste"
-        >
-          Caste
-        </p>
-        </SwiperSlide>
-
-        <SwiperSlide>
-        <p
-          className="nav-link"
-          id="v-pills-City-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-City"
-          aria-controls="v-pills-City"
-        >
-          City
-        </p>
-        </SwiperSlide>
-
-        <SwiperSlide>
-        <p
-          className="nav-link"
-          id="v-pills-Status-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-Status"
-          aria-controls="v-pills-Status"
-        >
-          Status
-        </p>
-        </SwiperSlide>
-
-        <SwiperSlide>
-        <p
-          className="nav-link"
-          id="v-pills-Country-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-Country"
-          aria-controls="v-pills-Country"
-        >
-          Country
-        </p>
-        </SwiperSlide>
-
-        <SwiperSlide>
-        <p
-          className="nav-link"
-          id="v-pills-Occupation-tab"
-          data-bs-toggle="pill"
-          data-bs-target="#v-pills-Occupation"
-          aria-controls="v-pills-Occupation"
-        >
-          Occupation
-        </p>
-        </SwiperSlide>
-        </Swiper>
-      </div>
-      )}
+                    <SwiperSlide>
+                      <p
+                        className="nav-link"
+                        id="v-pills-Occupation-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#v-pills-Occupation"
+                        aria-controls="v-pills-Occupation"
+                      >
+                        Occupation
+                      </p>
+                    </SwiperSlide>
+                  </Swiper>
+                </div>
+              )}
               <div className="tab-content" id="v-pills-tabContent">
                 <div
                   className="tab-pane fade show active"
@@ -193,7 +192,7 @@ const Second = () => {
                 >
                   <div className="religion">
                     <button>Hindu</button>
-                    <button >Muslim</button>
+                    <button>Muslim</button>
                     <button>Christian</button>
                     <button>Buddhist</button>
                     <button> Sikh</button>

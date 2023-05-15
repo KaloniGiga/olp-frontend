@@ -1,5 +1,5 @@
-import React, {useState } from "react";
-import { Link,useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Signup.css";
 
 const Signup = () => {
@@ -8,7 +8,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [isAnimated, setIsAnimated] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
 
   const handleButtonClick = (animate) => {
     setIsAnimated(!isAnimated);
@@ -16,9 +16,9 @@ const Signup = () => {
   };
   const handleButtonClick0 = (animate) => {
     if (animate === "login") {
-      navigate('/personaldetails');
-    } else{
-      navigate('/');
+      navigate("/personaldetails");
+    } else {
+      navigate("/");
     }
   };
   const handleUsernameChange = (event) => {
@@ -87,13 +87,21 @@ const Signup = () => {
                       </Link>
                     </p>
                   )}
-                <button className="form_btn" type="submit" onClick={() => handleButtonClick0(isAnimated ? "login" : "signup")}>
+                  <button
+                    className="form_btn"
+                    type="submit"
+                    onClick={() =>
+                      handleButtonClick0(isAnimated ? "login" : "signup")
+                    }
+                  >
                     {isAnimated ? "SignUp" : "Login"}
                   </button>
                 </form>
               </div>
             </div>
-            <div className={`signup ${isAnimated ? "animated" : "notanimated"}`}>
+            <div
+              className={`signup ${isAnimated ? "animated" : "notanimated"}`}
+            >
               <div className="signup-text">
                 <h2> {isAnimated ? "Welcome Back!" : "Hello, Friend"}</h2>
                 <p className="px-5">
@@ -101,8 +109,13 @@ const Signup = () => {
                     ? `To keep connected with us please  login with your personal details`
                     : `Enter your personal details and start your journey with us`}{" "}
                 </p>
-                <button className="login_btn" onClick={() => handleButtonClick(isAnimated ? "login" : "signup")}>
-                  {isAnimated ? "Login" :"SignUp"}
+                <button
+                  className="login_btn"
+                  onClick={() =>
+                    handleButtonClick(isAnimated ? "login" : "signup")
+                  }
+                >
+                  {isAnimated ? "Login" : "SignUp"}
                 </button>
               </div>
             </div>

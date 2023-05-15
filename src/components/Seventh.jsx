@@ -12,7 +12,7 @@ const Seventh = () => {
             </div>
             <div className="col-lg-9 col-sm-12 ">
               <div className="upcarousel">
-                <VerticalSlider/>
+                <VerticalSlider />
               </div>
             </div>
           </div>
