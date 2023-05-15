@@ -42,7 +42,7 @@ const Signup = () => {
           <div className="login-signup">
             <div className={`login ${isAnimated ? "animated" : "notanimated"}`}>
               <div className="login-text">
-                <form className="form_feild" onSubmit={handleSubmit}>
+                <form className="form_feild" onSubmit={(e) => handleSubmit(e)}>
                   <h2>{isAnimated ? "Create Account" : "Sign in"} </h2>
                   <div className="form-icon d-flex justify-content-center gap-3">
                     <i className="bi bi-facebook"></i>
