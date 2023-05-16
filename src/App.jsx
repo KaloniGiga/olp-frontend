@@ -15,11 +15,15 @@ import FamilyDetails from "./content/FamilyDetails";
 import UploadProfileSection from "./content/UploadProfileSection";
 import PreferenceDetails from "./content/PreferenceDetails";
 import MyProfilesSidebar from "./content/MyProfilesSidebar";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import Toasts from "./components/Toast/Toast";
 
 const App = () => {
   return (
     <>
+      <ToastContainer />
+      <Toasts />
       <BrowserRouter>
         <Homebtn />
         <Routes>         

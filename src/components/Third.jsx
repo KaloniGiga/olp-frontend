@@ -13,23 +13,23 @@ const Third = () => {
         <div className="container-fluid px-0">
           <div className="row">
             <OwlCarousel
-              className="owl-theme "
+              className="owl-theme"
               items={1}
               autoplay
               autoplaySpeed={0.3}
               dots
               loop
             >
-              <div class="item">
+              <div className="item">
                 <img src={s1} alt="cover1" />
               </div>
-              <div class="item">
+              <div className="item">
                 <img src={s2} alt="cover2" />
               </div>
-              <div class="item">
+              <div className="item">
                 <img src={s3} alt="cover3" />
               </div>
-              <div class="item">
+              <div className="item">
                 <img src={s2} alt="cover4" />
               </div>
             </OwlCarousel>

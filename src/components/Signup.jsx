@@ -1,6 +1,9 @@
 import React, {useState } from "react";
 import { Link,useNavigate} from "react-router-dom";
 import "../styles/Signup.css";
+import { axiosInstance } from '../http/index';
+import { addToast } from "../store/features/toastSlice";
+import { useDispatch } from 'react-redux';
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -9,11 +12,14 @@ const Signup = () => {
   const [isAnimated, setIsAnimated] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const navigate  = useNavigate();
+  const dispatch = useDispatch();
+  
 
   const handleButtonClick = (animate) => {
     setIsAnimated(!isAnimated);
     setIsVisible(!isVisible);
   };
+
   const handleButtonClick0 = (animate) => {
     if (animate === "login") {
       navigate('/personaldetails');
@@ -21,18 +27,81 @@ const Signup = () => {
       navigate('/');
     }
   };
+
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
   };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
+
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`Email: ${email}, Password: ${email},UserName: ${username}`);
+     
+     const user = isAnimated ? {email: email, username: username, password: password} : {email: email, password:password};
+     if((isAnimated && !username) || !email || !password  ) {
+      console.log('fill the form');
+        dispatch(
+          addToast({msg: "Please fill all values", kind: "WARNING"})
+        )
+        return;
+     }
+     console.log(user);
+     console.log('inside login')
+     axiosInstance
+     .post(isAnimated ? 'authentication/register' : 'authentication/log-in', user)
+     .then((response) => {
+        
+        const user = response.data;
+
+        //show toast
+        dispatch(
+          addToast({kind: "SUCCESS", msg: `${isAnimated ? 'Account created successfully' : 'Logged In successfully'}`})
+        )
+        //check if  the user has setup profile, family and others
+        if(user && !user.profileId) {
+          navigate('/personaldetails')
+        }else if(user && !user.familyId) {
+          navigate('/contactdetails');
+        }else if(user && !user.educationId) {
+          navigate('/familydetails');
+        }else if(user && !user.preferanceId) {
+          navigate('/preferancedetails');
+        }else if(user && !user.avatarId) {
+          navigate('/uploadprofile');
+        }else {
+           navigate('/');
+        }
+     })
+     .catch((error) => {
+      console.log(error);
+        if(error.response) {
+          const response = error.response;
+          const { message } = response.data;
+          console.log(message);
+          switch (response.status) {
+            case 400:
+            case 500:
+              console.log(message)
+             dispatch(
+              addToast({kind: 'ERROR', msg: message})
+             )
+             break;
+            default: 
+             dispatch(
+              addToast({
+                kind: "ERROR", msg: "Oops, Something went wrong",
+              })
+             )
+             break;
+          }
+        }
+     });
   };
 
   return (
@@ -46,8 +115,8 @@ const Signup = () => {
                   <h2>{isAnimated ? "Create Account" : "Sign in"} </h2>
                   <div className="form-icon d-flex justify-content-center gap-3">
                     <i className="bi bi-facebook"></i>
-                    <i class="bi bi-google"></i>
-                    <i class="bi bi-linkedin"></i>
+                    <i className="bi bi-google"></i>
+                    <i className="bi bi-linkedin"></i>
                   </div>
                   <p>
                     {" "}
@@ -87,7 +156,7 @@ const Signup = () => {
                       </Link>
                     </p>
                   )}
-                <button className="form_btn" type="submit" onClick={() => handleButtonClick0(isAnimated ? "login" : "signup")}>
+                <button className="form_btn" type="submit">
                     {isAnimated ? "SignUp" : "Login"}
                   </button>
                 </form>

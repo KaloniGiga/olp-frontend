@@ -189,7 +189,7 @@ const Second = () => {
                   id="v-pills-Religion"
                   role="tabpanel"
                   aria-labelledby="v-pills-Religion-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   <div className="religion">
                     <button>Hindu</button>
@@ -210,7 +210,7 @@ const Second = () => {
                   id="v-pills-Caste"
                   role="tabpanel"
                   aria-labelledby="v-pills-Caste-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   {" "}
                   <div className="religion">
@@ -232,7 +232,7 @@ const Second = () => {
                   id="v-pills-City"
                   role="tabpanel"
                   aria-labelledby="v-pills-City-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   {" "}
                   <div className="religion">
@@ -254,7 +254,7 @@ const Second = () => {
                   id="v-pills-Status"
                   role="tabpanel"
                   aria-labelledby="v-pills-Status-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   {" "}
                   <div className="religion">
@@ -276,7 +276,7 @@ const Second = () => {
                   id="v-pills-Country"
                   role="tabpanel"
                   aria-labelledby="v-pills-Country-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   {" "}
                   <div className="religion ">
@@ -298,7 +298,7 @@ const Second = () => {
                   id="v-pills-Occupation"
                   role="tabpanel"
                   aria-labelledby="v-pills-Occupation-tab"
-                  tabindex="0"
+                  tabIndex="0"
                 >
                   {" "}
                   <div className="religion">
