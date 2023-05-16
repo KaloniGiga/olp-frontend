@@ -1,144 +1,165 @@
-import React from 'react'
-import ProgressBar from './Progressbar';
-import {HiChevronDoubleRight,HiChevronDoubleLeft} from 'react-icons/hi'
-import { useState } from 'react';
-import '../styles/FamilyDetails.css'
-import { Link } from 'react-router-dom';
+import React from "react";
+import ProgressBar from "./Progressbar";
+import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
+import { useState } from "react";
+import "../styles/FamilyDetails.css";
+import { Link } from "react-router-dom";
 const FamilyDetails = () => {
-    const [familytype, setFamilyType] = useState("");
-    const [familystatus, setFamilyStatus] = useState("");
-    const [fathername, setFatherName] = useState("");
-    const [fatherjob, setFatherJob] = useState("");
-    const [mothername, setMotherName] = useState("");
-    const [motherjob, setMotherJob] = useState("");
-    const [numoffamilymember, setNumOfFamilyMember] = useState("");
-    const [numofbrother, setNumOfBrother] = useState("");
-    const [numofsister, setNumOfSister] = useState("");
-    const [noofunmarried, setNoOfUnmarried] = useState("");
-    const [noofmarried, setNoOfMarried] = useState("");
+  const [education, setEducation] = useState("");
+  const [subject, setSubject] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [companyname, setCompanyName] = useState("");
+  const [monthlysalery, setMonthlySalery] = useState("");
+  const [annualincome, setAnnualIncome] = useState("");
+  const [universitycollage, setUniversityCollage] = useState("");
+  const [foreign, setForeign] = useState("");
+  const [job, setJob] = useState("");
+  const [business, setBusiness] = useState("");
+  // const [noofmarried, setNoOfMarried] = useState("");
+  // const [noofmarried, setNoOfMarried] = useState("");
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(`Submitted: ${familytype} ${familystatus} (${fathername})  ${fatherjob} ${mothername} (${motherjob})  ${numoffamilymember} ${numofbrother} ${numofsister} ${noofunmarried} ${noofmarried}`);
-    
-      };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(
+      `Submitted: ${education} ${subject} (${occupation})  ${companyname} ${monthlysalery} (${annualincome})  ${universitycollage} ${foreign} ${job} ${business}`
+    );
+  };
   return (
     <>
       <div className="Family-detail-form">
-      <ProgressBar />
-        <h1>"Please fill up the Family details"</h1>
-   <div className="container">
-    <div className="row">
-    <form className="Family-details"  onSubmit={handleSubmit}> 
+        <ProgressBar />
+        <h1>"Please fill up the education and occupation details"</h1>
+        <div className="container">
+          <div className="row">
+            <form className="Family-details" onSubmit={handleSubmit}>
+              <div className="Family-details-form-left">
+                <div className="education group">
+                  <input
+                    type="text"
+                    value={education}
+                    onChange={(event) => setEducation(event.target.value)}
+                    required
+                  />
+                  <label>Education</label>
+                </div>
+                <div className="subject group">
+                  <input
+                    type="text"
+                    value={subject}
+                    onChange={(event) => setSubject(event.target.value)}
+                    required
+                  />{" "}
+                  <label>subject</label>
+                </div>
+                <div className="occupation group">
+                  <input
+                    type="text"
+                    value={occupation}
+                    onChange={(event) => setOccupation(event.target.value)}
+                    required
+                  />{" "}
+                  <label>occupation</label>
+                </div>
+                <div className="companyname group">
+                  <input
+                    type="text"
+                    value={companyname}
+                    onChange={(event) => setCompanyName(event.target.value)}
+                    required
+                  />{" "}
+                  <label>Company Name</label>
+                </div>
+              </div>
 
- <div className="Family-details-form-left">
- <div className="familytype group">
-  <input
-     type="number"
-     value={familytype}
-     onChange={(event) => setFamilyType(event.target.value)}
-     required
-   /><label>Family Type</label></div>  
-   <div className="familystatus group">
-   <input
-     type="text"
-     value={familystatus}
-     onChange={(event) => setFamilyStatus(event.target.value)}
-     required
-   /> <label>Family Status</label>
-   </div>
-   <div className="fathername group">
-   <input
-     type="text"
-     value={fathername}
-     onChange={(event) => setFatherName(event.target.value)}
-     required
-   /> <label>Father's Name</label>
-   </div>
-   <div className="fatherjob group">
-   <input
-     type="text"
-     value={fatherjob}
-     onChange={(event) => setFatherJob(event.target.value)}
-     required
-   /> <label>Father's Job</label>
-   </div>
- </div>
+              <div className="Family-details-form-middle">
+                <div className="monthlysalery group">
+                  <input
+                    type="number"
+                    value={monthlysalery}
+                    onChange={(event) => setMonthlySalery(event.target.value)}
+                    required
+                  />{" "}
+                  <label>monthlysalery</label>
+                </div>
+                <div className="annualincome group">
+                  <input
+                    type="number"
+                    value={annualincome}
+                    onChange={(event) => setAnnualIncome(event.target.value)}
+                    required
+                  />{" "}
+                  <label>annualincome</label>
+                </div>
+                <div className="universitycollage group">
+                  <input
+                    type="text"
+                    value={universitycollage}
+                    onChange={(event) =>
+                      setUniversityCollage(event.target.value)
+                    }
+                    required
+                  />
+                  <label>university/collage</label>
+                </div>
+                <div className="foreign group">
+                  <input
+                    type="text"
+                    value={foreign}
+                    onChange={(event) => setForeign(event.target.value)}
+                    required
+                  />
+                  <label>foreign</label>
+                </div>
+              </div>
 
- <div className="Family-details-form-middle">
- <div className="mothername group">
-   <input
-     type="text"
-     value={mothername}
-     onChange={(event) => setMotherName(event.target.value)}
-     required
-   /> <label>Mother's Name</label>
-   </div>
-   <div className="motherjob group">
-   <input
-     type="text"
-     value={motherjob}
-     onChange={(event) => setMotherJob(event.target.value)}
-     required
-   /> <label>Mother's Job</label>
-     </div>
-   <div className="numoffamilymember group">
-   <input
-     type="number"
-     value={numoffamilymember}
-     onChange={(event) => setNumOfFamilyMember(event.target.value)}
-     required
-   /><label>No. of family members</label>
-     </div>
-   <div className="numofbrother group">
-   <input
-     type="number"
-     value={numofbrother}
-     onChange={(event) => setNumOfBrother(event.target.value)}
-     required
-   /><label>No of brothers</label>
-     </div>
- </div>
- 
- <div className="Family-details-form-right">
- 
- <div className="numofsister group">
-   <input
-     type="number"
-     value={numofsister}
-     onChange={(event) => setNumOfSister(event.target.value)}
-     required
-   /><label>No of sister</label>
-     </div>
-   <div className="noofunmarried group">
-   <input
-     type="number"
-     value={noofunmarried}
-     onChange={(event) => setNoOfUnmarried(event.target.value)}
-     required
-   /><label>No of unmarried</label>
-     </div>
-   <div className="noofmarried group">
-   <input
-     type="number"
-     value={noofmarried}
-     onChange={(event) => setNoOfMarried(event.target.value)}
-     required
-   /><label>No of married</label>
-     </div>
-
- </div> 
-
- </form>
-    </div>
-   </div>
-   <div className="Family-details-btn">
-     <Link to="/contactdetails"> <button type="reset" className="btnprev"><HiChevronDoubleLeft/> Prev</button></Link>
-     <Link to="/preferencedetails"><button type="submit" className="btnnext">Next <HiChevronDoubleRight/></button></Link>
-  </div>
-    </div>
+              <div className="Family-details-form-right">
+                <div className="job group">
+                  <input
+                    type="text"
+                    value={job}
+                    onChange={(event) => setJob(event.target.value)}
+                    required
+                  />
+                  <label>job</label>
+                </div>
+                <div className="business group">
+                  <input
+                    type="text"
+                    value={business}
+                    onChange={(event) => setBusiness(event.target.value)}
+                    required
+                  />
+                  <label>Business</label>
+                </div>
+                {/* <div className="noofmarried group">
+                  <input
+                    type="number"
+                    value={noofmarried}
+                    onChange={(event) => setNoOfMarried(event.target.value)}
+                    required
+                  />
+                  <label>No of married</label>
+                </div> */}
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className="Family-details-btn">
+          <Link to="/contactdetails">
+            {" "}
+            <button type="reset" className="btnprev">
+              <HiChevronDoubleLeft /> Prev
+            </button>
+          </Link>
+          <Link to="/preferencedetails">
+            <button type="submit" className="btnnext">
+              Next <HiChevronDoubleRight />
+            </button>
+          </Link>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default FamilyDetails
+export default FamilyDetails;

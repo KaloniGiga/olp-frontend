@@ -10,7 +10,6 @@ import SwiperCore, { Pagination, Autoplay, Navigation } from "swiper";
 SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const VerticalSlider = () => {
-
   return (
     <>
       <div className="swipe">
@@ -30,37 +29,36 @@ const VerticalSlider = () => {
           navigation={true}
           modules={[Pagination]}
           className="mySwiper swiper-container"
-          breakpoints={{     
+          breakpoints={{
             292: {
-              direction:"horizontal",
+              direction: "horizontal",
               slidesPerView: 1,
             },
             768: {
-              direction:"horizontal",
+              direction: "horizontal",
               slidesPerView: 2,
-              centeredSlides:false
+              centeredSlides: false,
             },
-            1024:{
-              direction:"vertical",
+            1024: {
+              direction: "vertical",
               slidesPerView: 3,
-            }
+            },
           }}
         >
           <SwiperSlide>
             <div className="slidercard">
               <img src={test1} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-               
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -78,17 +76,16 @@ const VerticalSlider = () => {
             <div className="slidercard">
               <img src={test2} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-               
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -106,16 +103,16 @@ const VerticalSlider = () => {
             <div className="slidercard">
               <img src={test3} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -133,17 +130,16 @@ const VerticalSlider = () => {
             <div className="slidercard">
               <img src={test2} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-               
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -161,17 +157,16 @@ const VerticalSlider = () => {
             <div className="slidercard">
               <img src={test3} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-               
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -189,17 +184,16 @@ const VerticalSlider = () => {
             <div className="slidercard">
               <img src={test2} alt="" />
               <div className="slidecard_caption">
-              <div className="slider_caption_title">
-              <p>Shrawan Parsai</p>
-              <div className="">
-              <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-                  <span className="bi bi-star-fill checked"></span>
-              </div>
-               
-              </div>
+                <div className="slider_caption_title">
+                  <p>Shrawan Parsai</p>
+                  <div className="">
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                    <span className="bi bi-star-fill checked"></span>
+                  </div>
+                </div>
                 <p>
                   <em>
                     <q>
@@ -212,7 +206,6 @@ const VerticalSlider = () => {
               </div>
             </div>
           </SwiperSlide>
-
         </Swiper>
       </div>
     </>

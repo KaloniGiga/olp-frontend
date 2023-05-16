@@ -1,7 +1,7 @@
-import React, { useRef} from "react";
+import React, { useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../App.css";
-import {GoThreeBars} from 'react-icons/go'
+import { GoThreeBars } from "react-icons/go";
 import logo from "../images/logo.png";
 const Header = () => {
   const sidenav = useRef();
@@ -19,64 +19,74 @@ const Header = () => {
   return (
     <>
       <header className="Navbar">
-      <NavLink className="navbar-logo" to="/">
-              <img src={logo} alt="logo" />
-      </NavLink>
-      <ul className="Navbar-items">
-                <li className="navbar-item mt-2">
-                  <NavLink
-                    className="navbar-link cool-link "
-                    aria-current="page"
-                    to="/"
-                  >
-                    Home
-                  </NavLink>
-                </li>
-                <li className="navbar-item mt-2">
-                  <NavLink className="navbar-link cool-link" to="/about">
-                    About Our Life Partner
-                  </NavLink>
-                </li>
-                <li className="navbar-item mt-2">
-                  <NavLink className="navbar-link cool-link" to="/help">
-                    Help?
-                  </NavLink>
-                </li>
-                <li className="navbar-item">
-                <Link to="/signup"> <button className="nav-btn">Register Now</button></Link> 
-                </li>
-            </ul>
-      <div className="sidenavbar">
-        <GoThreeBars onClick={sidenavs} className="navbar-toggle"/>       
-        <div ref={sidenav} className='sidenav'>
-            <div className='snbar'></div>
+        <NavLink className="navbar-logo" to="/">
+          <img src={logo} alt="logo" />
+        </NavLink>
+        <ul className="Navbar-items">
+          <li className="navbar-item mt-2">
+            <NavLink
+              className="navbar-link cool-link "
+              aria-current="page"
+              to="/"
+            >
+              Home
+            </NavLink>
+          </li>
+          <li className="navbar-item mt-2">
+            <NavLink className="navbar-link cool-link" to="/about">
+              About Our Life Partner
+            </NavLink>
+          </li>
+          <li className="navbar-item mt-2">
+            <NavLink className="navbar-link cool-link" to="/help">
+              Help?
+            </NavLink>
+          </li>
+          <li className="navbar-item">
+            <Link to="/signup">
+              {" "}
+              <button className="nav-btn">Register Now</button>
+            </Link>
+          </li>
+        </ul>
+        <div className="sidenavbar">
+          <GoThreeBars onClick={sidenavs} className="navbar-toggle" />
+          <div ref={sidenav} className="sidenav">
+            <div className="snbar"></div>
             <ul className="sidenavbar-items">
-                <li className="sidenavbar-item">
-                  <NavLink
-                    className="navbar-link cool-link "
-                    aria-current="page"
-                    to="/"
-                  >
-                    Home
-                  </NavLink>
-                </li>
-                <li className="sidenavbar-item">
-                  <NavLink className="navbar-link cool-link" to="/about">
-                    About Our Life Partner
-                  </NavLink>
-                </li>
-                <li className="sidenavbar-item">
-                  <NavLink className="navbar-link cool-link" to="/help">
-                    Help?
-                  </NavLink>
-                </li>
-                <li className="sidenavbar-item">
-                <Link to="/signup"> <button className="sidenav-btn">Register Now</button></Link> 
-                </li>
+              <li className="sidenavbar-item">
+                <NavLink
+                  className="navbar-link cool-link "
+                  aria-current="page"
+                  to="/"
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li className="sidenavbar-item">
+                <NavLink className="navbar-link cool-link" to="/about">
+                  About Our Life Partner
+                </NavLink>
+              </li>
+              <li className="sidenavbar-item">
+                <NavLink className="navbar-link cool-link" to="/help">
+                  Help?
+                </NavLink>
+              </li>
+              <li className="sidenavbar-item">
+                <Link to="/signup">
+                  {" "}
+                  <button className="sidenav-btn">Register Now</button>
+                </Link>
+              </li>
             </ul>
+          </div>
+          <div
+            ref={sidenavblur}
+            className="sidenavblur"
+            onClick={sidenavss}
+          ></div>
         </div>
-        <div ref={sidenavblur} className='sidenavblur' onClick={sidenavss} ></div>
-      </div>
       </header>
     </>
   );

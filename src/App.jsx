@@ -26,21 +26,21 @@ const App = () => {
       <Toasts />
       <BrowserRouter>
         <Homebtn />
-        <Routes>         
+        <Routes>
           <Route index element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
           <Route path="*" element={<Page_Not_Found />} />
-          <Route path="/signup" element={<Signup/>}/>
-          <Route path="/profiles" element={<Profile_Page/>}/>
-          <Route path="/userprofile" element={<UserProfile/>}/>
-          <Route path="/chat" element={<ChatSection/>}/>          
-          <Route path="/personaldetails" element={<PresonaldetailForm/>}/>          
-          <Route path="/contactdetails" element={<ContactDetails/>}/>          
-          <Route path="/familydetails" element={<FamilyDetails/>}/>          
-          <Route path="/uploadprofile" element={<UploadProfileSection/>}/>          
-          <Route path="/preferencedetails" element={<PreferenceDetails/>}/>          
-          <Route path="/myprofile" element={<MyProfilesSidebar/>}/>          
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profiles" element={<Profile_Page />} />
+          <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/chat" element={<ChatSection />} />
+          <Route path="/personaldetails" element={<PresonaldetailForm />} />
+          <Route path="/contactdetails" element={<ContactDetails />} />
+          <Route path="/familydetails" element={<FamilyDetails />} />
+          <Route path="/uploadprofile" element={<UploadProfileSection />} />
+          <Route path="/preferencedetails" element={<PreferenceDetails />} />
+          <Route path="/myprofile" element={<MyProfilesSidebar />} />
         </Routes>
       </BrowserRouter>
     </>

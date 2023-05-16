@@ -1,7 +1,7 @@
-.footer{
+.footer {
   padding: 3rem 2rem 1rem;
 }
-.footertop{
+.footertop {
   flex-basis: 100%;
   display: flex;
   justify-content: space-around;
@@ -12,7 +12,6 @@
   font-weight: bold;
   margin-bottom: 20px;
   font-size: 24px;
-  
 }
 .footertopfirst li {
   list-style: none;
@@ -29,14 +28,14 @@
   font-size: 15px;
 }
 
-.footerbuttom{
+.footerbuttom {
   margin-top: 1rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
   column-gap: 2rem;
 }
-.icon{
+.icon {
   display: flex;
   justify-content: center;
 }
@@ -60,66 +59,65 @@
   border-radius: 5rem;
   white-space: nowrap;
 }
-.copyright{
+.copyright {
   display: flex;
   justify-content: center;
 }
-.copyright p{
-margin: 0;
+.copyright p {
+  margin: 0;
 }
-.copyright span a{
+.copyright span a {
   text-decoration: none;
   color: #008cab;
 }
-.copyright span a:hover{
-  text-decoration:underline;
-  color:#ed177e;
+.copyright span a:hover {
+  text-decoration: underline;
+  color: #ed177e;
 }
 
-@media screen and (max-width: 768px){
-  .footer{
+@media screen and (max-width: 768px) {
+  .footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
     padding: 2rem 1rem;
   }
-  .footertopfirst{
+  .footertopfirst {
     flex-basis: 100%;
     text-align: center;
   }
-  .footertop{
+  .footertop {
     flex-wrap: wrap;
     text-align: center;
-   margin-right: 2rem;
+    margin-right: 2rem;
   }
-   .footertopfirst li h3{
+  .footertopfirst li h3 {
     white-space: nowrap;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     font-size: 22px;
   }
-  .footerbuttom{
+  .footerbuttom {
     justify-content: start;
   }
-  .icon{
+  .icon {
     width: 100%;
   }
-  .footerbuttom{
+  .footerbuttom {
     flex-wrap: wrap;
   }
   .copyright {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
     flex-basis: 100%;
-    }
-    .icon ul li {
-      padding: 1px 0px 1px 15px;
-    }
-    .icon ul li:first-child {
-      padding: 6px 10px;
-      white-space: nowrap;
-    }
-    .icon ul li img{
-      width:20px;
-    }
-
+  }
+  .icon ul li {
+    padding: 1px 0px 1px 15px;
+  }
+  .icon ul li:first-child {
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+  .icon ul li img {
+    width: 20px;
+  }
 }

@@ -11,8 +11,6 @@ import Nine from "../components/Nine";
 import Sixth from "../components/Sixth";
 import Layout from "../components/Layout";
 
-
-
 const Home = () => {
   return (
     <Layout>
@@ -20,7 +18,7 @@ const Home = () => {
       <First text="Make | Meet | Marry" />
       <Second />
       <First text="Browser Partner Profiles By" />
-      <Third/>
+      <Third />
       <Fourth />
       <Fifth />
       <First text="Membership Plan" />

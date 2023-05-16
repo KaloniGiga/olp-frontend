@@ -38,14 +38,14 @@ const data = [
 const Gallery = () => {
   const [clickedImg, setClickedImg] = useState(null);
   const [currentIndex, setcurrentIndex] = useState(null);
-  const [bodyClassName, setBodyClassName] = useState('');
+  const [bodyClassName, setBodyClassName] = useState("");
 
   const handleClick = (item, index) => {
     setcurrentIndex(index);
     setClickedImg(item.link);
-    setBodyClassName('body-class');
+    setBodyClassName("body-class");
   };
-  
+
   const handleRotationRight = () => {
     const totalLength = data.length;
     if (currentIndex + 1 >= totalLength) {

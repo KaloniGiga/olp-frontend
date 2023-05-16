@@ -60,7 +60,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Married
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -94,7 +95,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -128,7 +129,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -138,7 +139,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -148,7 +150,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Doctor
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -182,7 +185,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -192,7 +195,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -226,7 +230,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -236,7 +240,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -270,7 +275,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -280,7 +285,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -288,9 +294,10 @@ const Filter = () => {
                     id="flexCheckChecked"
                   />
                   <label className="form-check-label" for="flexCheckChecked">
-                  Nepal
+                    Nepal
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -324,7 +331,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -334,7 +341,7 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
@@ -358,7 +365,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -368,7 +375,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -378,7 +386,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Kathmandu
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -412,7 +421,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -446,7 +455,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -456,7 +465,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -466,7 +476,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Hindu
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -500,7 +511,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -510,7 +521,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -520,7 +532,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Bahun
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -554,7 +567,7 @@ const Filter = () => {
               data-bs-parent="#accordionExample"
             >
               <div className="accordion-body1">
-              <div className="form-check">
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -564,7 +577,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     All
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
@@ -574,7 +588,8 @@ const Filter = () => {
                   <label className="form-check-label" for="flexCheckChecked">
                     Nepali
                   </label>
-                </div> <div className="form-check">
+                </div>{" "}
+                <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"

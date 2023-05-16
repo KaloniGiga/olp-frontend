@@ -1,136 +1,148 @@
-import React from 'react'
-import ProgressBar from './Progressbar';
-import {HiChevronDoubleRight,HiChevronDoubleLeft} from 'react-icons/hi'
-import { useState } from 'react';
-import '../styles/PreferenceDetails.css'
-import { Link } from 'react-router-dom';
+import React from "react";
+import ProgressBar from "./Progressbar";
+import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
+import { useState } from "react";
+import "../styles/PreferenceDetails.css";
+import { Link } from "react-router-dom";
 const PreferenceDetails = () => {
-  const [familytype, setFamilyType] = useState("");
-  const [familystatus, setFamilyStatus] = useState("");
-  const [fathername, setFatherName] = useState("");
-  const [fatherjob, setFatherJob] = useState("");
-  const [mothername, setMotherName] = useState("");
-  const [motherjob, setMotherJob] = useState("");
-  const [numoffamilymember, setNumOfFamilyMember] = useState("");
-  const [numofbrother, setNumOfBrother] = useState("");
-  const [numofsister, setNumOfSister] = useState("");
-  const [noofunmarried, setNoOfUnmarried] = useState("");
-  const [noofmarried, setNoOfMarried] = useState("");
+  const [minage, setMinAge] = useState("");
+  const [maxage, setMaxAge] = useState("");
+  const [maritalstatus, setMaritalStatus] = useState("");
+  const [height, setHeight] = useState("");
+  const [smokedrink, setSmokeDrink] = useState("");
+  const [caste, setCaste] = useState("");
+  const [subcaste, setSubCaste] = useState("");
+  const [religion, setReligion] = useState("");
+  const [education, setEducation] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [country, setCountry] = useState("");
 
   const handleSubmit = (event) => {
-      event.preventDefault();
-      console.log(`Submitted: ${familytype} ${familystatus} (${fathername})  ${fatherjob} ${mothername} (${motherjob})  ${numoffamilymember} ${numofbrother} ${numofsister} ${noofunmarried} ${noofmarried}`);
-    };
+    event.preventDefault();
+    console.log(
+      `Submitted: ${minage} ${maxage} (${maritalstatus})  ${height} ${smokedrink} (${caste})  ${subcaste} ${religion} ${education} ${occupation} ${country}`
+    );
+  };
   return (
     <>
       <div className="PreferenceSection">
         <ProgressBar />
         <h1>"Please fill the important preference"</h1>
         <div className="container">
-    <div className="row">
-    <form className="PreferenceSection-form"  onSubmit={handleSubmit}> 
+          <div className="row">
+            <form className="PreferenceSection-form" onSubmit={handleSubmit}>
+              <div className="PreferenceSection-form-left">
+                <div className="minage group">
+                  <input
+                    type="number"
+                    value={minage}
+                    onChange={(event) => setMinAge(event.target.value)}
+                    required
+                  />
+                  <label>minimum age</label>
+                </div>
+                <div className="maxage group">
+                  <input
+                    type="number"
+                    value={maxage}
+                    onChange={(event) => setMaxAge(event.target.value)}
+                    required
+                  />{" "}
+                  <label>max age</label>
+                </div>
+                <div className="maritalstatus group">
+                  <input
+                    type="text"
+                    value={maritalstatus}
+                    onChange={(event) => setMaritalStatus(event.target.value)}
+                    required
+                  />{" "}
+                  <label>marital status</label>
+                </div>
+                <div className="height group">
+                  <input
+                    type="text"
+                    value={height}
+                    onChange={(event) => setHeight(event.target.value)}
+                    required
+                  />{" "}
+                  <label>height</label>
+                </div>
+              </div>
 
- <div className="PreferenceSection-form-left">
- <div className="familytype group">
-  <input
-     type="number"
-     value={familytype}
-     onChange={(event) => setFamilyType(event.target.value)}
-     required
-   /><label>Family Type</label></div>  
-   <div className="familystatus group">
-   <input
-     type="text"
-     value={familystatus}
-     onChange={(event) => setFamilyStatus(event.target.value)}
-     required
-   /> <label>Family Status</label>
-   </div>
-   <div className="fathername group">
-   <input
-     type="text"
-     value={fathername}
-     onChange={(event) => setFatherName(event.target.value)}
-     required
-   /> <label>Father's Name</label>
-   </div>
-   <div className="fatherjob group">
-   <input
-     type="text"
-     value={fatherjob}
-     onChange={(event) => setFatherJob(event.target.value)}
-     required
-   /> <label>Father's Job</label>
-   </div>
- </div>
+              <div className="PreferenceSection-form-middle">
+                <div className="smokedrink group">
+                  <input
+                    type="text"
+                    value={smokedrink}
+                    onChange={(event) => setSmokeDrink(event.target.value)}
+                    required
+                  />{" "}
+                  <label>smoke/drink</label>
+                </div>
+                <div className="caste group">
+                  <input
+                    type="text"
+                    value={caste}
+                    onChange={(event) => setCaste(event.target.value)}
+                    required
+                  />{" "}
+                  <label>caste</label>
+                </div>
+                <div className="subcaste group">
+                  <input
+                    type="text"
+                    value={subcaste}
+                    onChange={(event) =>
+                      setSubCaste(event.target.value)
+                    }
+                    required
+                  />
+                  <label>subcaste</label>
+                </div>
+                <div className="Religion group">
+                  <input
+                    type="text"
+                    value={religion}
+                    onChange={(event) => setReligion(event.target.value)}
+                    required
+                  />
+                  <label>religion</label>
+                </div>
+              </div>
 
- <div className="PreferenceSection-form-middle">
- <div className="mothername group">
-   <input
-     type="text"
-     value={mothername}
-     onChange={(event) => setMotherName(event.target.value)}
-     required
-   /> <label>Mother's Name</label>
-   </div>
-   <div className="motherjob group">
-   <input
-     type="text"
-     value={motherjob}
-     onChange={(event) => setMotherJob(event.target.value)}
-     required
-   /> <label>Mother's Job</label>
-     </div>
-   <div className="numoffamilymember group">
-   <input
-     type="number"
-     value={numoffamilymember}
-     onChange={(event) => setNumOfFamilyMember(event.target.value)}
-     required
-   /><label>No. of family members</label>
-     </div>
-   <div className="numofbrother group">
-   <input
-     type="number"
-     value={numofbrother}
-     onChange={(event) => setNumOfBrother(event.target.value)}
-     required
-   /><label>No of brothers</label>
-     </div>
- </div>
- 
- <div className="PreferenceSection-form-right">
- 
- <div className="numofsister group">
-   <input
-     type="number"
-     value={numofsister}
-     onChange={(event) => setNumOfSister(event.target.value)}
-     required
-   /><label>No of sister</label>
-     </div>
-   <div className="noofunmarried group">
-   <input
-     type="number"
-     value={noofunmarried}
-     onChange={(event) => setNoOfUnmarried(event.target.value)}
-     required
-   /><label>No of unmarried</label>
-     </div>
-   <div className="noofmarried group">
-   <input
-     type="number"
-     value={noofmarried}
-     onChange={(event) => setNoOfMarried(event.target.value)}
-     required
-   /><label>No of married</label>
-     </div>
-
- </div> 
-
- </form>
-    </div>
-   </div>
+              <div className="PreferenceSection-form-right">
+                <div className="education group">
+                  <input
+                    type="text"
+                    value={education}
+                    onChange={(event) => setEducation(event.target.value)}
+                    required
+                  />
+                  <label>education</label>
+                </div>
+                <div className="occupation group">
+                  <input
+                    type="text"
+                    value={occupation}
+                    onChange={(event) => setOccupation(event.target.value)}
+                    required
+                  />
+                  <label>occupation</label>
+                </div>
+                <div className="country group">
+                  <input
+                    type="text"
+                    value={country}
+                    onChange={(event) => setCountry(event.target.value)}
+                    required
+                  />
+                  <label>country</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
         <div className="PreferenceSection-form-btn">
           <Link to="/familydetails">
             {" "}
