@@ -4,6 +4,7 @@ import "../styles/Signup.css";
 import { axiosInstance } from '../http/index';
 import { addToast } from "../store/features/toastSlice";
 import { useDispatch } from 'react-redux';
+import { setCurrentUser } from "../store/features/authSlice";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -59,10 +60,16 @@ const Signup = () => {
         
         const user = response.data;
 
-        //show toast
+        //show toast 
         dispatch(
           addToast({kind: "SUCCESS", msg: `${isAnimated ? 'Account created successfully' : 'Logged In successfully'}`})
         )
+
+       //add user details in store
+        dispatch(
+          setCurrentUser(user)
+        )
+
         //check if  the user has setup profile, family and others
         if(user && !user.profileId) {
           navigate('/personaldetails')

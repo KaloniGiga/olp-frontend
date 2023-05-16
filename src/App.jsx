@@ -18,6 +18,7 @@ import MyProfilesSidebar from "./content/MyProfilesSidebar";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Toasts from "./components/Toast/Toast";
+import { PrivateRoute } from "./layout/PrivateLayout";
 
 const App = () => {
   return (
@@ -32,14 +33,14 @@ const App = () => {
           <Route path="/help" element={<Help />} />
           <Route path="*" element={<Page_Not_Found />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profiles" element={<Profile_Page />} />
-          <Route path="/userprofile" element={<UserProfile />} />
-          <Route path="/chat" element={<ChatSection />} />
-          <Route path="/personaldetails" element={<PresonaldetailForm />} />
-          <Route path="/contactdetails" element={<ContactDetails />} />
-          <Route path="/familydetails" element={<FamilyDetails />} />
-          <Route path="/uploadprofile" element={<UploadProfileSection />} />
-          <Route path="/preferencedetails" element={<PreferenceDetails />} />
+          <Route path="/profiles" element={<PrivateRoute><Profile_Page /></PrivateRoute>} />
+          <Route path="/userprofile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+          <Route path="/chat" element={<PrivateRoute><ChatSection /></PrivateRoute>} />
+          <Route path="/personaldetails" element={<PrivateRoute><PresonaldetailForm /></PrivateRoute>} />
+          <Route path="/contactdetails" element={<PrivateRoute><ContactDetails /></PrivateRoute>} />
+          <Route path="/familydetails" element={<PrivateRoute><FamilyDetails /></PrivateRoute>} />
+          <Route path="/uploadprofile" element={<PrivateRoute><UploadProfileSection /></PrivateRoute>} />
+          <Route path="/preferencedetails" element={<PrivateRoute><PreferenceDetails /></PrivateRoute>} />
           <Route path="/myprofile" element={<MyProfilesSidebar />} />
         </Routes>
       </BrowserRouter>
