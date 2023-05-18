@@ -1,4 +1,6 @@
 .personal-detail-form {
+  display: flex;
+  flex-direction: column;
   padding: 3rem;
 }
 .personal-detail-form h1 {
@@ -15,7 +17,14 @@
   /* border: 1px solid rgba(0, 0, 0, 0.338); */
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+}
+
+.personal-details {
+  display: flex;
+  justify-content: space-between;
+  
 }
 .personal-details-form-left,
 .personal-details-form-middle,

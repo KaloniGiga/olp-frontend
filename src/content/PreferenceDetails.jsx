@@ -5,56 +5,74 @@ import { useState } from "react";
 import "../styles/PreferenceDetails.css";
 import { Link } from "react-router-dom";
 const PreferenceDetails = () => {
-  const [minage, setMinAge] = useState("");
-  const [maxage, setMaxAge] = useState("");
-  const [maritalstatus, setMaritalStatus] = useState("");
-  const [height, setHeight] = useState("");
-  const [smokedrink, setSmokeDrink] = useState("");
-  const [caste, setCaste] = useState("");
-  const [subcaste, setSubCaste] = useState("");
-  const [religion, setReligion] = useState("");
-  const [education, setEducation] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [country, setCountry] = useState("");
+ 
+  const [values, setValues] = useState({
+    minAge: '',
+    maxAge: '',
+    maritalStatus: '',
+    height: '',
+    religion: '',
+    caste: '',
+    subcaste: '',
+    language: '',
+    education: '',
+    occupation: '',
+    country: '',
+    smokeOrDrink: '',
+  })
+
+  const handleChange = (e) => {
+    setValues({...values, [e.target.name]: e.target.value})
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(
-      `Submitted: ${minage} ${maxage} (${maritalstatus})  ${height} ${smokedrink} (${caste})  ${subcaste} ${religion} ${education} ${occupation} ${country}`
-    );
+
+         axiosInstance.post('/users/personal-detail', values)
+          .then((response) => {
+            
+         }).catch((error) => {
+           console.log(error);
+         })
   };
+
+
   return (
     <>
-      <div className="PreferenceSection">
+      <div className="preferenceSection">
         <ProgressBar />
         <h1>"Please fill the important preference"</h1>
         <div className="container">
           <div className="row">
-            <form className="PreferenceSection-form" onSubmit={handleSubmit}>
-              <div className="PreferenceSection-form-left">
+            <form className="preferenceSection-form" onSubmit={handleSubmit}>
+              <div className="preferanceSection-detail">
+              <div className="preferenceSection-form-left">
                 <div className="minage group">
                   <input
                     type="number"
-                    value={minage}
-                    onChange={(event) => setMinAge(event.target.value)}
+                    value={values.minAge}
+                    name="minAge"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>minimum age</label>
+                  <label>Minimum age</label>
                 </div>
                 <div className="maxage group">
                   <input
                     type="number"
-                    value={maxage}
-                    onChange={(event) => setMaxAge(event.target.value)}
+                    value={values.maxAge}
+                    name="maxAge"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>max age</label>
+                  <label>Maximum age</label>
                 </div>
                 <div className="maritalstatus group">
                   <input
                     type="text"
-                    value={maritalstatus}
-                    onChange={(event) => setMaritalStatus(event.target.value)}
+                    value={values.maritalStatus}
+                    name="maritalStatus"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
                   <label>marital status</label>
@@ -62,8 +80,9 @@ const PreferenceDetails = () => {
                 <div className="height group">
                   <input
                     type="text"
-                    value={height}
-                    onChange={(event) => setHeight(event.target.value)}
+                    value={values.height}
+                    name="height"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
                   <label>height</label>
@@ -74,17 +93,19 @@ const PreferenceDetails = () => {
                 <div className="smokedrink group">
                   <input
                     type="text"
-                    value={smokedrink}
-                    onChange={(event) => setSmokeDrink(event.target.value)}
+                    value={values.religion}
+                    name="religion"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>smoke/drink</label>
+                  <label>Religion</label>
                 </div>
                 <div className="caste group">
                   <input
                     type="text"
-                    value={caste}
-                    onChange={(event) => setCaste(event.target.value)}
+                    value={values.caste}
+                    name="caste"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
                   <label>caste</label>
@@ -92,10 +113,9 @@ const PreferenceDetails = () => {
                 <div className="subcaste group">
                   <input
                     type="text"
-                    value={subcaste}
-                    onChange={(event) =>
-                      setSubCaste(event.target.value)
-                    }
+                    value={values.subcaste}
+                    name="subcaste"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <label>subcaste</label>
@@ -103,11 +123,12 @@ const PreferenceDetails = () => {
                 <div className="Religion group">
                   <input
                     type="text"
-                    value={religion}
-                    onChange={(event) => setReligion(event.target.value)}
+                    value={values.language}
+                    name="language"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>religion</label>
+                  <label>language</label>
                 </div>
               </div>
 
@@ -115,8 +136,9 @@ const PreferenceDetails = () => {
                 <div className="education group">
                   <input
                     type="text"
-                    value={education}
-                    onChange={(event) => setEducation(event.target.value)}
+                    value={values.education}
+                    name="education"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <label>education</label>
@@ -124,8 +146,9 @@ const PreferenceDetails = () => {
                 <div className="occupation group">
                   <input
                     type="text"
-                    value={occupation}
-                    onChange={(event) => setOccupation(event.target.value)}
+                    value={values.occupation}
+                    name="occupation"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <label>occupation</label>
@@ -133,17 +156,27 @@ const PreferenceDetails = () => {
                 <div className="country group">
                   <input
                     type="text"
-                    value={country}
-                    onChange={(event) => setCountry(event.target.value)}
+                    value={values.country}
+                    name="country"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <label>country</label>
                 </div>
+
+                <div className="country group">
+                  <input
+                    type="text"
+                    value={values.smokeOrDrink}
+                    name="smokeOrDrink"
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                  <label>smokeOrDrink</label>
+                </div>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
-        <div className="PreferenceSection-form-btn">
+              <div className="PreferenceSection-form-btn">
           <Link to="/familydetails">
             {" "}
             <button type="reset" className="btnprev">
@@ -156,6 +189,11 @@ const PreferenceDetails = () => {
             </button>
           </Link>
         </div>
+        
+            </form>
+          </div>
+        </div>
+    
       </div>
     </>
   );

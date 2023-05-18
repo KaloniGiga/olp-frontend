@@ -1,27 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/PresonaldetailForm.css";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import ProgressBar from "./Progressbar";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../http";
 function PresonaldetailForm() {
-  const [fullname, setFullName] = useState("");
-  const [age, setAge] = useState("");
-  const [height, setHeight] = useState("");
-  const [profilecreatedby, setProfileCreatedBy] = useState("");
-  const [religion, setReligion] = useState("");
-  const [sex, setSex] = useState("");
-  const [caste, setCaste] = useState("");
-  const [subcaste, setSubCaste] = useState("");
-  const [language, setLanguage] = useState("");
-  const [maritalstatus, setMaritalStatus] = useState("");
-  const [dob, setDOB] = useState("");
-  const [smokedrink, setSmokeDrink] = useState("");
+   
+  const [profileId, setProfileId] = useState(null);
+  const {user} = useSelector((state) => state.auth);
+
+  const [values, setValues] = useState({
+    fullname: '',
+    age: '',
+    height: '',
+    profileCreatedBy: '',
+    religion: '',
+    sex: '',
+    caste: '',
+    subcaste: '',
+    language: '',
+    marital_status: '',
+    dateOfBirth: '',
+    smokeOrdrink: ''
+  })
+
+  useEffect(() => {
+    if(user && user.profile) {
+       setProfileId(user.profile);
+    }
+  }, [user]);
+
+  const handleChange = (e) => {
+     setValues({...values, [e.target.name]: e.target.value})
+  }
+
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(
-      `Submitted: ${fullname} ${age} (${height}) ${profilecreatedby}   ${religion} ${sex} (${dob})  ${caste} ${subcaste} ${language} ${maritalstatus} ${dob}  ${smokedrink} `
-    );
+
+         axiosInstance.post('/users/personal-detail', values)
+          .then((response) => {
+            
+         }).catch((error) => {
+           console.log(error);
+         })
   };
 
   return (
@@ -30,13 +54,15 @@ function PresonaldetailForm() {
       <h1>"Please fill up the personal details"</h1>
       <div className="container">
         <div className="row">
-          <form className="personal-details" onSubmit={handleSubmit}>
+          <form className="" onSubmit={handleSubmit}>
+            <div className="personal-details">
             <div className="personal-details-form-left">
               <div className="fullname group">
                 <input
                   type="text"
-                  value={fullname}
-                  onChange={(event) => setFullName(event.target.value)}
+                  name="fullname"
+                  value={values.fullname}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
                 <label>FullName</label>
@@ -44,8 +70,9 @@ function PresonaldetailForm() {
               <div className="Age group">
                 <input
                   type="number"
-                  value={age}
-                  onChange={(event) => setAge(event.target.value)}
+                  name="age"
+                  value={values.age}
+                  onChange={(e) => handleChange(e)}
                   required
                 />{" "}
                 <label>Age</label>
@@ -53,9 +80,10 @@ function PresonaldetailForm() {
 
               <div className="height group">
                 <input
-                  type="number"
-                  value={height}
-                  onChange={(event) => setHeight(event.target.value)}
+                  type="text"
+                  value={values.height}
+                  name="height"
+                  onChange={(e) => handleChange(e)}
                   required
                 />{" "}
                 <label>height</label>
@@ -63,8 +91,9 @@ function PresonaldetailForm() {
               <div className="profilecreatedby group">
                 <input
                   type="text"
-                  value={profilecreatedby}
-                  onChange={(event) => setProfileCreatedBy(event.target.value)}
+                  value={values.rofileCreatedBy}
+                  name="profileCreatedBy"
+                  onChange={(e) => handleChange(e)}
                   required
                 />{" "}
                 <label>profile created by</label>
@@ -73,9 +102,10 @@ function PresonaldetailForm() {
             <div className="personal-details-form-middle">
               <div className="Religion group">
                 <input
+                  name="religion"
                   type="text"
-                  value={religion}
-                  onChange={(event) => setReligion(event.target.value)}
+                  value={values.religion}
+                  onChange={(e) => handleChange(e)}
                   required
                 />{" "}
                 <label>religion</label>
@@ -83,8 +113,9 @@ function PresonaldetailForm() {
               <div className="sex group">
                 <input
                   type="text"
-                  value={sex}
-                  onChange={(event) => setSex(event.target.value)}
+                  name="sex"
+                  value={values.sex}
+                  onChange={(e) => handleChange(e)}
                   required
                 />{" "}
                 <label>sex</label>
@@ -93,8 +124,9 @@ function PresonaldetailForm() {
               <div className="caste group">
                 <input
                   type="text"
-                  value={caste}
-                  onChange={(event) => setCaste(event.target.value)}
+                  value={values.caste}
+                  name="caste"
+                    onChange={(e) => handleChange(e)}
                   required
                 />
                 <label>caste</label>
@@ -103,8 +135,9 @@ function PresonaldetailForm() {
               <div className="subcaste group">
                 <input
                   type="text"
-                  value={subcaste}
-                  onChange={(event) => setSubCaste(event.target.value)}
+                  name="subcaste"
+                  value={values.subcaste}
+                    onChange={(e) => handleChange(e)}
                   required
                 />
                    <label>subcaste</label>
@@ -115,8 +148,9 @@ function PresonaldetailForm() {
               <div className="language group">
                 <input
                   type="text"
-                  value={language}
-                  onChange={(event) => setLanguage(event.target.value)}
+                  value={values.language}
+                  name="language"
+                    onChange={(e) => handleChange(e)}
                   required
                 />
                 <label>language</label>
@@ -124,8 +158,9 @@ function PresonaldetailForm() {
               <div className="maritalstatus group">
                 <input
                   type="text"
-                  value={maritalstatus}
-                  onChange={(event) => setMaritalStatus(event.target.value)}
+                  name="marital_status"
+                  value={values.marital_status}
+                    onChange={(e) => handleChange(e)}
                   required
                 />
                 <label>maritalstatus</label>
@@ -133,26 +168,28 @@ function PresonaldetailForm() {
               <div className="dob group">
                 <input
                   type="date"
-                  value={dob}
-                  onChange={(event) => setDOB(event.target.value)}
+                  name="dateOfBirth"
+                  value={values.dateOfBirth}
+                    onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
               <div className="smokedrink group">
                 <input
                   type="text"
-                  value={smokedrink}
-                  onChange={(event) => setSmokeDrink(event.target.value)}
+                  name="smokeOrdrink"
+                  value={values.smokeOrdrink}
+                    onChange={(e) => handleChange(e)}
                   required
                 />
-                <label>smokedrink</label>
+                <label>smokeOrdrink</label>
               </div>
               {/* <div className="gender">
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     value={male}
-                    onChange={(event) => setMale(event.target.value)}
+                    onChange={(e)}
                     type="radio"
                     name="flexRadioDefault"
                     id="flexRadioDefault1"
@@ -166,7 +203,7 @@ function PresonaldetailForm() {
                   <input
                     className="form-check-input"
                     value={female}
-                    onChange={(event) => setFemale(event.target.value)}
+                    onChange={(e) => handleChange(e)}
                     type="radio"
                     name="flexRadioDefault"
                     id="flexRadioDefault2"
@@ -177,22 +214,24 @@ function PresonaldetailForm() {
                 </div>
               </div> */}
             </div>
-          </form>
-        </div>
-      </div>
-      <div className="personal-details-btn">
-        <Link to="/signup">
-          {" "}
-          <button type="reset" className="btnprev">
+            </div>
+
+            <div className="personal-details-btn">
+          <button className="btnprev" onClick={() => handlePrevClick()}>
             <HiChevronDoubleLeft /> Prev
           </button>
-        </Link>
-        <Link to="/contactdetails">
+      
+      
           <button type="submit" className="btnnext">
             Next <HiChevronDoubleRight />
           </button>
-        </Link>
+       
+          </div>
+              
+          </form>
+        </div>
       </div>
+  
     </div>
   );
 }

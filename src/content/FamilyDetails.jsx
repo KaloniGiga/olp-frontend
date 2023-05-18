@@ -18,12 +18,36 @@ const FamilyDetails = () => {
   // const [noofmarried, setNoOfMarried] = useState("");
   // const [noofmarried, setNoOfMarried] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(
-      `Submitted: ${education} ${subject} (${occupation})  ${companyname} ${monthlysalery} (${annualincome})  ${universitycollage} ${foreign} ${job} ${business}`
-    );
-  };
+  const [values, setValues] = useState({
+    education_degree: '',
+    subject: '',
+    college: '',
+    occupation: '',
+    job: '',
+    selfEmployed: '',
+    monthlysalery: '',
+    annualincome: '',
+    companyName: '',
+    foreignEmployment: '',
+    country: '',
+
+  })
+
+  const handleChange = (e) => {
+    setValues({...values, [e.target.name]: e.target.value})
+ }
+
+ const handleSubmit = (event) => {
+  event.preventDefault();
+
+       axiosInstance.post('/users/personal-detail', values)
+        .then((response) => {
+          
+       }).catch((error) => {
+         console.log(error);
+       })
+};
+
   return (
     <>
       <div className="Family-detail-form">
@@ -36,38 +60,38 @@ const FamilyDetails = () => {
                 <div className="education group">
                   <input
                     type="text"
-                    value={education}
-                    onChange={(event) => setEducation(event.target.value)}
+                    value={values.education_degree}
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>Education</label>
+                  <label>Education Degree</label>
                 </div>
                 <div className="subject group">
                   <input
                     type="text"
-                    value={subject}
-                    onChange={(event) => setSubject(event.target.value)}
+                    value={values.subject}
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>subject</label>
+                  <label>Subject</label>
                 </div>
                 <div className="occupation group">
                   <input
                     type="text"
-                    value={occupation}
-                    onChange={(event) => setOccupation(event.target.value)}
+                    value={values.college}
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>occupation</label>
+                  <label>College/University</label>
                 </div>
                 <div className="companyname group">
                   <input
                     type="text"
-                    value={companyname}
-                    onChange={(event) => setCompanyName(event.target.value)}
+                    value={values.occupation}
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>Company Name</label>
+                  <label>Occupation</label>
                 </div>
               </div>
 
@@ -75,40 +99,38 @@ const FamilyDetails = () => {
                 <div className="monthlysalery group">
                   <input
                     type="number"
-                    value={monthlysalery}
-                    onChange={(event) => setMonthlySalery(event.target.value)}
+                    value={values.monthlySalary}
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>monthlysalery</label>
+                  <label>monthly Salery</label>
                 </div>
                 <div className="annualincome group">
                   <input
                     type="number"
-                    value={annualincome}
-                    onChange={(event) => setAnnualIncome(event.target.value)}
+                    value={values.annualIncome}
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>annualincome</label>
+                  <label>Annual Income</label>
                 </div>
                 <div className="universitycollage group">
                   <input
                     type="text"
-                    value={universitycollage}
-                    onChange={(event) =>
-                      setUniversityCollage(event.target.value)
-                    }
+                    value={values.companyName}
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>university/collage</label>
+                  <label>Company Name</label>
                 </div>
                 <div className="foreign group">
                   <input
                     type="text"
-                    value={foreign}
-                    onChange={(event) => setForeign(event.target.value)}
+                    value={values.foreignEmployment}
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>foreign</label>
+                  <label>Foreign Employment</label>
                 </div>
               </div>
 
@@ -116,13 +138,13 @@ const FamilyDetails = () => {
                 <div className="job group">
                   <input
                     type="text"
-                    value={job}
-                    onChange={(event) => setJob(event.target.value)}
+                    value={values.country}
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>job</label>
+                  <label>Country</label>
                 </div>
-                <div className="business group">
+                {/* <div className="business group">
                   <input
                     type="text"
                     value={business}
@@ -130,7 +152,7 @@ const FamilyDetails = () => {
                     required
                   />
                   <label>Business</label>
-                </div>
+                </div> */}
                 {/* <div className="noofmarried group">
                   <input
                     type="number"

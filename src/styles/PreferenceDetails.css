@@ -1,7 +1,10 @@
-.PreferenceSection {
+.preferenceSection {
   padding: 3rem;
+  display: flex;
+  flex-direction: column;
 }
-.PreferenceSection h1 {
+
+.preferenceSection h1 {
   text-align: center;
   font-size: 18px;
   font-style: italic;
@@ -10,12 +13,20 @@
   margin-top: 4rem;
   margin-bottom: 1rem;
 }
-.PreferenceSection form {
+
+.preferenceSection-form {
   padding: 2rem;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
+
+.preferanceSection-detail {
+  display: flex !important;
+  justify-content: space-between;
+}
+
 .PreferenceSection-form-left,
 .PreferenceSection-form-middle,
 .PreferenceSection-form-right {
@@ -24,14 +35,14 @@
   display: flex;
   flex-direction: column;
 }
-.PreferenceSection-form input {
+.preferenceSection-form input {
   border: 0px;
   border-radius: 8px;
   padding: 8px 20px 8px 8px;
   font-size: 14px;
   width: 80%;
 }
-.PreferenceSection-form input:focus {
+.preferenceSection-form input:focus {
   outline: 0px;
 }
 .PreferenceSection-form-btn {
@@ -72,11 +83,11 @@
   -moz-transition: 0.2s ease all;
   -webkit-transition: 0.2s ease all;
 }
-.PreferenceSection-form .group input:focus {
+.preferenceSection-form .group input:focus {
   border: 1px solid #ed177e;
 }
-.PreferenceSection-form .group input:focus ~ label,
-.PreferenceSection-form .group input:valid ~ label {
+.preferenceSection-form .group input:focus ~ label,
+.preferenceSection-form .group input:valid ~ label {
   top: -7px;
   font-size: 11px;
   color: #ed177e;

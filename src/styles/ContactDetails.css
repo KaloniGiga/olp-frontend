@@ -1,5 +1,7 @@
 .Contact-detail-form {
   padding: 3rem;
+  display: flex;
+  flex-direction: column;
 }
 .Contact-detail-form h1 {
   text-align: center;
@@ -14,8 +16,15 @@
   padding: 2rem;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
+
+.Contact-details {
+  display: flex;
+  justify-content: space-between;
+}
+
 .Contact-details-form-left,
 .Contact-details-form-middle,
 .Contact-details-form-right {

@@ -6,7 +6,7 @@ import logo from "../images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../http";
 import { addToast } from "../store/features/toastSlice";
-import { logOutUser } from "../store/features/authSlice";
+import { logOutUser, setCurrentUser } from "../store/features/authSlice";
 import axios, { Axios } from "axios";
 const Header = () => {
 
@@ -48,6 +48,10 @@ const Header = () => {
         const { message } = response.data;
         console.log(message);
         switch (response.status) {
+          case 401:
+            dispatch(addToast({msg: "Logged Out successfully", kind:"SUCCESS"}))
+            dispatch(logOutUser());
+            break;
           case 400:
           case 500:
             console.log(message)

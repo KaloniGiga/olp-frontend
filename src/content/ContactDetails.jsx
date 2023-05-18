@@ -4,26 +4,43 @@ import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { useState } from "react";
 import "../styles/ContactDetails.css";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ContactDetails = () => {
-  const [mobileNo, setMobileNo] = useState("");
-  const [siblings, setSiblings] = useState("");
-  const [familymember, setFamilyMember] = useState("");
-  const [motheroccupation, setMotherOccupation] = useState("");
-  const [municipility, setMunicipility] = useState("");
-  const [fatheroccupation, setFatherOccupation] = useState("");
-  const [district, setDistrict] = useState("");
-  const [province, setProvince] = useState("");
-  const [country, setCountry] = useState("");
-  const [familytype, setFamilyType] = useState("");
-  const [unmarried, setUnmarried] = useState("");
+ 
+  const {user} = useSelector((state) => state.auth);
+  const [values, setValues] = useState({
+    familyType: '',
+    fatherOccupation: '',
+    motherOccupation: '',
+    noOfBrother: '',
+    noOfSister: '',
+    noOfFamilyMember: '',
+    noOfUnmarried: '',
+    municipility: '',
+    district: '',
+    province: '',
+    country: '',
+    mobile: '',
+  })
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(
-      `Submitted: ${mobileNo} ${siblings} (${familymember})  ${motheroccupation} ${municipility} (${fatheroccupation})  ${district} ${province} ${country}  ${familytype} ${unmarried}`
-    );
-  };
+  const handleChange = (e) => {
+    setValues({...values, [e.target.name]: e.target.value})
+ }
+
+
+ const handleSubmit = (event) => {
+  event.preventDefault();
+
+       axiosInstance.post('/users/family-details', values)
+        .then((response) => {
+          
+       }).catch((error) => {
+         console.log(error);
+       })
+};
+
+
   return (
     <>
       <div className="Contact-detail-form">
@@ -31,13 +48,15 @@ const ContactDetails = () => {
         <h1>"Please fill up the important details"</h1>
         <div className="container">
           <div className="row">
-            <form className="Contact-details" onSubmit={handleSubmit}>
+            <form className="" onSubmit={handleSubmit}>
+              <div className="Contact-details">
               <div className="Contact-details-form-left">
                 <div className="mobileNo group">
                   <input
-                    type="number"
-                    value={mobileNo}
-                    onChange={(event) => setMobileNo(event.target.value)}
+                    type="text"
+                    value={values.mobile}
+                    name="mobile"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <label>Mobile No</label>
@@ -45,29 +64,32 @@ const ContactDetails = () => {
                 <div className="country group">
                   <input
                     type="text"
-                    value={country}
-                    onChange={(event) => setCountry(event.target.value)}
+                    value={values.familyType}
+                    name="familyType"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>Country</label>
+                  <label>Family Type</label>
                 </div>
                 <div className="municipility group">
                   <input
                     type="text"
-                    value={municipility}
-                    onChange={(event) => setMunicipility(event.target.value)}
+                    value={values.fatherOccupation}
+                    name="fatherOccupation"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>municipility</label>
+                  <label>Father Occupation</label>
                 </div>
                 <div className="province group">
                   <input
-                    type="number"
-                    value={province}
-                    onChange={(event) => setProvince(event.target.value)}
+                    type="text"
+                    value={values.motherOccupation}
+                    name="motherOccupation"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>State/Province</label>
+                  <label>Mother Occupation</label>
                 </div>
               </div>
 
@@ -76,40 +98,42 @@ const ContactDetails = () => {
                 <div className="district group">
                   <input
                     type="text"
-                    value={district}
-                    onChange={(event) =>
-                      setDistrict(event.target.value)
-                    }
+                    value={values.noOfBrother}
+                    name="noOfBrother"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>Country/District</label>
+                  <label>no. of Brother</label>
                 </div>
                 <div className="fatheroccupation group">
                   <input
                     type="text"
-                    value={fatheroccupation}
-                    onChange={(event) => setFatherOccupation(event.target.value)}
+                    value={values.noOfSister}
+                    name="noOfSister"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>Father's Occupation</label>
+                  <label>no. of Sister</label>
                 </div>
                 <div className="motheroccupation group">
                   <input
                     type="text"
-                    value={motheroccupation}
-                    onChange={(event) => setMotherOccupation(event.target.value)}
+                    value={values.noOfFamilyMemeber}
+                    name="noOfFamilyMember"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>Mother Occupation</label>
+                  <label>no. of Family Memeber</label>
                 </div>
                 <div className="familymember group">
                   <input
-                    type="number"
-                    value={familymember}
-                    onChange={(event) => setFamilyMember(event.target.value)}
+                    type="text"
+                    value={values.noOfUnmarried}
+                    name="noOfUnmarried"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label> No of family member</label>
+                  <label> No of Unmarried</label>
                 </div>
                
               </div>
@@ -119,41 +143,49 @@ const ContactDetails = () => {
                 <div className="familytype group">
                   <input
                     type="text"
-                    value={familytype}
-                    onChange={(event) =>
-                      setFamilyType(event.target.value)
-                    }
+                    value={values.municipility}
+                    name="municipility"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>Family Type</label>
+                  <label>Municipality</label>
                 </div>
                 <div className="unmarried group">
                   <input
                     type="text"
-                    value={unmarried}
-                    onChange={(event) =>
-                      setUnmarried(event.target.value)
-                    }
+                    value={values.district}
+                    name="district"
+                    onChange={(e) => handleChange(e)}
                     required
                   />
-                  <label>No of unmarried</label>
+                  <label>District</label>
                 </div>
                 <div className="siblings group">
                   <input
-                    type="number"
-                    value={siblings}
-                    onChange={(event) => setSiblings(event.target.value)}
+                    type="text"
+                    value={values.province}
+                    name="province"
+                    onChange={(e) => handleChange(e)}
                     required
                   />{" "}
-                  <label>No of siblings</label>
+                  <label>Province</label>
                 </div>
                
+                <div className="siblings group">
+                  <input
+                    type="text"
+                    value={values.country}
+                    name="country"
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />{" "}
+                  <label>Country</label>
+                </div>
                 
               </div>
-            </form>
-          </div>
-        </div>
-        <div className="Contact-details-btn">
+             
+              </div>
+              <div className="Contact-details-btn">
           <Link to="/personaldetails">
             {" "}
             <button type="reset" className="btnprev">
@@ -166,6 +198,11 @@ const ContactDetails = () => {
             </button>
           </Link>
         </div>
+       
+            </form>
+          </div>
+        </div>
+
       </div>
     </>
   );
