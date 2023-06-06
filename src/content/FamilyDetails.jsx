@@ -3,21 +3,18 @@ import ProgressBar from "./Progressbar";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { useState } from "react";
 import "../styles/FamilyDetails.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { axiosInstance } from "../http";
+import { setFamilyDetail } from "../store/features/familyDetailSlice";
+import { setEducationDetail } from "../store/features/educationDetailSlice";
 const FamilyDetails = () => {
-  const [education, setEducation] = useState("");
-  const [subject, setSubject] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [companyname, setCompanyName] = useState("");
-  const [monthlysalery, setMonthlySalery] = useState("");
-  const [annualincome, setAnnualIncome] = useState("");
-  const [universitycollage, setUniversityCollage] = useState("");
-  const [foreign, setForeign] = useState("");
-  const [job, setJob] = useState("");
-  const [business, setBusiness] = useState("");
-  // const [noofmarried, setNoOfMarried] = useState("");
-  // const [noofmarried, setNoOfMarried] = useState("");
 
+  const { educationDetail } = useSelector((state) => state.educationDetail)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [values, setValues] = useState({
     education_degree: '',
     subject: '',
@@ -25,13 +22,19 @@ const FamilyDetails = () => {
     occupation: '',
     job: '',
     selfEmployed: '',
-    monthlysalery: '',
-    annualincome: '',
+    monthlySalary: '',
+    annualIncome: '',
     companyName: '',
     foreignEmployment: '',
     country: '',
 
   })
+
+  useEffect(() => {
+    if(educationDetail) {
+      setValues(educationDetail);
+    }
+  }, [educationDetail])
 
   const handleChange = (e) => {
     setValues({...values, [e.target.name]: e.target.value})
@@ -39,10 +42,15 @@ const FamilyDetails = () => {
 
  const handleSubmit = (event) => {
   event.preventDefault();
-
-       axiosInstance.post('/users/personal-detail', values)
+     console.log(values);
+       axiosInstance.post('/users/education-detail', values)
         .then((response) => {
-          
+          console.log(response.data)
+          console.log('hello')
+          dispatch(
+            setEducationDetail(response.data)
+          )
+          navigate('/preferencedetails')
        }).catch((error) => {
          console.log(error);
        })
@@ -56,12 +64,14 @@ const FamilyDetails = () => {
         <div className="container">
           <div className="row">
             <form className="Family-details" onSubmit={handleSubmit}>
+               <div className="family-details-inner">
               <div className="Family-details-form-left">
                 <div className="education group">
                   <input
                     type="text"
                     value={values.education_degree}
                     onChange={(e) => handleChange(e)}
+                    name="education_degree"
                     required
                   />
                   <label>Education Degree</label>
@@ -71,6 +81,7 @@ const FamilyDetails = () => {
                     type="text"
                     value={values.subject}
                     onChange={(e) => handleChange(e)}
+                    name="subject"
                     required
                   />{" "}
                   <label>Subject</label>
@@ -80,6 +91,7 @@ const FamilyDetails = () => {
                     type="text"
                     value={values.college}
                     onChange={(e) => handleChange(e)}
+                    name="college"
                     required
                   />{" "}
                   <label>College/University</label>
@@ -89,6 +101,7 @@ const FamilyDetails = () => {
                     type="text"
                     value={values.occupation}
                     onChange={(e) => handleChange(e)}
+                    name="occupation"
                     required
                   />{" "}
                   <label>Occupation</label>
@@ -96,29 +109,55 @@ const FamilyDetails = () => {
               </div>
 
               <div className="Family-details-form-middle">
+              <div className="monthlysalery group">
+                  <input
+                    type="text"
+                    value={values.job}
+                    onChange={(e) => handleChange(e)}
+                    name="job"
+                    required
+                  />{" "}
+                  <label>Job</label>
+                </div>
                 <div className="monthlysalery group">
                   <input
                     type="number"
                     value={values.monthlySalary}
                     onChange={(e) => handleChange(e)}
+                    name="monthlySalary"
                     required
                   />{" "}
                   <label>monthly Salery</label>
+                </div>
+                <div className="monthlysalery group">
+                  <input
+                    type="text"
+                    value={values.selfEmployed}
+                    onChange={(e) => handleChange(e)}
+                    name="selfEmployed"
+                    required
+                  />{" "}
+                  <label>Self Employed</label>
                 </div>
                 <div className="annualincome group">
                   <input
                     type="number"
                     value={values.annualIncome}
                     onChange={(e) => handleChange(e)}
+                    name="annualIncome"
                     required
                   />{" "}
                   <label>Annual Income</label>
                 </div>
-                <div className="universitycollage group">
+          </div>
+
+              <div className="Family-details-form-right">
+              <div className="universitycollage group">
                   <input
                     type="text"
                     value={values.companyName}
                     onChange={(e) => handleChange(e)}
+                    name="companyName"
                     required
                   />
                   <label>Company Name</label>
@@ -128,18 +167,17 @@ const FamilyDetails = () => {
                     type="text"
                     value={values.foreignEmployment}
                     onChange={(e) => handleChange(e)}
+                    name="foreignEmployment"
                     required
                   />
                   <label>Foreign Employment</label>
                 </div>
-              </div>
-
-              <div className="Family-details-form-right">
                 <div className="job group">
                   <input
                     type="text"
                     value={values.country}
                     onChange={(e) => handleChange(e)}
+                    name="country"
                     required
                   />
                   <label>Country</label>
@@ -163,22 +201,23 @@ const FamilyDetails = () => {
                   <label>No of married</label>
                 </div> */}
               </div>
-            </form>
-          </div>
-        </div>
-        <div className="Family-details-btn">
+
+           </div>
+              <div className="Family-details-btn">
           <Link to="/contactdetails">
             {" "}
             <button type="reset" className="btnprev">
               <HiChevronDoubleLeft /> Prev
             </button>
           </Link>
-          <Link to="/preferencedetails">
             <button type="submit" className="btnnext">
               Next <HiChevronDoubleRight />
             </button>
-          </Link>
+          </div>
+            </form>
+          </div>
         </div>
+    
       </div>
     </>
   );

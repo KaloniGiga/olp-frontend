@@ -18,6 +18,8 @@ const ChatSection = () => {
   const handleSelectEmoji = (emoji) => {
     setMessage(message + emoji);
   };
+
+  
   return (
     <>
       <LayoutwithoutFooter>

@@ -35,7 +35,7 @@ const CustomSelect = ({ options, setValues, value }) => {
         defaultvalue={value}
         onChange={handleChange}
         styles={colorStyles}
-        className="select"
+        className="select lg:w-[150px]"
       />
     </>
   );

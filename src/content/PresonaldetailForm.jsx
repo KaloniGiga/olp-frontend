@@ -2,14 +2,21 @@ import React, { useEffect, useState } from "react";
 import "../styles/PresonaldetailForm.css";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import ProgressBar from "./Progressbar";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../http";
+import { setPersonalDetail } from "../store/features/personalDetailSlice";
+import Select from "../newComponent/Profile/Select";
+import InputSelect from "../newComponent/Profile/Select";
+import Input from "../newComponent/Profile/Input";
+import Button from "../newComponent/Profile/Button";
 function PresonaldetailForm() {
-   
-  const [profileId, setProfileId] = useState(null);
-  const {user} = useSelector((state) => state.auth);
+  
+  const {personalDetail} = useSelector((state) => state.personalDetail);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  console.log(personalDetail);
   const [values, setValues] = useState({
     fullname: '',
     age: '',
@@ -26,213 +33,129 @@ function PresonaldetailForm() {
   })
 
   useEffect(() => {
-    if(user && user.profile) {
-       setProfileId(user.profile);
+    if(personalDetail) {
+       setValues(personalDetail);
     }
-  }, [user]);
+  }, [personalDetail]);
 
   const handleChange = (e) => {
      setValues({...values, [e.target.name]: e.target.value})
   }
 
-
-
+  const handlePrevClick = () => {
+     navigate('/')
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
 
          axiosInstance.post('/users/personal-detail', values)
           .then((response) => {
-            
+            console.log('updated successfully')
+            console.log(response.data);
+            dispatch(
+              setPersonalDetail(response.data)
+            )
+            navigate('/contactdetails')
          }).catch((error) => {
            console.log(error);
          })
   };
 
+  const profileOptions = [
+    { value: 'myself', label: 'MySelf' },
+    { value: 'brother', label: 'Brother' },
+    { value: 'sister', label: 'Sister' },
+    { value: 'son', label: 'Son' },
+    { value: 'daughter', label: 'Daughter' },
+    { value: 'friend', label: 'Friend' },
+    { value: 'relative', label: 'Relative' },
+  ]
+
+  const religionOptions = [
+    { value: 'hindu', label: 'Hinduism' },
+    { value: 'buddhist', label: 'Buddhism' },
+    { value: 'islam', label: 'Islam' },
+    { value: 'christianity', label: 'Christianity' },
+    { value: 'sikh', label: 'Sikhism' },
+    { value: 'Jain', label: 'Jainism' },
+    { value: 'kirat', label: 'Kirat' },
+    { value: 'no', label: 'Non-Religious'},
+    {value: 'other', label: 'Other'},
+  ]
+
+
+  const genderOptions = [
+     {value: 'Man', label: "Man"},
+      {value: "woman", label: "Woman"},
+      {value: "other", label: "Other"},
+  ]
+
+  const casteOptions = [
+    {value: "brahmin", label: "Brahmin"},
+    {value: "chhetri", label: "chhetri"},
+    {value: 'thakuri', label: "Thakuri"},
+    {value: 'magar', label: 'Magar'},
+    {value: 'tamang', label: 'Tamang'},
+    {value: 'sherpa', label: "Sherpa"},
+    {value: "newar", label: "Newar"},
+  ]
+
+  const community = [
+    
+  ]
+
+  const ethinicOptions = [
+
+  ]
+
   return (
-    <div className="personal-detail-form">
+    <div className="w-full min-h-[100vh] pt-16 pb-16 bg-[#DEDEDE]">
       <ProgressBar />
-      <h1>"Please fill up the personal details"</h1>
-      <div className="container">
-        <div className="row">
-          <form className="" onSubmit={handleSubmit}>
-            <div className="personal-details">
-            <div className="personal-details-form-left">
-              <div className="fullname group">
-                <input
-                  type="text"
-                  name="fullname"
-                  value={values.fullname}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />
-                <label>FullName</label>
-              </div>
-              <div className="Age group">
-                <input
-                  type="number"
-                  name="age"
-                  value={values.age}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />{" "}
-                <label>Age</label>
-              </div>
+      <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] bg-white shadow-xl rounded-lg mx-auto">
+      <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Let's setup your account.</h1>
+      
+        
+          <form className=" mx-auto" onSubmit={handleSubmit}>
+           
+            <div className="w-full flex flex-col-reverse justify-between items-center">
+               <Input label="Full Name" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter full Name" />
+               <InputSelect label="Profile for " classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" options={profileOptions}/>
+           </div>
 
-              <div className="height group">
-                <input
-                  type="text"
-                  value={values.height}
-                  name="height"
-                  onChange={(e) => handleChange(e)}
-                  required
-                />{" "}
-                <label>height</label>
-              </div>
-              <div className="profilecreatedby group">
-                <input
-                  type="text"
-                  value={values.rofileCreatedBy}
-                  name="profileCreatedBy"
-                  onChange={(e) => handleChange(e)}
-                  required
-                />{" "}
-                <label>profile created by</label>
-              </div>
-            </div>
-            <div className="personal-details-form-middle">
-              <div className="Religion group">
-                <input
-                  name="religion"
-                  type="text"
-                  value={values.religion}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />{" "}
-                <label>religion</label>
-              </div>
-              <div className="sex group">
-                <input
-                  type="text"
-                  name="sex"
-                  value={values.sex}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />{" "}
-                <label>sex</label>
-              </div>
+           <div className="w-full flex flex-col justify-between items-center">
+              <InputSelect label="Gender " classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" options={genderOptions} />
+               {/* <Input label="Religo" classes3="basis-[40%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter full Name" /> */}
+               <InputSelect label="Religion " classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" options={religionOptions}/>
+           </div>
 
-              <div className="caste group">
-                <input
-                  type="text"
-                  value={values.caste}
-                  name="caste"
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-                <label>caste</label>
-              </div>
+           <div className="w-full flex justify-between flex-col-reverse items-center">
+               {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
+               <Input label="Enter your Date Of Birth" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="date" placeholder="Enter full Name" />
+               <InputSelect label="Caste " classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[70%]" options={casteOptions}/>
+           </div>
 
-              <div className="subcaste group">
-                <input
-                  type="text"
-                  name="subcaste"
-                  value={values.subcaste}
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-                   <label>subcaste</label>
-              </div>
-            </div>
+           <div className="w-full flex justify-between flex-col items-center">
+               {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
+               <Input label="Where do you live ?" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter your current address" />
+               {/* <InputSelect label="Caste " classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={casteOptions}/> */}
+           </div>
 
-            <div className="personal-details-form-right">
-              <div className="language group">
-                <input
-                  type="text"
-                  value={values.language}
-                  name="language"
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-                <label>language</label>
-              </div>
-              <div className="maritalstatus group">
-                <input
-                  type="text"
-                  name="marital_status"
-                  value={values.marital_status}
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-                <label>maritalstatus</label>
-              </div>
-              <div className="dob group">
-                <input
-                  type="date"
-                  name="dateOfBirth"
-                  value={values.dateOfBirth}
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-              </div>
-              <div className="smokedrink group">
-                <input
-                  type="text"
-                  name="smokeOrdrink"
-                  value={values.smokeOrdrink}
-                    onChange={(e) => handleChange(e)}
-                  required
-                />
-                <label>smokeOrdrink</label>
-              </div>
-              {/* <div className="gender">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    value={male}
-                    onChange={(e)}
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                    checked
-                  />
-                  <label className="form-check-label" for="flexRadioDefault1">
-                    Male
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    value={female}
-                    onChange={(e) => handleChange(e)}
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                  />
-                  <label className="form-check-label" for="flexRadioDefault2">
-                    female
-                  </label>
-                </div>
-              </div> */}
-            </div>
-            </div>
 
-            <div className="personal-details-btn">
-          <button className="btnprev" onClick={() => handlePrevClick()}>
+          <div>
+             <Button label="Continue" classes="px-24 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" />
+          </div>
+
+          {/* <button className="btnprev" onClick={() => handlePrevClick()}>
             <HiChevronDoubleLeft /> Prev
           </button>
-      
-      
+    
           <button type="submit" className="btnnext">
-            Next <HiChevronDoubleRight />
-          </button>
-       
-          </div>
+            Next <HiChevronDoubleRight /> */}
+          {/* </button> */}
               
           </form>
         </div>
       </div>
-  
-    </div>
   );
 }
 

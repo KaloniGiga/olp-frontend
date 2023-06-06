@@ -16,7 +16,7 @@ const Profile_Page = () => {
   const isTabletOrMobileFilter = useMediaQuery({ query: "(max-width: 992px)" });
   return (
     <>
-      <Layout>
+      
         <div className="profiles py-4">
           <div className="container">
             <div className="profile-section position-relative">
@@ -106,7 +106,6 @@ const Profile_Page = () => {
             </div>
           </div>
         </div>
-      </Layout>
     </>
   );
 };

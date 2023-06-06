@@ -15,7 +15,7 @@ function ProgressBar() {
   return (
     <>
       <div
-        className="progress-bar"
+        className="progress-bar mt-16"
         style={{ backgroundColor: `rgb(${percentage}%, 0, 0)` }}
       >
         <div className="progress" style={{ width: `${percentage}%` }}></div>

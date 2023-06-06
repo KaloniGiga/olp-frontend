@@ -1,21 +1,65 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { VscDeviceCamera } from "react-icons/vsc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/UploadProfileSection.css";
 import ProgressBar from "./Progressbar";
+import { axiosInstance } from "../http";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentUser } from '../store/features/authSlice';
+
 const UploadProfileSection = (props) => {
   const fileInputRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(
     "https://www.caltrain.com/files/images/2021-09/default.jpg"
   );
 
+  const { user } = useSelector((state) => state.auth);
+  const [imageFile, setImageFile] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleCircleClick = () => {
     fileInputRef.current.click();
   };
   const handleFileSelect = (event) => {
-    setSelectedImage(URL.createObjectURL(event.target.files[0]));
+    setSelectedImage(event.target.files[0]);
+    setImageFile(URL.createObjectURL(event.target.files[0]));
   };
+
+  useEffect(() => {
+     if(user.avatarId) {
+       setImageUrl(`http://localhost:3000/v1/api/user-avatar/${user.avatarId}`)
+     }
+     console.log(user.avatarId);
+  }, [user])
+
+  const handelProfileUpload = (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('file', selectedImage);
+
+      axios.post('http://localhost:3000/v1/api/users/avatar', formData,
+       {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+       }
+      ).then((res) => {
+         console.log(res.data);
+        const userWithNewAvatarId = {...user, avatarId: res.data.id};
+        console.log(userWithNewAvatarId);
+         dispatch(
+          setCurrentUser(userWithNewAvatarId)
+         )
+      }).catch((error) => {
+         console.log(error);
+      })
+  }
 
   return (
     <>
@@ -27,8 +71,8 @@ const UploadProfileSection = (props) => {
             <div className="upload-box">
               {selectedImage ? (
                 <img
-                  src={selectedImage}
-                  alt="profile pic"
+                  src={imageUrl}
+                  alt=""
                   className="profilepic"
                 />
               ) : (
@@ -46,7 +90,7 @@ const UploadProfileSection = (props) => {
               />
             </div>
             <div className="profile-bio">
-              <h2>Samar Rai</h2>
+              <h2>{user && user.username}</h2>
             </div>
           </div>
         </div>
@@ -58,11 +102,11 @@ const UploadProfileSection = (props) => {
             <HiChevronDoubleLeft /> Prev
           </button>
         </Link>
-        <Link to="#">
-          <button type="submit" className="btnnext">
+       
+          <button type="submit" className="btnnext" onClick={(e) => handelProfileUpload(e)}>
             Next <HiChevronDoubleRight />
           </button>
-        </Link>
+
       </div>
     </>
   );

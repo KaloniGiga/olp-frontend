@@ -4,7 +4,6 @@ import Header from "./Header";
 const LayoutwithoutFooter = ({ children }) => {
   return (
     <>
-      <Header />
       <div>{children}</div>
     </>
   );

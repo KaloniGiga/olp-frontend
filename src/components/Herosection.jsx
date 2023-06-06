@@ -4,6 +4,7 @@ import "../App.css";
 import CustomSelect from "./CustomSelect";
 import "../Store/data.json";
 import { useState } from "react";
+import heroImage from '../images/lifepartnerheroImage.png'
 
 const Herosection = () => {
   const [values, setValues] = useState({
@@ -43,10 +44,17 @@ const Herosection = () => {
   return (
     <>
       <div className="herosection">
-        <div id="overlay">
-          <div className="container">
-            <p className="glass-text">Let's find</p>
-            <div className="glass-container">
+        {/* <div id="overlay"> */}
+          <div className="container relative w-full h-full">
+            {/* <p className="glass-text">Let's find</p> */}
+
+            <div className="w-full h-full overflow-hidden">
+              <img src={heroImage} alt="" className="w-[100%] h-[100%] object-contain object-center scale-125" />
+            </div>
+            <div className="absolute top-[50%] w-full h-[50%] bg-white flex justify-center items-start">
+
+           <div className="bg-[#E61A52] px-4 pb-4 mb-4 md:mb-4 rounded-xl flex flex-col items-center">
+             <p className="text-xl lg:text-2xl 2xl:text-3xl text-white py-2">Find Your Partner Here</p>
               <div className="middlehero">
                 <div className="input1 ipt">
                   <label className="lbl">Searching For</label>
@@ -134,7 +142,7 @@ const Herosection = () => {
 
                 <div className="input6 ipt">
                   <Link to="/profiles">
-                    <button onClick={handleSearch}>Let's Begin</button>
+                    <button onClick={handleSearch} className="bg-[#200949]">Let's Begin</button>
                   </Link>
                 </div>
               </div>

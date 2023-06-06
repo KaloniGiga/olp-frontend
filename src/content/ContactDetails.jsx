@@ -3,13 +3,18 @@ import ProgressBar from "./Progressbar";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { useState } from "react";
 import "../styles/ContactDetails.css";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { setFamilyDetail } from "../store/features/familyDetailSlice";
+import { axiosInstance } from "../http";
 
 const ContactDetails = () => {
  
-  const {user} = useSelector((state) => state.auth);
-  const [values, setValues] = useState({
+ const {familyDetail} = useSelector((state) => state.familyDetail);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+ const [values, setValues] = useState({
     familyType: '',
     fatherOccupation: '',
     motherOccupation: '',
@@ -17,12 +22,18 @@ const ContactDetails = () => {
     noOfSister: '',
     noOfFamilyMember: '',
     noOfUnmarried: '',
-    municipility: '',
+    municipality: '',
     district: '',
     province: '',
     country: '',
     mobile: '',
   })
+
+  useEffect(() => {
+    if(familyDetail) {
+     setValues(familyDetail)
+    }
+  }, [familyDetail])
 
   const handleChange = (e) => {
     setValues({...values, [e.target.name]: e.target.value})
@@ -32,8 +43,15 @@ const ContactDetails = () => {
  const handleSubmit = (event) => {
   event.preventDefault();
 
-       axiosInstance.post('/users/family-details', values)
+     console.log(values)
+       axiosInstance.post('/users/family-detail', values)
         .then((response) => {
+          console.log(response.data)
+          console.log('hello')
+          dispatch(
+            setFamilyDetail(response.data)
+          )
+          navigate('/familydetails')
           
        }).catch((error) => {
          console.log(error);
@@ -48,7 +66,7 @@ const ContactDetails = () => {
         <h1>"Please fill up the important details"</h1>
         <div className="container">
           <div className="row">
-            <form className="" onSubmit={handleSubmit}>
+            <form className="" onSubmit={(e) => handleSubmit(e)}>
               <div className="Contact-details">
               <div className="Contact-details-form-left">
                 <div className="mobileNo group">
@@ -118,7 +136,7 @@ const ContactDetails = () => {
                 <div className="motheroccupation group">
                   <input
                     type="text"
-                    value={values.noOfFamilyMemeber}
+                    value={values.noOfFamilyMember}
                     name="noOfFamilyMember"
                     onChange={(e) => handleChange(e)}
                     required
@@ -143,8 +161,8 @@ const ContactDetails = () => {
                 <div className="familytype group">
                   <input
                     type="text"
-                    value={values.municipility}
-                    name="municipility"
+                    value={values.municipality}
+                    name="municipality"
                     onChange={(e) => handleChange(e)}
                     required
                   />
@@ -192,11 +210,10 @@ const ContactDetails = () => {
               <HiChevronDoubleLeft /> Prev
             </button>
           </Link>
-          <Link to="/familydetails">
             <button type="submit" className="btnnext">
               Next <HiChevronDoubleRight />
             </button>
-          </Link>
+          
         </div>
        
             </form>

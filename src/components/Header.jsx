@@ -2,12 +2,13 @@ import React, { useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../App.css";
 import { GoThreeBars } from "react-icons/go";
-import logo from "../images/logo.png";
+import logo from "../images/lifepartnerlogo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../http";
 import { addToast } from "../store/features/toastSlice";
 import { logOutUser, setCurrentUser } from "../store/features/authSlice";
 import axios, { Axios } from "axios";
+
 const Header = () => {
 
   const {user} = useSelector((state) => state.auth);
@@ -76,10 +77,11 @@ const Header = () => {
         <NavLink className="navbar-logo" to="/">
           <img src={logo} alt="logo" />
         </NavLink>
-        <ul className="Navbar-items">
+        <div className="Navbar-items">
+        <ul className="flex gap-6 justify-end w-full">
           <li className="navbar-item mt-2">
             <NavLink
-              className="navbar-link cool-link "
+              className="navbar-link cool-link"
               aria-current="page"
               to="/"
             >
@@ -96,22 +98,25 @@ const Header = () => {
               Help?
             </NavLink>
           </li>
-          {!user ? (
-              <li className="navbar-item">
-                <Link to="/signup">
+       
+        </ul>
+
+        {!user ? (
+              // <li className="navbar-item">
+                <Link to="/login">
                   {" "}
-                  <button className="nav-btn">Register Now</button>
+                  <button className="nav-btn text-white">Login</button>
                 </Link>
-              </li>
+              // </li>
               ):(
-                <li className="navbar-item">
+                // <li className="navbar-item">
                 <Link >
                   {" "}
-                  <button className="nav-btn" onClick={(e) => handleLogout(e)}>Logout</button>
+                  <button className="nav-btn text-white" onClick={(e) => handleLogout(e)}>Logout</button>
                 </Link>
-              </li>
+              // </li>
               )}
-        </ul>
+        </div>
         <div className="sidenavbar">
           <GoThreeBars onClick={sidenavs} className="navbar-toggle" />
           <div ref={sidenav} className="sidenav">
@@ -136,22 +141,26 @@ const Header = () => {
                   Help?
                 </NavLink>
               </li>
-              {!user ? (
-              <li className="sidenavbar-item">
+         
+            </ul>
+            
+            <div>
+                 {!user ? (
+              <span className="sidenavbar-item ">
                 <Link to="/signup">
                   {" "}
                   <button className="sidenav-btn">Register Now</button>
                 </Link>
-              </li>
+              </span>
               ):(
-                <li className="sidenavbar-item">
+                <span className="sidenavbar-item ">
                 <Link >
                   {" "}
                   <button className="sidenav-btn" onClick={(e) => handleLogout(e)}>Logout</button>
                 </Link>
-              </li>
+              </span>
               )}
-            </ul>
+            </div>
           </div>
           <div
             ref={sidenavblur}

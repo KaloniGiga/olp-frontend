@@ -1,9 +1,9 @@
 .chat-person {
   border-radius: 5px;
   margin-top: 0.5rem;
-  height: 4rem;
+  /* height: 4rem; */
   width: 100%;
-  background-color: rgb(226, 226, 226);
+  /* background-color: rgb(226, 226, 226); */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,8 +21,9 @@
   color: red;
 }
 .chat-person:hover {
-  transform: scale(1.08);
-  transition: transform 0.2s ease;
+  /* transform: scale(1.08); */
+   /* transition: transform 0.2s ease;  */
+   background-color: 'var(--screen)' !important;
 }
 .chat-person-img {
   flex-basis: 20%;

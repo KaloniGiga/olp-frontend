@@ -19,21 +19,81 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Toasts from "./components/Toast/Toast";
 import { PrivateRoute } from "./layout/PrivateLayout";
+import RegisterPage from "./pages/authentication/RegisterPage";
+import FormLayout from "./layout/FormLayout";
+import FirstForm from "./newComponent/Forms/FirstForm";
+import SecondForm from "./newComponent/Forms/SecondForm";
+import ThirdForm from "./newComponent/Forms/ThirdForm";
+import FourthForm from "./newComponent/Forms/FourthForm";
+import PhotoUploadForm from "./newComponent/Forms/PhotoUploadForm";
+import HomeLayout from "./layout/HomeLayout";
+import Searchedlist from "./content/Searchedlist";
+import Dashboard from "./pages/InnerHome/Dashboard";
+import DashboardSection from "./Section/DashboardSection";
+import UserProfileSection from "./Section/UserProfileSection";
+import ConnectionSection from "./Section/ConnectionSection";
+import NotificationSection from "./Section/NotificationSection";
+import EventSection from "./Section/EventSection";
+import SettingSection from "./Section/SettingSection";
+import { useState } from "react";
+import { socket, SocketContext } from './utils/context/SocketContext';
+import { AuthContext } from './utils/context/AuthContext';
+import AppLayout from "./pages/AppLayout";
+import ChatLayout from "./content/ChatSection/ChatLayout";
+import ChatPanel from "./content/ChatSection/ChatPanel";
+import RecommendSection from "./newComponent/RecommendSection/RecommendSection";
+import NewProfileSection from "./newComponent/NewProfileSection/NewProfileSection";
+import AboutMe from "./newComponent/AboutMe/AboutMe";
+import Photos from "./newComponent/Photos/Photos";
+import Connections from "./newComponent/Connections/Connections";
+import ConversationBox from "./content/ChatSection/ConversationBox";
+import CallBox from "./content/ChatSection/CallBox";
+import CallPanel from "./newComponent/CallPanel/CallPanel";
+import SearchResultSection from "./Section/SearchResultSection";
+import { useMediaQuery } from "react-responsive";
+import ConnectionLayout from "./Section/ConnectionLayout";
+import PricingSection from "./Section/PricingSection";
 
 const App = () => {
+   const isMobile = useMediaQuery({query: '(max-width: 768px)'});
+  const [user, setUser] = useState();
+
   return (
     <>
+     <AuthContext.Provider value={[user, setUser]}>
+       <SocketContext.Provider value={socket}>
       <ToastContainer />
       <Toasts />
       <BrowserRouter>
         <Homebtn />
         <Routes>
-          <Route index element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
-          <Route path="*" element={<Page_Not_Found />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/profiles" element={<PrivateRoute><Profile_Page /></PrivateRoute>} />
+          <Route path="/login" element={<Signup />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          <Route path="/profile/info" element={
+            <PrivateRoute>
+              <FormLayout />
+            </PrivateRoute>} />
+
+             <Route path="/secondform" element={
+               <PrivateRoute>
+                 <FormLayout />
+              </PrivateRoute>} />
+
+            <Route path="/thirdform" element={
+            <PrivateRoute>
+            <FormLayout><ThirdForm /></FormLayout>
+            </PrivateRoute>} />
+
+            <Route path="/fourthform" element={
+            <PrivateRoute>
+            <FormLayout><FourthForm /></FormLayout>
+            </PrivateRoute>} />
+
+          <Route path="/avatarUpload" element={<PrivateRoute><PhotoUploadForm /></PrivateRoute>}  />
           <Route path="/userprofile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
           <Route path="/chat" element={<PrivateRoute><ChatSection /></PrivateRoute>} />
           <Route path="/personaldetails" element={<PrivateRoute><PresonaldetailForm /></PrivateRoute>} />
@@ -42,8 +102,52 @@ const App = () => {
           <Route path="/uploadprofile" element={<PrivateRoute><UploadProfileSection /></PrivateRoute>} />
           <Route path="/preferencedetails" element={<PrivateRoute><PreferenceDetails /></PrivateRoute>} />
           <Route path="/myprofile" element={<MyProfilesSidebar />} />
+
+          <Route path="/home" element={<PrivateRoute><AppLayout><HomeLayout /></AppLayout></PrivateRoute>}>
+            <Route path="dashboard" element={<Dashboard />} >
+                <Route path="" element={<DashboardSection />} />
+                <Route path="search" element={<SearchResultSection />} />
+                 {/* <Route path="profile" element={<UserProfileSection />} /> */}
+            </Route>
+      
+            <Route path="connection"  element={<ConnectionLayout />} />
+            <Route path="notification" element={<NotificationSection />} />
+            <Route path="pricing" element={<PricingSection />} />
+
+            <Route path="settings" element={<SettingSection />} />
+           {!isMobile ? 
+           (<Route path="chat" element={<ChatLayout />} >
+              <Route path="conversation" element={<ChatPanel />} >
+                <Route path=":id" element={<ChatPanel />} />
+              </Route>
+            </Route>
+           ): (
+            <>
+             <Route path="chat/conversation" element={<ChatLayout />} />
+             <Route path="chat/conversation/:id" element={<ChatPanel />} />
+             </>
+           )}
+            
+            <Route path="profiles" element={<Profile_Page />} />
+            <Route path="search" element={<Searchedlist />} />
+            <Route path="profile/me" element={<NewProfileSection />} >
+              <Route path="about" element={<AboutMe />} />
+              <Route path="photos" element={<Photos />} />
+              <Route path="connections" element={<Connections />} />
+            </Route>
+            
+            
+            <Route path="profile/:id" element={<NewProfileSection />} >
+              <Route path="about" element={<AboutMe />} />
+              <Route path="photos" element={<Photos />} />
+              <Route path="connections" element={<Connections />} />
+            </Route>
+            </Route>
+          <Route path="*" element={<Page_Not_Found />} />
         </Routes>
       </BrowserRouter>
+     </SocketContext.Provider>
+   </AuthContext.Provider>
     </>
   );
 };

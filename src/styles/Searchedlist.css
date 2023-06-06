@@ -1,10 +1,8 @@
 .searchedlist {
   width: 100%;
-  margin-bottom: 1rem;
   display: flex;
   flex-wrap: wrap;
-  background-color: rgb(242, 242, 242);
-  border-radius: 10px;
+  align-items: center;
 }
 .searchedlist-left {
   padding: 10px;
@@ -28,7 +26,7 @@
 }
 .searchedlist-right hr {
   position: relative;
-  top: -0.8rem;
+  /* top: -0.8rem; */
   opacity: 20%;
   margin-bottom: 0;
   width: 94%;
@@ -59,10 +57,11 @@
   color: white;
   border: none;
   border-radius: 10px;
-  background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91);
+  background-color: var(--primary);
+  /* background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91); */
 }
 .searchedlist-btn:hover {
-  color: black;
+  color: white;
   transition: all 0.2s ease-in-out;
 }
 .searchedlist-outline-btn {

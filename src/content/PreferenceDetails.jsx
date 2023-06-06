@@ -3,9 +3,18 @@ import ProgressBar from "./Progressbar";
 import { HiChevronDoubleRight, HiChevronDoubleLeft } from "react-icons/hi";
 import { useState } from "react";
 import "../styles/PreferenceDetails.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { axiosInstance } from "../http";
+import { setPreferanceDetail } from "../store/features/preferanceDetailSlice";
+// import { setPreferanceDetail } from '../store/features/preferanceDetailSlice';
 const PreferenceDetails = () => {
  
+  const { preferanceDetail } = useSelector((state) => state.preferanceDetail);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  console.log(preferanceDetail);
   const [values, setValues] = useState({
     minAge: '',
     maxAge: '',
@@ -21,6 +30,12 @@ const PreferenceDetails = () => {
     smokeOrDrink: '',
   })
 
+  useEffect(() => {
+    if(preferanceDetail) {
+       setValues(preferanceDetail);
+    }
+  }, [preferanceDetail]);
+
   const handleChange = (e) => {
     setValues({...values, [e.target.name]: e.target.value})
   }
@@ -28,9 +43,14 @@ const PreferenceDetails = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-         axiosInstance.post('/users/personal-detail', values)
+         axiosInstance.post('/users/preferance-detail', values)
           .then((response) => {
-            
+            console.log('updated successfully')
+            console.log(response.data);
+            dispatch(
+               setPreferanceDetail(response.data)
+            )
+            navigate('/uploadprofile')
          }).catch((error) => {
            console.log(error);
          })
@@ -183,11 +203,11 @@ const PreferenceDetails = () => {
               <HiChevronDoubleLeft /> Prev
             </button>
           </Link>
-          <Link to="/uploadprofile">
+        
             <button type="submit" className="btnnext">
               Next <HiChevronDoubleRight />
             </button>
-          </Link>
+
         </div>
         
             </form>

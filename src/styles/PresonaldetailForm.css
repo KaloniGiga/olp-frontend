@@ -64,7 +64,7 @@
 }
 
 .btnnext {
-  background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91);
+  background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91) !important;
 }
 .gender {
   display: flex;

@@ -3,7 +3,7 @@ import "../styles/Filter.css";
 const Filter = () => {
   return (
     <>
-      <div className="filter">
+      <div className="filter mt-3">
         <div className="refine-text py-2">
           <h6 className="">Refine your search</h6>
         </div>
@@ -23,7 +23,7 @@ const Filter = () => {
             </h2>
             <div
               id="collapseOne"
-              className="accordion-collapse1 show"
+              className="accordion-collapse1"
               aria-labelledby="headingOne"
               data-bs-parent="#accordionExample"
             >

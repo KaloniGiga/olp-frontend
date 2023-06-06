@@ -24,7 +24,7 @@ const Homebtn = () => {
     <>
       {isVisible && (
         <div className="homebtn" onClick={goToBtn}>
-          <i class="bi bi-house-up"></i>
+          <i className="bi bi-house-up"></i>
         </div>
       )}
     </>

@@ -14,7 +14,12 @@
   padding: 2rem;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+}
+
+.family-details-inner {
+  display: flex;
 }
 .Family-details-form-left,
 .Family-details-form-middle,

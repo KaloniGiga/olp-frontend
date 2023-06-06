@@ -7,8 +7,8 @@ import simple from "../images/phone.png";
 const Fourth = () => {
   return (
     <>
-      <div className="fourth">
-        <p className="trust">Why Trust Us ?</p>
+      <div className="fourth mb-4 mt-4">
+        {/* <p className="trust">Why Trust Us ?</p> */}
         <div className="container">
           <div className="row">
             <div className="row bg-light border rounded-5 text-center pb-4 m-0">
@@ -62,7 +62,7 @@ const Fourth = () => {
                     </h2>
                     <div
                       id="collapseOne"
-                      className="accordion-collapse collapse show"
+                      className="accordion-collapse show"
                       aria-labelledby="headingOne"
                       data-bs-parent="#accordionExample"
                     >

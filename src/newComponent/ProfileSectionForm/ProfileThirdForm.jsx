@@ -1,0 +1,174 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import Input from '../Profile/Input';
+import InputSelect from '../Profile/Select';
+import Button from '../Profile/Button';
+
+function ProfileThirdForm({setCurrentFormCount, currentFromCount}) {
+
+
+
+     const handleSubmit = (event) => {
+        event.preventDefault();
+
+         axiosInstance.post('/users/personal-detail', values)
+          .then((response) => {
+            console.log('updated successfully')
+            console.log(response.data);
+            dispatch(
+              setPersonalDetail(response.data)
+            )
+            navigate('/contactdetails')
+         }).catch((error) => {
+           console.log(error);
+         })
+  };
+
+
+    const handlePrevClick = () => {
+     setCurrentFormCount((prev) => prev-1)
+  }
+
+  const handleNextClick = () => {
+    setCurrentFormCount((prev) => prev+1)
+  }
+
+const profileOptions = [
+    { value: 'myself', label: 'MySelf' },
+    { value: 'brother', label: 'Brother' },
+    { value: 'sister', label: 'Sister' },
+    { value: 'son', label: 'Son' },
+    { value: 'daughter', label: 'Daughter' },
+    { value: 'friend', label: 'Friend' },
+    { value: 'relative', label: 'Relative' },
+  ]
+
+  const religionOptions = [
+    { value: 'hindu', label: 'Hinduism' },
+    { value: 'buddhist', label: 'Buddhism' },
+    { value: 'islam', label: 'Islam' },
+    { value: 'christianity', label: 'Christianity' },
+    { value: 'sikh', label: 'Sikhism' },
+    { value: 'Jain', label: 'Jainism' },
+    { value: 'kirat', label: 'Kirat' },
+    { value: 'no', label: 'Non-Religious'},
+    {value: 'other', label: 'Other'},
+  ]
+
+
+  const genderOptions = [
+     {value: 'Man', label: "Man"},
+      {value: "woman", label: "Woman"},
+      {value: "other", label: "Other"},
+  ]
+
+  const casteOptions = [
+    {value: "brahmin", label: "Brahmin"},
+    {value: "chhetri", label: "chhetri"},
+    {value: 'thakuri', label: "Thakuri"},
+    {value: 'magar', label: 'Magar'},
+    {value: 'tamang', label: 'Tamang'},
+    {value: 'sherpa', label: "Sherpa"},
+    {value: "newar", label: "Newar"},
+  ]
+
+  const educationQualificationOptions = [
+    {value: "undergraduate", label: "Undergraduate"},
+    {value: "graduate", label: "Graduate"},
+    {value: "doctarate", label: "P.h.d/Doctorate"},
+    {value: "highSchool", label: "High School"},
+    {value: "literate", label: "Literate"},
+    {value: "illiterate", label: "Illiterate"}
+  ]
+
+  const subjectOptions = [
+    {value: "engineering", label: 'Engineering/'},
+    {value: "medical", label: "Medical"},
+     {value: "business", label: "Business"},
+     {value: "law", label: 'Law'},
+     {value: "socialScience", label: "Social Science"},
+     {value: "commerce", label: "Commerce/Finance"},
+     {value: "agriculture", label: "Agriculture"}
+  ]
+
+  const sectorOptions = [
+    {value: 'private', label: 'Private Company'},
+    {value: 'government', label: 'Government'},
+    {value: 'ngo', label: "NGO's/INGO's"},
+    {value: 'selfEmployed', label: "Self Employed"},
+    {value: "unEmployed", label: 'Unemployed'},
+  ]
+
+  const annualIncomeOptions = [
+    { value: "2L", label: "Upto 2L"},
+    {value: '3L', label: "Upto 3L"},
+    {value: '3L-4L', label: '3L-4L'},
+     {value: '4L-5L', label: '4L-5L'},
+     {value: '5L-6L', label: '5L-6L'},
+     {value: '6L-7L', label: '6L-7L'},
+     {value: '7L-8L', label: '7L-8L'},
+     {value: '8L-9L', label: '8L-9L'},
+     {value: '9L-10L', label: '9L-10L'},
+     {value: '10L-15L', label: '10L-15L'},
+     {value: '15L-20L', label: '15L-20L'},
+     {value: '20L-30L', label: '20L-30L'},
+     {value: 'abover30L', label: 'Above 30L'},
+  ]
+
+  return (
+
+           <div className="md:mt-8 md:mb-8 px-2 py-4  w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%] bg-white rounded-lg mx-auto">
+           {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Let's setup your account.</h1> */}
+      
+        
+          <form className=" mx-auto" onSubmit={handleSubmit}>
+            <h1 className='text-2xl font-semibold w-[90%] mx-auto'>Education and Profession Information</h1>
+
+            <div className="w-full flex justify-around items-center">
+               <InputSelect label="Education Qualification" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={educationQualificationOptions}/>
+               <InputSelect label="Field/Subject/Program" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={subjectOptions}/>
+           </div>
+
+            <div className="w-full flex justify-around items-center">
+              <Input label="Enter your College/University Name" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="College/University" />
+               {/* <Input label="Religo" classes3="basis-[40%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter full Name" /> */}
+               <InputSelect label="Current Profession and Position" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" />
+             </div>
+
+
+
+         
+
+            <div className="w-full flex justify-around items-center">
+              
+               {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
+               <InputSelect label="Sector You are working in" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={casteOptions}/>
+               <Input label="Institution/Company Name ?" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Name of Employer" />
+               
+           </div>
+
+            <div className="w-[90%] mx-auto flex justify-start items-center">
+               {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
+               {/* <Input label="Enter your Date Of Birth" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="date" placeholder="Enter full Name" /> */}
+               <InputSelect label="Annual Income" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[45%] basis-[45%]" options={annualIncomeOptions}/>
+           </div>
+
+           <div className="w-[90%] mx-auto flex justify-around">
+             {/* <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} /> */}
+             <Button onClick={() => handleNextClick()} label="Save" classes="px-8 py-2 rounded-xl btnnext text-white" classes2="w-full flex justify-end py-2" />
+          </div>
+
+          {/* <button className="btnprev" onClick={() => handlePrevClick()}>
+            <HiChevronDoubleLeft /> Prev
+          </button>
+    
+          <button type="submit" className="btnnext">
+            Next <HiChevronDoubleRight /> */}
+          {/* </button> */}
+              
+          </form>
+        </div>
+  )
+}
+
+export default ProfileThirdForm;

@@ -5,6 +5,10 @@ import { axiosInstance } from '../http/index';
 import { addToast } from "../store/features/toastSlice";
 import { useDispatch } from 'react-redux';
 import { setCurrentUser } from "../store/features/authSlice";
+import { setPersonalDetail } from "../store/features/personalDetailSlice";
+import { setFamilyDetail } from "../store/features/familyDetailSlice";
+import { setEducationDetail } from "../store/features/educationDetailSlice";
+import { setPreferanceDetail } from "../store/features/preferanceDetailSlice";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -28,6 +32,10 @@ const Signup = () => {
       navigate("/");
     }
   };
+
+  const  handleSignUpClick = () => {
+      navigate('/register');
+  }
 
   const handleUsernameChange = (event) => {
     setUserName(event.target.value);
@@ -66,23 +74,43 @@ const Signup = () => {
         )
 
        //add user details in store
-        dispatch(
-          setCurrentUser(user)
-        )
+        // dispatch(
+        //   setCurrentUser(user)
+        // )
+
+        //add personalDetail in store
+        // dispatch(
+        //   setPersonalDetail(user.profile && user.profile)
+        // )
+
+        //add familyDetail in store
+        //  dispatch(
+        //   setFamilyDetail(user.family && user.family)
+        //  )
+
+         //add educationDetail to store
+
+        // dispatch(
+        //   setEducationDetail(user.education && user.education)
+        // )
+
+         //add preferanceDetail to store
+
+        //  dispatch(
+        //   setPreferanceDetail(user.preferance && user.preferance)
+        //  )
 
         //check if  the user has setup profile, family and others
-        if(user && !user.profileId) {
-          navigate('/personaldetails')
-        }else if(user && !user.familyId) {
-          navigate('/contactdetails');
-        }else if(user && !user.educationId) {
-          navigate('/familydetails');
-        }else if(user && !user.preferanceId) {
-          navigate('/preferancedetails');
-        }else if(user && !user.avatarId) {
-          navigate('/uploadprofile');
+        if(user && !user.profile) {
+          navigate('/profile/info')
+        }else if(user && !user.family) {
+          navigate('/profile/info');
+        }else if(user && !user.education) {
+          navigate('/profile/info');
+        }else if(user && !user.preferance) {
+          navigate('/profile/info');
         }else {
-           navigate('/');
+           navigate('/home/dashboard');
         }
      })
      .catch((error) => {
@@ -113,7 +141,7 @@ const Signup = () => {
 
   return (
     <>
-      <div className="signup-page py-5">
+      <div className="signup-page py-5 bg-screen">
         <div className="container">
           <div className="login-signup">
             <div className={`login ${isAnimated ? "animated" : "notanimated"}`}>

@@ -6,10 +6,12 @@ import i2 from "../images/facebook.png";
 import i3 from "../images/instagram.png";
 import i4 from "../images/youtube.png";
 import i5 from "../images/twitter.png";
+
+
 const Footer = () => {
   return (
     <>
-      <footer className="footer">
+      <footer className="footer bg-white">
         <div className="footertop">
           <ul className="footertopfirst">
             <li>

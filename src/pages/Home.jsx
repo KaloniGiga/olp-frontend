@@ -15,11 +15,15 @@ const Home = () => {
   return (
     <Layout>
       <Herosection />
-      <First text="Make | Meet | Marry" />
-      <Second />
+      <First text="Why trust us ?"/>
+      <Fourth />
+      
       <First text="Browser Partner Profiles By" />
       <Third />
-      <Fourth />
+
+     <First text="Make | Meet | Marry" />
+      <Second />
+      
       <Fifth />
       <First text="Membership Plan" />
       <Sixth />
