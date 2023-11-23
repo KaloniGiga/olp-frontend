@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+       backgroundImage: {
+          'gradient24': 'linear-gradient(135deg, var(--tw-gradient-stops))',
+       },
       keyframes: {
           progressBarStep1: {
             '0%': {width: "0%"},
@@ -41,6 +44,7 @@ export default {
         delete: 'var(--delete)',
         filter: 'var(--filter)',
         secondary: 'var(--secondary)',
+        montserrat: 'var(--mitr)',
       },
     },
   },

@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { io } from "socket.io-client";
 
-export const socket = io('http://localhost:3000', { withCredentials: true});
+export const socket = io(import.meta.env.VITE_BASE_URL, { withCredentials: true});
 
 export const SocketContext = createContext(socket);

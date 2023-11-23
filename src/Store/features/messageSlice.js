@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { deleteMessageThunk, editMessageThunk, fetchMessagesThunk } from "../thunk/messagesThunk";
+import { deleteMessageThunk, editMessageThunk, fetchMessageAfterSeeMore, fetchMessagesThunk } from "../thunk/messagesThunk";
 
 const initialState = {
     messages: [],
@@ -30,8 +30,26 @@ export const messagesSlice = createSlice({
             const messageIndex = conversationMessage.messages.findIndex((cm) => cm.id === message.id);
             conversationMessage.messages[messageIndex] = message;
         },
+        addCallMessage: (state, action) => {
+            const { conversation , message, call} = action.payload;
+            console.log(action.payload)
+            const conversationMessage = state.messages.find((cm) => cm.id == conversation.id);
+            console.log(conversation, message, call);
+            conversationMessage && conversationMessage.messages.unshift({...message, call: call}); 
+            console.log(conversationMessage.messages[0]);
+        },
+        updateCallMessage: (state, action) => {
+            const { conversation, message, call } = action.payload;
+            console.log(action.payload);
+            console.log(conversation, message, call);
+            // console.log(conversation, message, updatedCall)
+            const conversationMessage = state.messages.find((cm) => cm.id === conversation.id);
+            if(!conversationMessage) return;
+            const messageIndex = conversationMessage.messages.findIndex((cm) => cm.id === message.id);
+            conversationMessage.messages[messageIndex] = {...message, call: call};
+            
+        }
     },
-
     extraReducers: (builder) => {
         builder
          .addCase(fetchMessagesThunk.fulfilled, (state, action) => {
@@ -40,6 +58,16 @@ export const messagesSlice = createSlice({
              const exists = state.messages.find((cm) => cm.id === id);
              if(exists) {
                 state.messages[index] = action.payload.data;
+             }else {
+                state.messages.push(action.payload.data);
+             }
+         })
+         .addCase(fetchMessageAfterSeeMore.fulfilled, (state, action) => {
+           const { id, messages } = action.payload.data;
+             const index = state.messages.findIndex((cm) => cm.id === id);
+             const exists = state.messages.find((cm) => cm.id === id);
+             if(exists) {
+                state.messages[index].messages.push(...action.payload.data.messages);
              }else {
                 state.messages.push(action.payload.data);
              }
@@ -72,6 +100,6 @@ export const selectConversationMessage = createSelector(
   (conversationMessages, id) => conversationMessages.find((cm) => cm.id === id)
 );
 
-export const { addMessage, deleteMessage, editMessage } = messagesSlice.actions;
+export const { addMessage, deleteMessage, editMessage, addCallMessage, updateCallMessage } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

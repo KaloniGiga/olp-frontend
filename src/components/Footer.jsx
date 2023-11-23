@@ -21,10 +21,10 @@ const Footer = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/profiles">Search For Partners</Link>
+              <Link to="/home/dashboard">Search For Partners</Link>
             </li>
             <li>
-              <Link to="/">Browse profiles By</Link>
+              <Link to="/home/dashboard">Browse profiles By</Link>
             </li>
           </ul>
           <ul className="footertopfirst">
@@ -32,16 +32,16 @@ const Footer = () => {
               <h3>About Our Life Partner</h3>
             </li>
             <li>
-              <Link to="/">Who Are You?</Link>
+              <Link to="/about">Who Are You?</Link>
             </li>
             <li>
-              <Link to="/">Contact Us</Link>
+              <Link to="/about">Contact Us</Link>
             </li>
             <li>
-              <Link to="/">Our History</Link>
+              <Link to="/about">Our History</Link>
             </li>
           </ul>
-          <ul className="footertopfirst">
+          {/* <ul className="footertopfirst">
             <li>
               <h3>Quick Help</h3>
             </li>
@@ -54,7 +54,7 @@ const Footer = () => {
             <li>
               <Link to="/">Tutorials/Guides</Link>
             </li>
-          </ul>
+          </ul> */}
         </div>
 
         <div className="footerbuttom">

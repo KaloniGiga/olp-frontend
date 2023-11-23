@@ -8,7 +8,7 @@ import AsyncSelect from 'react-select/async';
 function ConversationBox(props) {
 
 
-        const dispatch = useDispatch();
+       const dispatch = useDispatch();
        const socket = useContext(SocketContext)
 
     // useEffect(() => {
@@ -17,14 +17,17 @@ function ConversationBox(props) {
 
     // const { conversations } = useSelector((state) => state.conversation);
     // console.log(conversations)
- const conversations = [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0  ];
+ const conversations = [0, 0, 0 ,0, 0, 0, 0, 0, 0, 0, 0, 0 ,0 ,0];
+ const prevMessageDate = null;
 
   return (
 
-    props.conversations ? (<div className='w-full h-full overflow-y-auto  overflow-hidden chat-sidebar'>
+    props.conversations && props.conversations.length > 0 ? (<div className='w-full h-full overflow-y-auto  overflow-hidden chat-sidebar'>
           {props.conversations && props.conversations.map((conversation, index) => {
                      return (
+                      <>
                        <ChatPerson key={index} conversation={conversation} />
+                       </>
                      )
           })}
     </div>

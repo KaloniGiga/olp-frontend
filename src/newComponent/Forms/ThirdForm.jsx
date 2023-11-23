@@ -6,6 +6,7 @@ import Button from '../Profile/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEducationDetail } from '../../store/features/educationDetailSlice';
 import { axiosInstance } from '../../http';
+import { addToast } from '../../store/features/toastSlice';
 
 function ThirdForm({thirdFormValues, setThirdFormValues, setCurrentFormCount, currentFromCount}) {
 
@@ -14,6 +15,11 @@ function ThirdForm({thirdFormValues, setThirdFormValues, setCurrentFormCount, cu
 
      const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(thirdFormValues);
+
+        if(!thirdFormValues.education_degree || !thirdFormValues.subject || !thirdFormValues.college || !thirdFormValues.occupation || !thirdFormValues.sector || !thirdFormValues.annualIncome || !thirdFormValues.companyName) {
+           return dispatch(addToast({kind: 'ERROR', msg: 'Please fill all fields'}));
+        }
 
          axiosInstance.post('/users/education-detail', thirdFormValues)
           .then((response) => {
@@ -126,9 +132,26 @@ const profileOptions = [
      {value: 'abover30L', label: 'Above 30L'},
   ]
 
-  const handleInputChange = (e) => {
-    setThirdFormValues({...thirdFormValues, [e.target.name]: e.target.value})
-  }
+ const handleInputChange = (e) => {
+      setThirdFormValues({...thirdFormValues, [e.target.name]: e.target.value})
+   }
+
+   const handleFamilyTypeChange = (values) => {
+       setThirdFormValues({...secondFormValues, familyType: values.value})
+   }
+
+   const handleYouLiveWithFamilyChange = (values) => {
+      setThirdFormValues({...secondFormValues, liveWithFamily: values.value})
+   }
+
+   const handleFamilyValuesChange = (values) => {
+    setSecondFormValues({...secondFormValues, familyValues: values.value});
+   }
+   
+   const handleParentStatusChange = (values) => {
+    setSecondFormValues({...secondFormValues, parentStatus: values.value})
+   }
+
 
   const handleEducationalQualification = (values) => {
       setThirdFormValues({...thirdFormValues, education_degree: values.value})
@@ -149,48 +172,42 @@ const profileOptions = [
  const handleAnnualIncomeChange = (values) => {
   setThirdFormValues({...thirdFormValues, annualIncome: values.value});
  }
-
-
   return (
 
-           <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] bg-white rounded-lg mx-auto">
+           <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] rounded-lg mx-auto">
            {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Let's setup your account.</h1> */}
       
           <form className=" mx-auto" onSubmit={handleSubmit}>
             <h1 className='text-2xl font-semibold w-[90%] mx-auto'>Education and Profession Information</h1>
 
-            <div className="w-full flex justify-around items-center">
-               <InputSelect value={thirdFormValues.education_degree} onChange={handleEducationalQualification} label="Education Qualification" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={educationQualificationOptions}/>
-               <InputSelect value={thirdFormValues.subject} onChange={handleSubjectChange} label="Field/Subject/Program" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={subjectOptions}/>
+            <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around items-center">
+               <InputSelect value={thirdFormValues.education_degree} onChange={handleEducationalQualification} label="Education Qualification" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" options={educationQualificationOptions}/>
+               <InputSelect value={thirdFormValues.subject} onChange={handleSubjectChange} label="Field/Subject/Program" classes1="block font-semibold text-xl lg:text-xl xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" options={subjectOptions}/>
            </div>
 
-            <div className="w-full flex justify-around items-center">
-              <Input value={thirdFormValues.college} name="college" onChange={handleInputChange} label="Enter your College/University Name" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="College/University" />
+            <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around items-center">
+              <Input value={thirdFormValues.college} name="college" onChange={handleInputChange} label="Enter your College/University Name" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl lg:text-lg xl:text-xl" type="text" placeholder="College/University" />
                {/* <Input label="Religo" classes3="basis-[40%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter full Name" /> */}
-               <InputSelect value={thirdFormValues.occupation} onChange={handleOccupationChange} label="Current Profession and Position" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" />
-             </div>
+               <InputSelect value={thirdFormValues.occupation} onChange={handleOccupationChange} label="Current Profession and Position" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" />
+             </div>    
 
-
-
-         
-
-            <div className="w-full flex justify-around items-center">
+            <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around items-center">
               
                {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-               <InputSelect value={thirdFormValues.sector} onChange={handleSectorChange} label="Sector You are working in" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={casteOptions}/>
-               <Input name="companyName" value={thirdFormValues.companyName} onChange={handleInputChange} label="Institution/Company Name ?" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Name of Employer" />
+               <InputSelect value={thirdFormValues.sector} onChange={handleSectorChange} label="Sector You are working in" classes1="block text-xl font-semibold lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" options={sectorOptions}/>
+               <Input name="companyName" value={thirdFormValues.companyName} onChange={handleInputChange} label="Institution/Company Name ?" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block text-xl font-semibold lg:text-lg xl:text-xl" type="text" placeholder="Name of Employer" />
                
            </div>
 
-            <div className="w-[90%] mx-auto flex justify-start items-center">
+            <div className="w-[90%]  mx-auto flex justify-start items-center">
                {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
                {/* <Input label="Enter your Date Of Birth" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="date" placeholder="Enter full Name" /> */}
-               <InputSelect onChange={handleAnnualIncomeChange} value={thirdFormValues.annualIncome} label="Annual Income" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[45%] basis-[45%]" options={annualIncomeOptions}/>
+               <InputSelect onChange={handleAnnualIncomeChange} value={thirdFormValues.annualIncome} label="Annual Income" classes1="block text-xl font-semibold lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[45%] lg:basis-[45%]" options={annualIncomeOptions}/>
            </div>
 
            <div className="w-full flex justify-around">
-             <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} />
-             <Button type="submit" label="Next" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" />
+             <Button label="Previous" classes="px-8 lg:px-16 py-2 rounded-xl bg-[var(--secondary)] text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} />
+             <Button type="submit" label="Next" classes="px-8 lg:px-16 py-2 rounded-xl bg-[var(--primary)] text-white" classes2="w-full flex justify-center py-4" />
           </div>
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>

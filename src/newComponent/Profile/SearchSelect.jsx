@@ -2,6 +2,7 @@ import React from 'react'
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import CreatableSelect from 'react-select/creatable';
+import './style.css';
 
 function SearchSelect(props) {
 

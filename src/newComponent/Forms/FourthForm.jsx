@@ -6,6 +6,7 @@ import Button from '../Profile/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPreferanceDetail } from '../../store/features/preferanceDetailSlice';
 import { axiosInstance } from '../../http';
+import { addToast } from '../../store/features/toastSlice';
 
 function FourthForm({fourthFormValues, setFourthFormValues, setCurrentFormCount, currentFromCount}) {
 
@@ -15,7 +16,10 @@ function FourthForm({fourthFormValues, setFourthFormValues, setCurrentFormCount,
 
   const handleSubmit = (event) => {
         event.preventDefault();
-
+       console.log(fourthFormValues);
+        if(!fourthFormValues.minAge || !fourthFormValues.maxAge || !fourthFormValues.minHeight || !fourthFormValues.maxHeight || !fourthFormValues.maritalStatus || !fourthFormValues.religion || !fourthFormValues.caste  ) {
+            return dispatch(addToast({ kind: 'ERROR', msg: 'Please insert all values'}))
+        }
           console.log(fourthFormValues);
          axiosInstance.post('/users/preferance-detail', fourthFormValues)
           .then((response) => {
@@ -300,43 +304,43 @@ const casteOptions = [
   setFourthFormValues({...fourthFormValues, sector: values.value});
  }
 
- const handleMotherTongueChange = (values) => {
-  setFourthFormValues({...fourthFormValues, motherTongue: values.value});
+ const handleMotherTongueChange = (e) => {
+  setFourthFormValues({...fourthFormValues, motherTongue: e.target.value});
  }
 
   return (
 
-    <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] bg-white  rounded-lg mx-auto">
+    <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] rounded-lg mx-auto">
       {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Some Personal details</h1> */}
       
         
-          <form className=" mx-auto" onSubmit={handleSubmit}>
-            <h1 className='text-2xl w-[90%] mx-auto mb-1 font-bold'>Partner Preferance detail </h1>
+          <form className=" mx-auto" onSubmit={(e) => handleSubmit(e)}>
+            <h1 className='text-xl lg:text-2xl w-[90%] mx-auto mb-1 font-bold'>Partner Preferance detail </h1>
 
             <div className='w-[90%] mx-auto flex flex-col justify-start items-center'>
-                <h1 className='w-full mx-auto mt-1 text-md lg:text-lg 2xl:text-xl'>Age Range</h1>
+                <h1 className='w-full mx-auto mt-1 text-xl font-semibold lg:text-lg 2xl:text-xl'>Age Range</h1>
 
                 <div className='flex w-[100%] justify-between mt-0'>
                  <InputSelect value={fourthFormValues.minAge} onChange={handleMinAgeChange} placeholder="From" classes2="xl:w-[45%] basis-[45%]" options={fromAgeOptions}  />
-                 <InputSelect value={fourthFormValues.maxAge} onChange={handleMaxAgeChange} placeholder="To"   classes2="xl:w-[45%] basis-[45%]" options={toAgeOptions} />    
+                 <InputSelect  value={fourthFormValues.maxAge} onChange={handleMaxAgeChange} placeholder="To"   classes2="xl:w-[45%] basis-[45%]" options={toAgeOptions} />    
                 </div>
             
             </div>
 
             <div className='w-[90%] mx-auto flex flex-col justify-start items-center'>
-                <h1 className='w-full mx-auto text-md lg:text-lg 2xl:text-xl mt-1'>Height Range</h1>
+                <h1 className='w-full mx-auto text-xl font-semibold lg:text-lg xl:text-xl mt-1'>Height Range</h1>
 
-                <div className='flex w-full justify-between'>
+                <div className='w-[100%] flex lg:w-full  justify-between'>
                  <InputSelect value={fourthFormValues.minHeight} onChange={handleMinHeightChange} placeholder="From" classes2="xl:w-[45%] basis-[45%] " options={fromheightOptions}  />
                  <InputSelect placeholder="To" value={fourthFormValues.maxHeight} onChange={handleMaxHeightChange}  classes2="xl:w-[45%] basis-[45%] " options={toheightOptions} />    
                 </div>
             
             </div>
 
-           <div className="w-full flex justify-around items-center">
+           <div className="w-[90%] mx-auto lg:w-full  flex flex-col lg:flex-row lg:justify-around items-center">
               {/* <Input label="No of family Members" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="number" placeholder="Family Member Number" /> */}
-               <InputSelect value={fourthFormValues.religion} onChange={handleReligionChange} label="Religion" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={religionOptions} />
-               <InputSelect value={fourthFormValues.caste} onChange={handleCasteChange} label="Caste" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={casteOptions} />
+               <InputSelect  value={fourthFormValues.religion} onChange={handleReligionChange} label="Religion" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={religionOptions} />
+               <InputSelect  value={fourthFormValues.caste} onChange={handleCasteChange} label="Caste" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={casteOptions} />
             </div>
 {/* 
 
@@ -349,35 +353,34 @@ const casteOptions = [
         
            {/* </div> */}
 
-           <div className="w-full flex justify-around items-center">
-                <InputSelect value={fourthFormValues.education} onChange={handleEducationalQualificationChange} label="Educational Qualification" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={educationQualificationOptions}  />
+           <div className="w-[90%] mx-auto lg:w-full flex lg:flex-row flex-col lg:justify-around items-center">
+                <InputSelect  value={fourthFormValues.education} onChange={handleEducationalQualificationChange} label="Educational Qualification" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={educationQualificationOptions}  />
              
-                 <InputSelect value={fourthFormValues.subject} onChange={handleSubjectChange} label="Subject" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={subjectOptions} />
+                 <InputSelect  value={fourthFormValues.subject} onChange={handleSubjectChange} label="Subject" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={subjectOptions} />
                 
            </div>
 
        
 
-           <div className="w-full flex justify-around items-center">
+           <div className="w-[90%] mx-auto lg:w-full flex lg:flex-row flex-col lg:justify-around items-center">
                {/* <Input label="Enter your Gotra" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
                {/* <Input label="Enter your gotra" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter your gotra (if applied)" />
                 <InputSelect label="Family Values" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-70%]" options={familyValueOptions}/>
                 <InputSelect label="Parent Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[70%]" options={parentStatusOptions}/>
                   */}
                  {/* <Input label="Where do your family live ?" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter your family location" /> */}
-                 <InputSelect value={fourthFormValues.sector} onChange={handleSectorChange} label="Sector working in" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={sectorOptions}/>
-                 <InputSelect value={fourthFormValues.annualIncome} onChange={handleAnnualIncomeChange} label="Annual Income" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={annualIncomeOptions}/>
+                 <InputSelect  value={fourthFormValues.sector} onChange={handleSectorChange} label="Sector working in" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={sectorOptions}/>
+                 <InputSelect  value={fourthFormValues.annualIncome} onChange={handleAnnualIncomeChange} label="Annual Income" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={annualIncomeOptions}/>
                </div>
 
-               <div className='w-[90%] mx-auto flex justify-start items-center'>
-                  <InputSelect value={fourthFormValues.maritalStatus} onChange={handleMaritalStatusChange} label="Marital Status" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={maritalStatusOptions} />
-                  <Input value={fourthFormValues.motherTongue} onChange={handleMotherTongueChange} label="Mother Tongue" classes3="w-[45%]" classes="px-2" classes2="block text-md lg:text-lg 2xl:text-xl" type="text" placeholder="Enter your mother tongue" />
-      
+               <div className='w-[90%] mx-auto lg:w-full flex lg:flex-row flex-col justify-around items-center'>
+                  <InputSelect  value={fourthFormValues.maritalStatus} onChange={handleMaritalStatusChange} label="Marital Status" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" options={maritalStatusOptions} />
+                  <Input  value={fourthFormValues.motherTongue} onChange={(e) => handleMotherTongueChange(e)} label="Mother Tongue" classes3="w-full lg:w-[40%] basis-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl lg:text-lg xl:text-xl" type="text" placeholder="Enter your mother tongue" />
                </div>
 
            <div className="w-full flex justify-around">
-             <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} />
-             <Button type="submit" label="Next" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" />
+             <Button label="Previous" classes="px-8 lg:px-16 py-2 bg-[var(--secondary)]  lg:py-3 rounded-xl text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} />
+             <Button type="submit" label="Next" classes="px-8  lg:px-16 py-2 lg:py-3 bg-[var(--primary)] rounded-xl text-white" classes2="w-full flex justify-center py-4" />
           </div>
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>

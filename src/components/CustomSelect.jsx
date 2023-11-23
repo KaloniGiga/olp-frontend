@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 
-const CustomSelect = ({ options, setValues, value }) => {
+const CustomSelect = ({ options, value, onChange }) => {
   const colorStyles = {
     control: (styles) => ({
       ...styles,
@@ -20,22 +20,16 @@ const CustomSelect = ({ options, setValues, value }) => {
     },
   };
 
-  const handleChange = (selectedValue) => {
-    setValues({ ...value, looking_for: selectedValue });
-    setValues({ ...value, agefrom: selectedValue });
-    setValues({ ...value, ageto: selectedValue });
-    setValues({ ...value, caste: selectedValue });
-  };
-
   return (
     <>
       <Select
         menuPlacement="top"
         options={options}
         defaultvalue={value}
-        onChange={handleChange}
+        onChange={onChange}
         styles={colorStyles}
-        className="select lg:w-[150px]"
+        value={value}
+        className="select w-[100%] lg:w-[150px]"
       />
     </>
   );

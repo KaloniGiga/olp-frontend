@@ -2,23 +2,50 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Input from '../Profile/Input';
 import InputSelect from '../Profile/Select';
-import Button from '../Profile/Button';
+import { useState } from 'react';
+import { BiEdit } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { addToast } from '../../store/features/toastSlice';
+import { setPreferanceDetail } from '../../store/features/preferanceDetailSlice';
+import { axiosInstance } from '../../http';
+import { ActionIcon, Button, Group, Paper, Select, Stack, Text, TextInput, Title, createStyles } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { useEffect } from 'react';
 
-function ProfileFourthForm({setCurrentFormCount, currentFromCount}) {
+const useStyles = createStyles((theme) => ({
+    formWrapper: {
+      backgroundColor: 'white'
+    },
+    button: {
+      backgroundColor: 'var(--seondary)'
+    }
+}))
+
+function ProfileFourthForm({fourthFormValues, setFourthFormValues, isMe}) {
+
+  const [profileEdit, setProfileEdit] = useState(false);
+  const dispatch = useDispatch();
+  const {classes} = useStyles();
+  const largeDesktop = useMediaQuery('(min-width: 1750px)')
+  const mediumDesktop = useMediaQuery('(max-width: 1440px)')
 
   const handleSubmit = (event) => {
         event.preventDefault();
-
-         axiosInstance.post('/users/personal-detail', values)
+        if(!fourthFormValues.minAge || !fourthFormValues.maxAge || !fourthFormValues.minHeight || !fourthFormValues.maxHeight || !fourthFormValues.maritalStatus || !fourthFormValues.religion || !fourthFormValues.caste  ) {
+            dispatch(addToast({ kind: 'ERROR', msg: 'Please insert all values'}))
+        }
+         axiosInstance.post('/users/preferance-detail', fourthFormValues)
           .then((response) => {
             console.log('updated successfully');
             console.log(response.data);
             dispatch(
-              setPersonalDetail(response.data)
+              setPreferanceDetail(response.data)
             )
-            navigate('/contactdetails')
+            // navigate('/contactdetails')
+            dispatch(addToast({kind: 'SUCCESS', msg: 'Preferance Detail updated!'}))
          }).catch((error) => {
            console.log(error);
+           dispatch(addToast({kind: 'ERROR', msg: 'Failed to update!'}))
          })
   };
 
@@ -114,54 +141,54 @@ function ProfileFourthForm({setCurrentFormCount, currentFromCount}) {
     { value: 'divorced', label: "Divorced"},
  ]
 
+
  const fromAgeOptions = [
-  {value: 22, label: 22},
-  {value: 23, label: 23}, 
-  {value: 24, label: 24},
-  {value: 25, label: 25},
-  {value: 26, label: 26},
-  {value: 27, label: 27},
-  {value: 28, label: 28},
-  {value: 29, label: 29},
-  {value: 30, label: 30},
-  {value: 31, label: 31},
-  {value: 32, label: 32},
-  {value: 33, label: 33},
-  {value: 34, label: 34},
-  {value: 35, label: 35},
-  {value: 36, label: 36},
-  {value: 37, label: 37},
-  {value: 38, label: 38},
-  {value: 39, label: 39},
-  {value: 40, label: 40},
-  {value: 41, label: 41},
-  {value: 42, label: 42},
+  {value: 22, label: '22'},
+  {value: 23, label: '23'}, 
+  {value: 24, label: '24'},
+  {value: 25, label: '25'},
+  {value: 26, label: '26'},
+  {value: 27, label: '27'},
+  {value: 28, label: '28'},
+  {value: 29, label: '29'},
+  {value: 30, label: '30'},
+  {value: 31, label: '31'},
+  {value: 32, label: '32'},
+  {value: 33, label: '33'},
+  {value: 34, label: '34'},
+  {value: 35, label: '35'},
+  {value: 36, label: '36'},
+  {value: 37, label: '37'},
+  {value: 38, label: '38'},
+  {value: 39, label: '39'},
+  {value: 40, label: '40'},
+  {value: 41, label: '41'},
+  {value: 42, label: '42'},
  ]
 
  const toAgeOptions = [
-  {value: 22, label: 22},
-  {value: 23, label: 23}, 
-  {value: 24, label: 24},
-  {value: 25, label: 25},
-  {value: 26, label: 26},
-  {value: 27, label: 27},
-  {value: 28, label: 28},
-  {value: 29, label: 29},
-  {value: 30, label: 30},
-  {value: 31, label: 31},
-  {value: 32, label: 32},
-  {value: 33, label: 33},
-  {value: 34, label: 34},
-  {value: 35, label: 35},
-  {value: 36, label: 36},
-  {value: 37, label: 37},
-  {value: 38, label: 38},
-  {value: 39, label: 39},
-  {value: 40, label: 40},
-  {value: 41, label: 41},
-  {value: 42, label: 42},
+  {value: 22, label: '22'},
+  {value: 23, label: '23'}, 
+  {value: 24, label: '24'},
+  {value: 25, label: '25'},
+  {value: 26, label: '26'},
+  {value: 27, label: '27'},
+  {value: 28, label: '28'},
+  {value: 29, label: '29'},
+  {value: 30, label: '30'},
+  {value: 31, label: '31'},
+  {value: 32, label: '32'},
+  {value: 33, label: '33'},
+  {value: 34, label: '34'},
+  {value: 35, label: '35'},
+  {value: 36, label: '36'},
+  {value: 37, label: '37'},
+  {value: 38, label: '38'},
+  {value: 39, label: '39'},
+  {value: 40, label: '40'},
+  {value: 41, label: '41'},
+  {value: 42, label: '42'},
  ]
-
 
  const annualIncomeOptions = [
   { value: "2L", label: "Upto 2L"},
@@ -178,7 +205,7 @@ function ProfileFourthForm({setCurrentFormCount, currentFromCount}) {
    {value: '20L-30L', label: '20L-30L'},
    {value: 'abover30L', label: 'Above 30L'},
 ]
-const subjectOptions = [
+const [subjectOptions, setSubjectOptions ] = useState([
   {value: "engineering", label: 'Engineering/'},
   {value: "medical", label: "Medical"},
    {value: "business", label: "Business"},
@@ -186,9 +213,9 @@ const subjectOptions = [
    {value: "socialScience", label: "Social Science"},
    {value: "commerce", label: "Commerce/Finance"},
    {value: "agriculture", label: "Agriculture"}
-]
+])
 
-const religionOptions = [
+const [religionOptions, setReligionOptions ]= useState([
   { value: 'hindu', label: 'Hinduism' },
   { value: 'buddhist', label: 'Buddhism' },
   { value: 'islam', label: 'Islam' },
@@ -198,18 +225,18 @@ const religionOptions = [
   { value: 'kirat', label: 'Kirat' },
   { value: 'no', label: 'Non-Religious'},
   {value: 'other', label: 'Other'},
-]
+])
 
-const educationQualificationOptions = [
+const [educationQualificationOptions, setEducationQualificationOptions ]= useState([
   {value: "undergraduate", label: "Undergraduate"},
   {value: "graduate", label: "Graduate"},
   {value: "doctarate", label: "P.h.d/Doctorate"},
   {value: "highSchool", label: "High School"},
   {value: "literate", label: "Literate"},
   {value: "illiterate", label: "Illiterate"}
-] 
+]) 
 
-const casteOptions = [
+const [casteOptions, setCasteOptions] = useState([
   {value: "brahmin", label: "Brahmin"},
   {value: "chhetri", label: "chhetri"},
   {value: 'thakuri', label: "Thakuri"},
@@ -217,7 +244,7 @@ const casteOptions = [
   {value: 'tamang', label: 'Tamang'},
   {value: 'sherpa', label: "Sherpa"},
   {value: "newar", label: "Newar"},
-]
+])
 
 
 
@@ -243,41 +270,142 @@ const casteOptions = [
     {value: "unEmployed", label: 'Unemployed'},
   ]
 
+  
+  const handleMinAgeChange = (values) => {
+     setFourthFormValues({...fourthFormValues, minAge: values.value})
+  }
+
+  const handleMaxAgeChange = (values) => {
+    setFourthFormValues({...fourthFormValues, maxAge: values.value})
+  }
+
+  const handleMinHeightChange = (values) => {
+    setFourthFormValues({...fourthFormValues, minHeight: values.value})
+  }
+
+  const handleMaxHeightChange = (values) => {
+    setFourthFormValues({...fourthFormValues, maxHeight: values.value})
+  }
+
+  const handleMaritalStatusChange = (values) => {
+    setFourthFormValues({...fourthFormValues, maritalStatus: values.value})
+  }
+  const handleReligionChange = (values) => {
+    setFourthFormValues({...fourthFormValues, religion: values.value})
+  }
+
+  const handleCasteChange = (values) => {
+    setFourthFormValues({...fourthFormValues, caste: values.value});
+  }
+
+  const handleEducationalQualificationChange = (values) => {
+    setFourthFormValues({...fourthFormValues, education: values.value});
+  }
+
+  const handleSubjectChange = (values) => {
+     setFourthFormValues({...fourthFormValues, subject: values.value})
+  }
+
+  const handleAnnualIncomeChange = (values) => {
+     setFourthFormValues({...fourthFormValues, annualIncome: values.value})
+ }
+
+ const handleSectorChange = (values) => {
+  setFourthFormValues({...fourthFormValues, sector: values.value});
+ }
+
+ const handleMotherTongueChange = (values) => {
+  setFourthFormValues({...fourthFormValues, motherTongue: values.value});
+ }
+
+    useEffect(() => {
+      const targetCaste = casteOptions.find((caste) => caste.value == fourthFormValues.caste);
+      console.log(targetCaste)
+      if(!targetCaste && fourthFormValues.caste) {
+         setCasteOptions([...casteOptions, {value: fourthFormValues.caste, label: fourthFormValues.caste}])
+      }
+  }, [fourthFormValues])
+  
+   useEffect(() => {
+      const targetReligion = religionOptions.find((religion) => religion.value == fourthFormValues.religion);
+      if(!targetReligion && fourthFormValues.religion) {
+         setReligionOptions([...religionOptions, {value: fourthFormValues.religion, label: fourthFormValues.religion}])
+      }
+  }, [fourthFormValues])
+
+    useEffect(() => {
+      const targetCaste = educationQualificationOptions.find((caste) => caste.value == fourthFormValues.education_degree);
+      console.log(targetCaste)
+      if(!targetCaste && fourthFormValues.education_degree) {
+         setEducationQualificationOptions([...casteOptions, {value: fourthFormValues.education_degree, label: fourthFormValues.education_degree}])
+      }
+  }, [fourthFormValues])
+  
+   useEffect(() => {
+      const targetSubject = subjectOptions.find((subject) => subject.value == fourthFormValues.subject);
+      if(!targetSubject && fourthFormValues.subject) {
+         setSubjectOptions([...subjectOptions, {value: fourthFormValues.subject, label: fourthFormValues.subject}])
+      }
+  }, [fourthFormValues])
+
+  // useEffect(() => {
+  //     const targetMotherTongue = motherTongueOptions.find((motherTongue) => motherTongue.value == fourthFormValues.motherTongue );
+  //     if(!targetMotherTongue && fourthFormValues.motherTongue) {
+  //       setMotherTongueOptions([...motherTongueOptions, {value: fourthFormValues.motherTongue, label: fourthFormValues.motherTongue}])
+  //     }
+  // }, [fourthFormValues])
+
 
   return (
 
-    <div className="md:mt-8 md:mb-8 px-2 py-4  w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%] bg-white rounded-lg mx-auto">
+    <div className="lg:mt-8 lg:mb-8 px-2 py-4 w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%] rounded-lg mx-auto">
       {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Some Personal details</h1> */}
       
-        
-          <form className=" mx-auto" onSubmit={handleSubmit}>
-            <h1 className='text-2xl w-[90%] mx-auto mb-1 font-bold'>Partner Preferance detail </h1>
+         <Paper className={classes.formWrapper} withBorder radius={2} py={30} px={30}>
+          <form className="mx-auto" onSubmit={handleSubmit}>
 
-            <div className='w-[90%] mx-auto flex flex-col justify-start items-center'>
-                <h1 className='w-full mx-auto mt-1 text-md lg:text-lg 2xl:text-xl'>Age Range</h1>
+            <Group position='apart' mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+             <Title order={largeDesktop ? 1 : (mediumDesktop ? 3 : 2)} >Preferance Detail</Title>
+             {isMe && <ActionIcon onClick={() => setProfileEdit((prev) => !prev)}><BiEdit size={30}  className={`${!profileEdit ? 'text-[var(--secondary)]' : 'text-[var(--primary)]'} hover:text-[var(--primary)] cursor-pointer`} /></ActionIcon>}
+             </Group>
 
-                <div className='flex w-[100%] justify-between mt-0'>
-                 <InputSelect placeholder="From" classes2="xl:w-[45%] basis-[45%]" options={fromAgeOptions}  />
-                 <InputSelect placeholder="To"   classes2="xl:w-[45%] basis-[45%]" options={toAgeOptions} />    
-                </div>
+            <Stack spacing={0}>
+            <Text size="sm">Age Range</Text>
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+                 <Select onChange={handleMinAgeChange} value={fourthFormValues.minAge} readOnly={profileEdit ? false : true} placeholder="From" classes2="xl:w-[45%] basis-[45%]" data={fromAgeOptions}  />
+                 <Select onChange={handleMaxAgeChange} value={fourthFormValues.maxAge} readOnly={profileEdit ? false : true} placeholder="To"   classes2="xl:w-[45%] basis-[45%]" data={toAgeOptions} />    
             
-            </div>
+            </Group>
+            </Stack>
 
-            <div className='w-[90%] mx-auto flex flex-col justify-start items-center'>
-                <h1 className='w-full mx-auto text-md lg:text-lg 2xl:text-xl mt-1'>Height Range</h1>
+            <Stack spacing={0}>
+                <Text size="sm">Height Range</Text>
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+                 <Select onChange={handleMinHeightChange} value={fourthFormValues.minHeight} readOnly={profileEdit ? false : true} placeholder="From" classes2="xl:w-[45%] basis-[45%] " data={fromheightOptions}  />
+                 <Select onChange={handleMaxHeightChange} value={fourthFormValues.maxHeight} readOnly={profileEdit ? false : true} placeholder="To"  classes2="xl:w-[45%] basis-[45%] " data={toheightOptions} />    
+           </Group> 
+            </Stack>
 
-                <div className='flex w-full justify-between'>
-                 <InputSelect placeholder="From" classes2="xl:w-[45%] basis-[45%] " options={fromheightOptions}  />
-                 <InputSelect placeholder="To"  classes2="xl:w-[45%] basis-[45%] " options={toheightOptions} />    
-                </div>
-            
-            </div>
 
-           <div className="w-full flex justify-around items-center">
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
               {/* <Input label="No of family Members" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="number" placeholder="Family Member Number" /> */}
-               <InputSelect label="Religion" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={religionOptions} />
-               <InputSelect label="Caste" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={casteOptions} />
-            </div>
+               <Select
+                onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setReligionOptions([...religionOptions, item])
+                             return item;
+                         }} 
+                 getCreateLabel={(query) => `+Create ${query}`}
+                value={fourthFormValues.religion} readOnly={profileEdit ? false : true} label="Religion" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={religionOptions} />
+               <Select
+                 onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setCasteOptions([...casteOptions, item])
+                             return item;
+                         }} 
+                 getCreateLabel={(query) => `+Create ${query}`}
+               value={fourthFormValues.caste} readOnly={profileEdit ? false : true} label="Caste" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={casteOptions} />
+             </Group>
 {/* 
 
             <div className="w-full flex justify-between flex-col items-center">
@@ -289,34 +417,50 @@ const casteOptions = [
         
            {/* </div> */}
 
-           <div className="w-full flex justify-around items-center">
-                <InputSelect label="Educational Qualification" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={educationQualificationOptions}  />
+
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+                <Select 
+                  onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setEducationQualificationOptions([...educationQualificationOptions, item])
+                             return item;
+                         }} 
+                 getCreateLabel={(query) => `+Create ${query}`}
+                onChange={handleEducationalQualificationChange} value={fourthFormValues.education} readOnly={profileEdit ? false : true} label="Educational Qualification" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={educationQualificationOptions}  />
              
-                 <InputSelect label="Subject" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={subjectOptions} />
-                
-           </div>
+                 <Select
+                   onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setSubjectOptions([...subjectOptions, item])
+                             return item;
+                         }} 
+                  getCreateLabel={(query) => `+Create ${query}`}
+                  onChange={handleSubjectChange} value={fourthFormValues.subject} readOnly={profileEdit ? false : true} label="Subject" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={subjectOptions} />
+               </Group> 
 
        
 
-           <div className="w-full flex justify-around items-center">
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
                {/* <Input label="Enter your Gotra" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
                {/* <Input label="Enter your gotra" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter your gotra (if applied)" />
                 <InputSelect label="Family Values" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-70%]" options={familyValueOptions}/>
                 <InputSelect label="Parent Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[70%]" options={parentStatusOptions}/>
                   */}
                  {/* <Input label="Where do your family live ?" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter your family location" /> */}
-                 <InputSelect label="Sector working in" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={sectorOptions}/>
-                 <InputSelect label="Annual Income" classes1="block text-md lg:text-lg 2xl:text-xl my-1" classes2="xl:w-[40%] basis-[40%]" options={annualIncomeOptions}/>
-               </div>
+                 <Select value={fourthFormValues.sector} onChange={handleSectorChange} readOnly={profileEdit ? false : true} label="Sector working in" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={sectorOptions}/>
+                 <Select value={fourthFormValues.annualIncome} onChange={handleAnnualIncomeChange} readOnly={profileEdit ? false : true} label="Annual Income" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={annualIncomeOptions}/>
+            </Group>
 
-               <div className='w-[90%] mx-auto flex justify-start items-center'>
-                  <Input label="Mother Tongue" classes3="w-[45%]" classes="px-2" classes2="block text-md lg:text-lg 2xl:text-xl" type="text" placeholder="Enter your mother tongue" />
-               </div>
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
 
-           <div className="w-[90%] mx-auto flex justify-end">
+                  <Select  value={fourthFormValues.maritalStatus} onChange={handleMaritalStatusChange} readOnly={profileEdit ? false : true} label="Marital Status" classes1="block text-md font-semibold  lg:text-lg xl:text-xl my-1" classes2="w-full lg:w-[40%] basis-[40%]" data={maritalStatusOptions} />
+                  {fourthFormValues.motherTongue && <TextInput value={fourthFormValues.motherTongue} onChange={handleMaritalStatusChange} disabled={profileEdit ? false : true} label="Mother Tongue" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl font-semibold" type="text" placeholder="Enter your mother tongue" />}
+             </Group> 
+
+             {profileEdit && ( <Group position='right'>
              {/* <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} /> */}
-             <Button onClick={() => handleNextClick()} label="Save" classes="px-8 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-end py-2" />
-          </div>
+             <Button className={classes.button} style={{backgroundColor: 'var(--secondary)'}} variant='filled' size='md' type="submit">Save</Button>
+          </Group>)}
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>
             <HiChevronDoubleLeft /> Prev
@@ -327,6 +471,7 @@ const casteOptions = [
           {/* </button> */}
               
           </form>
+       </Paper>
         </div>
   )
 }

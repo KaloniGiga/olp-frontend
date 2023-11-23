@@ -1,37 +1,36 @@
 import debounce from 'debounce-promise';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import { Accordion, AccordionItem, AccordionItemButton, AccordionItemHeading, AccordionItemPanel } from 'react-accessible-accordion';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { filterSearchUserThunk } from '../../store/thunk/searchUserThunk';
 import { axiosInstance } from '../../http';
 import { RiArrowDownSFill } from 'react-icons/ri';
 import '../../styles/Filter.css';
+import InputSelect from '../Profile/Select';
+import FilterSelect from '../Profile/FilterSelect';
+import { setFilteredResult, setLoading } from '../../store/features/searchUser';
+import { setFilteredRecommedUser } from '../../store/features/recommendSlice';
+import { FiCornerDownLeft } from 'react-icons/fi';
+import { BsFillArrowLeftSquareFill } from 'react-icons/bs';
+import { Select } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
-function NewFilter() {
-
+function NewFilter({ showFilter, setShowFilter }) {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const location = useLocation();
+    const [expandedItem, setExpandedItem] = useState(6);
+    const { result, filteredResult} = useSelector((state) => state.search);
+    const { recommendUser, filteredRecommendUser} = useSelector((state) => state.recommend)
+    const isMobile = useMediaQuery('max-width: 992px')
+    const [fetchFilterData, setFetchFilterData] = useState(false);
 
-    const [showFilter, setShowFilter] = useState(false);
-
-    const {loading} = useSelector((state) => state.search);
-
-    const [value, setValue] = useState({
-        minHeight: '',
-        maxHeight: '',
-        minAge: '',
-        maxAge: '',
-        maritalStatus: '',
-        annualIncome: '',
-        religion: '',
-        caste: '',
-    })
-
-    const filterOption = [
+    const [option, setOption] = useState(
+            [
             {
             key: '6',
             value: 'religion',
@@ -68,8 +67,8 @@ function NewFilter() {
            value: 'gender',
            label: 'Gender',
            options: [
-            {value: 'male', label: 'Male'},
-            {value: 'female', label: 'Female'},
+            {value: 'man', label: 'Male'},
+            {value: 'woman', label: 'Female'},
            ]
         },
                {
@@ -91,9 +90,21 @@ function NewFilter() {
                 }
             ]
         },
+   { 
+        key: '10',
+        value: 'sector',
+        label: 'Sector',
+        options: [
+    {value: 'private', label: 'Private Company'},
+    {value: 'government', label: 'Government'},
+    {value: 'ngo', label: "NGO's/INGO's"},
+    {value: 'selfEmployed', label: "Self Employed"},
+    {value: "unEmployed", label: 'Unemployed'},
+        ]
+    },
         {
             key: '1',
-            value: 'minHeight',
+            value: 'height',
             label: 'Height',
             options: [
       {value: '4ft 5in - 134cm', label: '4ft 5in - 134cm'},
@@ -155,30 +166,30 @@ function NewFilter() {
     //     },
                 {
             key: '3',
-            value: 'agege',
+            value: 'age',
             label: 'Age',
             options: [
-                {value: 22, label: 22},
-  {value: 23, label: 23}, 
-  {value: 24, label: 24},
-  {value: 25, label: 25},
-  {value: 26, label: 26},
-  {value: 27, label: 27},
-  {value: 28, label: 28},
-  {value: 29, label: 29},
-  {value: 30, label: 30},
-  {value: 31, label: 31},
-  {value: 32, label: 32},
-  {value: 33, label: 33},
-  {value: 34, label: 34},
-  {value: 35, label: 35},
-  {value: 36, label: 36},
-  {value: 37, label: 37},
-  {value: 38, label: 38},
-  {value: 39, label: 39},
-  {value: 40, label: 40},
-  {value: 41, label: 41},
-  {value: 42, label: 42},
+  {value: 22, label: '22'},
+  {value: 23, label: '23'}, 
+  {value: 24, label: '24'},
+  {value: 25, label: '25'},
+  {value: 26, label: '26'},
+  {value: 27, label: '27'},
+  {value: 28, label: '28'},
+  {value: 29, label: '29'},
+  {value: 30, label: '30'},
+  {value: 31, label: '31'},
+  {value: 32, label: '32'},
+  {value: 33, label: '33'},
+  {value: 34, label: '34'},
+  {value: 35, label: '35'},
+  {value: 36, label: '36'},
+  {value: 37, label: '37'},
+  {value: 38, label: '38'},
+  {value: 39, label: '39'},
+  {value: 40, label: '40'},
+  {value: 41, label: '41'},
+  {value: 42, label: '42'},
             ]
         },
     
@@ -203,88 +214,589 @@ function NewFilter() {
             ]
         },
     ]
+    );
+    
+    const [values, setValues] = useState({
+        minHeight: '',
+        maxHeight: '',
+        minAge: '',
+        maxAge: '',
+        maritalStatus: '',
+        annualIncome: '',
+        religion: '',
+        caste: '',
+        subcaste: '',
+        sector: '',
+        gender: ''
+    })
+
+    useEffect(() => {
+       if(fetchFilterData) {
+        fetchUser();
+       }
+    }, [values, setValues])
+
+
 
       const searchUser = async () => {
-         console.log('filter search user thunk');
-         console.log(value);
-        //  dispatch(filterSearchUserThunk(value.minAge, value.maxAge, value.minHeight, value.maxHeight, value.religion, value.caste, value.annualIncome));
-          axiosInstance.get(`/users/filter?minAge=${value.minAge}&&maxAge=${value.maxAge}&&minHeight=${value.minHeight}&&maxHeight=${value.maxHeight}&&maritalStatus=${value.maritalStatus}&&religion=${value.religion}&&caste=${value.caste}&&annualIncome=${value.annualIncome}`)
+        //  console.log('filter search user thunk');
+           console.log(values);
+           dispatch(setLoading(true));
+        //  dispatch(filterSearchUserThunk(values.minAge && values.minAge.value, values.maxAge && values.maxAge.value, values.minHeight && values.minHeight.value, values.maxHeight && values.maxHeight.value, values.religion && values.religion.value, values.caste && values.caste.value, values.annualIncome && values.annualIncome.value, values.sector && values.sector.value, values.gender && values.gender.value));
+          axiosInstance.get(`/users/filter?minAge=${values.minAge && values.minAge}&maxAge=${values.maxAge && values.maxAge}&minHeight=${values.minHeight && values.minHeight}&maxHeight=${values.maxHeight && values.maxHeight}&maritalStatus=${values.maritalStatus && values.maritalStatus}&religion=${values.religion && values.religion}&caste=${values.caste && values.caste}&annualIncome=${values.annualIncome && values.annualIncome}`)
           .then((res) => {
             console.log(res.data);
-          })
-      };
+           if(location.pathname == '/home/main/dashboard/search') {
+              console.log('setting search filter')
+              let filterSearchResult;
+            if(result.length > 0){
+                 filterSearchResult = result.filter((searchResult) => {
+                    console.log(values);
+                    console.log(result);
+                    console.log(searchResult)
+                   if(
+                    (values.religion && (searchResult.religion == values.religion.value))
+                    && (values.caste && (searchResult.caste == values.caste.value)) &&
+                    (values.annualIncome && (searchResult.annualIncome == values.annualIncome.value))
+                    && (values.maritalStatus && (searchResult.marital_status == values.maritalStatus.value))
+                    && (values.sector && (searchResult.sector === values.sector.value))
+                    && (values.minAge && (searchResult.year <= (new Date().getFullYear - values.minAge)))
+                    && (values.maxAge && (searchResult.year >= (new Date().getFullYear - values.maxAge -1)))
+                   ) {
+                       return searchResult;
+                   }
+                })
+            }
+
+            dispatch(setLoading(false));
+            if(filterSearchResult.length > 0){
+                 dispatch(setFilteredResult([...filterSearchResult, ...res.data]));
+            } else {
+            dispatch(setFilteredResult([...res.data]));
+            }
+        } else {
+              console.log('seconde')
+               let filterRecommendResult = [];
+            if(recommendUser.length > 0){
+                console.log('thirde')
+                 filterRecommendResult = recommendUser.filter((searchResult) => {
+                   if(
+                    (values.religion && (searchResult.religion == values.religion))
+                    && (values.caste && (searchResult.caste == values.caste)) &&
+                    (values.annualIncome && (searchResult.annualIncome == values.annualIncome))
+                    && (values.maritalStatus && (searchResult.marital_status == values.maritalStatus))
+                    && (values.sector && (searchResult.sector === values.sector))
+                    && (values.minAge && (searchResult.year <= (new Date().getFullYear - values)))
+                    && (values.maxAge && (searchResult.year >= (new Date().getFullYear - values.maxAge -1)))
+                   ) {
+                       return searchResult;
+                   }
+                })
+            }
+                console.log(filteredRecommendUser)
+
+            dispatch(setLoading(false));
+            if(filterRecommendResult.length > 0) {
+                console.log('setting filterRecommendResult');
+            dispatch(setFilteredRecommedUser([filterRecommendResult, ...res.data]));
+            } else {
+                console.log('filter', res.data)
+               dispatch(setFilteredRecommedUser([...res.data]));
+            }
+        }
+          }) 
+         
+      }
 
     const delayFetchUser = useCallback(debounce(searchUser, 500), []);
 
-    
+   const handleReligionChange = (value) => {
+       
+       setValues({...values, religion: value })
+       setFetchFilterData(true)
+   }
+   
+const handleCasteChange = (value) => {
+       setValues({...values, caste: value })
+      setFetchFilterData(true)
+   }
 
-    const handleChange = (e) => {
-        console.log(e.target.name, e.target.value)
-        setValue({
-            ...value,
-            [e.target.name]: e.target.value
-        })
+const handleMaritalStatusChange = (value) => {
+       setValues({...values, maritalStatus: value})
+       setFetchFilterData(true)
+   }
 
-       fetchUser();
-    }
+const handleSectorChange = (value) => {
+       setValues({...values, sector: value })
+       setFetchFilterData(true)
+   }
 
+const handleMinAgeChange = (value) => {
+       setValues({...values, minAge: value })
+       setFetchFilterData(true)
+   }
+
+const handleMaxAgeChange = (value) => {
+       setValues({...values, maxAge: value })
+       setFetchFilterData(true)
+   }
+
+const handleMinHeightChange = (value) => {
+       setValues({...values, minHeight: value })
+       setFetchFilterData(true)
+   }
+
+const handleMaxHeightChange = (value) => {
+       setValues({...values, maxHeight: value })
+       setFetchFilterData(true)
+   }
+
+   const handleGenderChange = (value) => {
+       setValues({...values, gender: value })
+       setFetchFilterData(true)
+   }
     const fetchUser = () => {
-        console.log(value)
+        
         searchUser()
         // delayFetchUser();
     }
 
-    console.log(value);
-
+    const setExpandedItems = (index) => {
+        console.log(index);
+         setExpandedItem(index == expandedItem ? 'null' : index);
+    }
   return (
-
-    <div className='filter z-20 mr-0 shadow-md'>
-      <div className='refine-text py-3 flex justify-between px-2 ' onClick={() => setShowFilter((prev) => !prev)}>
-        <h6>Refine your search</h6>
-        {/* <span className=''><RiArrowDownSFill size={25} /></span> */}
+  
+    <div>
+     <div className={`fixed lg:hidden top-0 left-0 z-30 w-[100vw] h-[100vh] ${showFilter ? 'block' : 'hidden'} bg-[rgba(0,0,0,0.2)]`} onClick={isMobile ? () => setShowFilter(false) : null}></div>
+    <div className={`filter z-50 shadow-md relative`}>
+      <div className='refine-text py-3 flex justify-between pl-6 pr-2' onClick={isMobile ? () => setShowFilter((prev) => !prev) : ''}>
+        <h6 className='text-[20px] py-3 text-[rgba(0,0,0,0.2)]'>Refine your search</h6>
+         {isMobile && <span className='cursor-pointer'><BsFillArrowLeftSquareFill color={'var(--secondary)'} size={25} /></span>}
       </div>
-    <div className='refine-body w-full h-[80vh] overflow-y-auto'>
-      <Accordion allowZeroExpanded allowMultipleExpanded className={`accordion ${showFilter ? 'block' : 'hidden'}  md:block`}>
-         {
-            filterOption && filterOption.map((option) => {
-                return (
-                    <AccordionItem className='accordionItem' uuid={option.key}>
+    <div className='refine-body w-full h-[83vh] overflow-y-auto'>
+         <Accordion preExpanded={['6']} allowZeroExpanded onChange={(index) => setExpandedItem(index[0])} className={`accordion ${showFilter ? 'block' : 'hidden'}  md:block`}>
+                    <AccordionItem className='accordionItem' uuid={option[0].key} >
                 <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
-                    <AccordionItemButton className="accordionItemButton hover:bg-screen rounded-xl w-full  border-[rgba(0, 0, 0)] font-bold text-sm text-[rgba(0, 0, 0, 0.6)]">
-                        {option.label}
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[0].key ? 'border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-lg text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[0].label}
                     </AccordionItemButton>
                 </AccordionItemHeading>
                     <AccordionItemPanel className='accordion-body'>
                         <div>
-                            {
-                                option.options && option.options.map((item, index) => {
-                                   return ( 
-                                   <div className='w-full' key={index}>
-                                       {/* <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        id="flexCheckDefault"
-                                        name={option.value}
-                                        value={item.value}
-                                        onChange={(e) => handleChange(e)}
-                                        /> */}
-                                         <h4 className='font-semibold py-2 px-3 rounded-xl hover:bg-screen '>
-                                             {item.label}
-                                        </h4>
-                                    </div>
-                                   )
-                                })
-                            }
+                         {(!(option[0].value == 'age') && !(option[0].value =='height')) ?   (<Select color='secondary'
+                          allowDeselect
+                          placeholder="Enter Religion"
+                          rightSection={<span></span>}
+                          searchable 
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 0) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[0].value} value={values.religion} classes1="" onChange={(e) => handleReligionChange(e)} classes2="xl:w-[100%] basis-[100%]"  data={option[0] && option[0].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                            <Select
+                           allowDeselect
+                          searchable 
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 0) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                                 name={option[0].value == 'age' ? 'minAge' : 'minHeight'} value={values} classes1="" onChange={(e) => handleReligionChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option[0] && option[0].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select 
+                                 searchable 
+                                 allowDeselect
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 0) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                                name={option[0].value == 'age' ? 'maxAge' : 'maxHeight'} value={values} classes1="" onChange={(e) => handleReligionChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option[0] && option[0].options}/>
+                            </div>
+                         )}
                         </div>
                     </AccordionItemPanel>
                  </AccordionItem>
-                )
-            })
-         }
+
+                 <AccordionItem className='accordionItem' uuid={option[1].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[1].key ? 'border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[1].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                     
+                         {(!(option[1].value == 'age') && !(option[1].value =='height')) ?   (<Select
+                         placeholder='Enter Caste'
+                          rightSection={<span></span>}
+                          allowDeselect
+                         searchable 
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 1) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[1].value} value={values.caste} classes1="" onChange={(e) => handleCasteChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option[1] && option[1].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select
+                                searchable 
+                                allowDeselect
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 1) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                                
+                                name={option[1].value == 'age' ? 'minAge' : 'minHeight'} value={values} classes1="" onChange={(e) => handleCasteChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option[1] && option[1].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select 
+                                 searchable 
+                                 allowDeselect
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 0) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                                name={option[1].value == 'age' ? 'maxAge' : 'maxHeight'} value={values} classes1="" onChange={(e) => handleCasteChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option[1] && option[1].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
+
+                 <AccordionItem className='accordionItem' uuid={option[2].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'> 
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[2].key ? 'border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[2].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                     
+                         {(!(option[2].value == 'age') && !(option[2].value =='height')) ?   (<Select
+                         placeholder='Enter Gender'
+                          rightSection={<span></span>}
+                         searchable 
+                         allowDeselect
+                        //   creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 2) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[2].value} value={values.gender} classes1="" onChange={(e) => handleGenderChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[2].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select
+                                allowDeselect
+                                 name={option[2].value == 'age' ? 'minAge' : 'minHeight'} value={values} classes1="" onChange={(e) => handleGenderChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[2].options}/>
+                                <span
+                                 allowDeselect
+                                 className='mx-2 '>to</span>
+                                <Select name={option[2].value == 'age' ? 'maxAge' : 'maxHeight'} value={values} classes1="" onChange={(e) => handleGenderChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[2].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
+
+                 <AccordionItem className='accordionItem' uuid={option[3].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2  border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[3].key ? 'border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[3].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                        
+                         {(!(option[3].value == 'age') && !(option[3].value =='height')) ?   (<Select
+                          placeholder='Select Marital Status'
+                          rightSection={<span></span>}
+                           searchable 
+                           allowDeselect
+                        //   creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 3) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[3].value} value={values.maritalStatus} classes1="" onChange={(e) => handleMaritalStatusChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[3].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select allowDeselect name={option[3].value == 'age' ? 'minAge' : 'minHeight'} value={values} classes1="" onChange={(e) => handleMaritalStatusChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[3].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select allowDeselect name={option[3].value == 'age' ? 'maxAge' : 'maxHeight'} value={values} classes1="" onChange={(e) => handleMaritalStatusChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[3].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
+                 
+                 <AccordionItem className='accordionItem' uuid={option[4].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[4].key ? 'border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[4].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                     
+                         {(!(option[4].value == 'age') && !(option[4].value =='height')) ?   (<Select
+                         placeholder='Select Sector'
+                          rightSection={<span></span>}
+                          allowDeselect
+                         searchable 
+                        //   creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 4) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[4].value} value={values.sector} classes1="" onChange={(e) => handleSectorChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[4].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select allowDeselect name={option[4].value == 'age' ? 'minAge' : 'minHeight'} value={values} classes1="" onChange={(e) => handleSectorChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[4].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select allowDeselect name={option[4].value == 'age' ? 'maxAge' : 'maxHeight'} value={values} classes1="" onChange={(e) => handleSectorChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[4].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
+
+                 <AccordionItem className='accordionItem'  uuid={option[5].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
+                    <AccordionItemButton className={`accordionItemButton border-l-4  rounded-tr-xl rounded-br-xl ${expandedItem == option[5].key ?  ' border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[5].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                     
+                         {(!(option[5].value == 'age') && !(option[5].value =='height')) ?   (<Select
+                          rightSection={<span></span>}
+                          allowDeselect
+                         searchable 
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 5) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[5].value} value={values} classes1="" onChange={(e) => handleChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[5].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select allowDeselect placeholder='From' rightSection={<span></span>} name={option[5].value == 'age' ? 'minAge' : 'minHeight'} value={values.minHeight} classes1="" onChange={(e) => handleMinHeightChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[5].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select allowDeselect placeholder='to'  rightSection={<span></span>} name={option[5].value == 'age' ? 'maxAge' : 'maxHeight'} value={values.maxHeight} classes1="" onChange={(e) => handleMaxHeightChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[5].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
+
+                 <AccordionItem className='accordionItem' uuid={option[6].key}>
+                <AccordionItemHeading className='accordionItemHeading border-b-2 border-[rgba(0 ,0, 0, 0.8)] rounded-none md:border-none'>
+                    <AccordionItemButton className={`accordionItemButton border-l-4 rounded-tr-xl rounded-br-xl ${expandedItem == option[6].key ? ' border-[var(--primary)]' : 'border-transparent'} hover:bg-screen w-full  border-[rgba(0, 0, 0)] font-semibold text-sm text-[rgba(0, 0, 0, 0.6)]`}>
+                        {option[6].label}
+                    </AccordionItemButton>
+                </AccordionItemHeading>
+                    <AccordionItemPanel className='accordion-body'>
+                        <div>
+                     
+                         {(!(option[6].value == 'age') && !(option[6].value =='height')) ?   (<Select
+                          rightSection={<span></span>}
+                          allowDeselect
+                          searchable 
+                          creatable 
+                          nothingFound='Sorry! nothing found'
+                           onCreate={(query) => {
+                             const item = { value: query, label: query};
+                              setOption((prev) => prev.map((opt, index) => {
+                                   if(index == 6) {
+                                     return {
+                                        ...opt,
+                                        options: [
+                                            ...opt.options,
+                                            item,
+                                       ]
+                                     }
+                                   } else {
+                                     return opt;
+                                   }
+                              }))
+                             return item;
+                         }} 
+                         getCreateLabel={(query) => `+Create ${query}`}
+                          name={option[6].value} value={values.minAge} classes1="" onChange={(e) => handleChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[6].options}/>
+                         ) : (
+                            <div className='flex items-center'>
+                                <Select allowDeselect placeholder='From'  rightSection={<span></span>} name={option[6].value == 'age' ? 'minAge' : 'minHeight'} value={values.minAge} classes1="" onChange={(e) => handleMinAgeChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[6].options}/>
+                                <span className='mx-2 '>to</span>
+                                <Select allowDeselect placeholder='to'  rightSection={<span></span>} name={option[6].value == 'age' ? 'maxAge' : 'maxHeight'} value={values.maxAge} classes1="" onChange={(e) => handleMaxAgeChange(e)} classes2="xl:w-[100%] basis-[100%]" data={option && option[6].options}/>
+                            </div>
+                         )}
+                        </div>
+                    </AccordionItemPanel>
+                 </AccordionItem>
          </Accordion>
          <div>
       </div>
       </div>
+
+    </div>
     </div>
   )
 }

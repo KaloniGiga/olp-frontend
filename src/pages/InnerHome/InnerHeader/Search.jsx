@@ -5,30 +5,38 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { fetchSearchUserThunk } from '../../../store/thunk/searchUserThunk';
 import { getSearchUser } from '../../../utils/api';
+import { Box, Group, TextInput } from '@mantine/core';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 function Search() {
     const [value, setValue] = useState('');
+    const [focused, setFocused] = useState('');
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      
+      if(!value){
+        return;
+      }
       dispatch(
-        fetchSearchUserThunk(value)
+        fetchSearchUserThunk({value, page:0, limit:20})
       )
-      navigate('/home/dashboard/search');
+      setValue('');
+      navigate(`/home/main/dashboard/search/${value}`);
       // console.log(value);
   }
-
+ 
   return (
-    <div className='flex w-full overflow-hidden justify-between bg-screen rounded-3xl items-center border-[2px] border-[rgba(0 ,0, 0, 0.6)]'>
-      <form className='flex w-full justify-between bg-screen items-center py-2 2xl:py-2 ' action="" onSubmit={(e) => handleSubmit(e)}>
-        <input className='w-full bg-transparent outline-none border-none px-2 text-sm 2xl:text-md' onChange={(e) => setValue(e.target.value)} placeholder='Search by name' />
-           <button type='submit' className='h-full px-2  border-l-[2px] border-[rgba(0, 0, 0, 0.6)]'><BsSearchHeart size={20} color='var(--primary)'/></button>
-        </form>
-    </div>
+    
+      <form action="" onSubmit={(e) => handleSubmit(e)}>
+         <Group grow>
+         <TextInput color='red' radius={40} icon={<AiOutlineSearch size={20} />} onChange={(e) => setValue(e.target.value)} placeholder='Search by name' />
+           {/* <button type='submit' className='h-full px-2  border-l-[2px] border-[rgba(0, 0, 0, 0.6)]'><BsSearchHeart size={20} color='var(--primary)'/></button> */}
+         </Group>
+       </form>
+    
   )
 }
 

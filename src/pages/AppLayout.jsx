@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchConnectionRequestThunk } from '../store/thunk/connectionsThunk';
 import Peer from 'peerjs';
 import { setCall, setLocalStream, setPeer, setPeerId, setRemoteStream } from '../store/features/callSlice';
-import { removeConnectionRequest } from '../store/features/connectionSlice';
+import { addConnection, removeConnectionRequest } from '../store/features/connectionSlice';
 import { useVoiceCallRejected } from '../hooks/useVoiceCallRejected';
 import { useVoiceCallHangUp } from '../hooks/useVoiceCallHangUp';
 import { useVoiceCallAccept } from '../hooks/useVoiceCallAccept';
@@ -17,6 +17,10 @@ import { useVideoCall } from '../hooks/useVideoCall';
 import { useVideoCallRejected } from '../hooks/useVideoCallRejected';
 import { useConnectionRequestReceived } from '../hooks/useConnectionRequestReceived';
 import CallReceiveDialog from '../newComponent/Call/CallReceiveDialog';
+import { useUserUnavailable } from '../hooks/useUserUnavailable';
+import { addToast } from '../store/features/toastSlice';
+import { addNotification, increaseNotification } from '../store/features/notificationSlice';
+import { fetchUnreadNotificationThunk } from '../store/thunk/notificationThunk';
 
 function AppLayout({children}) {
 
@@ -30,6 +34,12 @@ function AppLayout({children}) {
         dispatch(fetchConnectionRequestThunk())
     }, [dispatch])
     
+    useEffect(() => {
+      if(user) {
+        console.log(user[0].lastReadNotification);
+      dispatch(fetchUnreadNotificationThunk(user[0].lastReadNotification));
+      }
+    }, [user])
 
     useEffect(() => {
       if(!user) return;
@@ -55,13 +65,17 @@ function AppLayout({children}) {
 
        socket.on('onConnectionRequestAccepted', (payload) => {
            console.log('onConnectionRequestAccepted');
+           if(payload.connectionRequest.sender.id == user[0].id) {
            dispatch(removeConnectionRequest(payload.connectionRequest));
-           
-           socket.emit('getOnlineConnections');
+           }
 
-           dispatch(
-            addToast({kind: 'INFO', msg: `${payload.connectionRequest.receiver.username} accepted your connection request`})
-           )
+           dispatch(addConnection(payload.connection));
+           socket.emit('getConnectionOnline');
+          //  if(payload.connectionRequest.sender.id == user[0].id) {
+          //  dispatch(
+          //   addToast({kind: 'INFO', msg: `${payload.connectionRequest.receiver.username} accepted your connection request`})
+          //  )
+          //  }
        });
 
        socket.on('onConnectionRequestRejected', (payload) => {
@@ -69,10 +83,17 @@ function AppLayout({children}) {
          dispatch(removeConnectionRequest(payload));
        });
 
+       socket.on('onNotificationReceived', (payload) => {
+         console.log('NotificationReceived');
+         dispatch(addNotification(payload))
+         dispatch(increaseNotification());
+       })
+
        return () => {
         socket.off('onConnectionRequestCancelled');
         socket.off('onConnectionRequestAccepted');
         socket.off('onConnectionRequestRejected');
+        socket.off('onNotificationReceived');
        }
     }, [socket, isReceivingCall]);
 
@@ -115,11 +136,12 @@ function AppLayout({children}) {
     useVideoCallAccept();
     useVideoCallRejected();
     useVideoCallHangUp();
-
+    
     useVoiceCall();
     useVoiceCallAccept();
     useVoiceCallHangUp();
     useVoiceCallRejected();
+    useUserUnavailable();
 
     useEffect(() => {
       if(connection) {
@@ -152,7 +174,7 @@ function AppLayout({children}) {
 
   return (
 
-    <div>
+    <div className=''>
       {isReceivingCall && caller && <CallReceiveDialog />}
        {children}
       

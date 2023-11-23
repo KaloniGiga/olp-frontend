@@ -9,6 +9,8 @@ import { setPersonalDetail } from "../store/features/personalDetailSlice";
 import { setFamilyDetail } from "../store/features/familyDetailSlice";
 import { setEducationDetail } from "../store/features/educationDetailSlice";
 import { setPreferanceDetail } from "../store/features/preferanceDetailSlice";
+import GoogleAuthButton from "./GoogleSignInButton";
+import { TfiArrowCircleLeft } from 'react-icons/tfi';
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -72,36 +74,10 @@ const Signup = () => {
         dispatch(
           addToast({kind: "SUCCESS", msg: `${isAnimated ? 'Account created successfully' : 'Logged In successfully'}`})
         )
-
-       //add user details in store
-        // dispatch(
-        //   setCurrentUser(user)
-        // )
-
-        //add personalDetail in store
-        // dispatch(
-        //   setPersonalDetail(user.profile && user.profile)
-        // )
-
-        //add familyDetail in store
-        //  dispatch(
-        //   setFamilyDetail(user.family && user.family)
-        //  )
-
-         //add educationDetail to store
-
-        // dispatch(
-        //   setEducationDetail(user.education && user.education)
-        // )
-
-         //add preferanceDetail to store
-
-        //  dispatch(
-        //   setPreferanceDetail(user.preferance && user.preferance)
-        //  )
-
         //check if  the user has setup profile, family and others
-        if(user && !user.profile) {
+        if(user && !user.emailVerified) {
+          navigate('/resend/email');
+        }else if(user && !user.profile) {
           navigate('/profile/info')
         }else if(user && !user.family) {
           navigate('/profile/info');
@@ -143,14 +119,16 @@ const Signup = () => {
     <>
       <div className="signup-page py-5 bg-screen">
         <div className="container">
-          <div className="login-signup">
+          <div className="login-signup shadow-lg flex-col-reverse lg:flex-row">
             <div className={`login ${isAnimated ? "animated" : "notanimated"}`}>
               <div className="login-text">
+                {/* <span><TfiArrowCircleLeft /></span> */}
                 <form className="form_feild" onSubmit={(e) => handleSubmit(e)}>
                   <h2>{isAnimated ? "Create Account" : "Sign in"} </h2>
-                  <div className="form-icon d-flex justify-content-center gap-3">
+                  <div className="form-icon d-flex justify-center gap-3">
                     <i className="bi bi-facebook"></i>
-                    <i className="bi bi-google"></i>
+                   <i className="bi bi-google"></i>
+                    {/* <GoogleAuthButton /> */}
                     <i className="bi bi-linkedin"></i>
                   </div>
                   <p>
@@ -160,6 +138,7 @@ const Signup = () => {
                       : "or use your email account"}
                   </p>
                   {isVisible && (
+                  
                     <input
                       placeholder="UserName....."
                       className="input_field px-3 py-1"
@@ -167,7 +146,9 @@ const Signup = () => {
                       value={username}
                       onChange={handleUsernameChange}
                     />
+                   
                   )}
+                  <br />
                   <input
                     placeholder="Email....."
                     className="input_field px-3 py-1"
@@ -184,21 +165,25 @@ const Signup = () => {
                     onChange={handlePasswordChange}
                   />
                   <br />
-                  {!isVisible && (
-                    <p className="form-forget mt-2">
-                      <Link className="text-decoration-none">
-                        Forgot your Password?
-                      </Link>
-                    </p>
-                  )}
-                <button className="form_btn" type="submit">
+                    {!isVisible && (
+                      <p className="form-forget mt-2">
+                        <Link className="text-decoration-none" to={'/password/forget'}>
+                          Forgot your Password?
+                        </Link>
+                      </p>
+                    )}
+                <button className="form_btn bg-[var(--primary)]" type="submit">
                     {isAnimated ? "SignUp" : "Login"}
                   </button>
                 </form>
+                <div className="flex justify-center items-center mt-2 cursor-pointer" onClick={() => navigate('/')}>
+                  <span><TfiArrowCircleLeft size={20} color="var(--primary)" /></span>
+                  <span className="ml-2 font-semibold text-lg underline text-[var(--secondary)]">Go Back</span>
+                </div>
               </div>
             </div>
             <div
-              className={`signup ${isAnimated ? "animated" : "notanimated"}`}
+              className={`hidden lg:flex signup ${isAnimated ? "animated" : "notanimated"}`}
             >
               <div className="signup-text">
                 <h2> {isAnimated ? "Welcome Back!" : "Hello, Friend"}</h2>

@@ -18,6 +18,10 @@ import { AuthContext } from '../../utils/context/AuthContext';
 import { updateSelectedConversation } from '../../store/features/selectedConversationSlice';
 import { MdAddIcCall } from 'react-icons/md';
 import { FiPhoneCall } from 'react-icons/fi';
+import { useMediaQuery } from 'react-responsive';
+import { Select, Title } from '@mantine/core';
+import { AiOutlineSearch } from 'react-icons/ai';
+import classNames from 'classnames';
 
 function ChatSidebar() {
     const dispatch = useDispatch();
@@ -27,6 +31,7 @@ function ChatSidebar() {
     const [showCall, setShowCall] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [conver, setConver] = useState([]);
+    const isDesktop = useMediaQuery({query: '(max-width: 992px)'});
     // useEffect(() => {
     //     dispatch(fetchConversationsThunk());
     // }, [dispatch])
@@ -35,17 +40,17 @@ function ChatSidebar() {
   
     
   
-
+   console.log(conversations);
     const searchConv = async (value) => {
       if(value) {
         const response = await axiosInstance.get(`/users/search/conversation?username=${value}`)
         console.log(response.data)
         return response.data.filter((search) => search.id !== user[0].id).map((search) => { 
-          return {value: search.id, label: search.username}
+          return {value: search.id, label: search.profile.fullname, avatarId: search.avatarId, username: search.profile.fullname, id: search.id}
         })
       }
     }
-    const delayfetchConversation = useCallback(debounce(searchConv, 5000), []);
+    const delayfetchConversation = useCallback(debounce(searchConv, 3000), []);
 
     const fetchConversation = (value) => {
         return delayfetchConversation(value);
@@ -58,7 +63,6 @@ function ChatSidebar() {
               return conv;
             }
         })
-
         return targetConversation;
     }
 
@@ -68,17 +72,23 @@ function ChatSidebar() {
        console.log('we are here');
 
        const targetConversation = getConversationByUserId(value.value);
+       console.log(value);
+       console.log(targetConversation);
+
        if(targetConversation) {
+        console.log('targetConversation is true');
           dispatch(
             updateSelectedConversation({conversation: targetConversation, type: 'conversation'})
           )
-          navigate(`/home/chat/conversation/${targetConversation.id}`)
+          navigate(`/home/main/chat/conversation/${targetConversation.id}`)
        }else {
+         console.log('auto here.');
+
          dispatch(
           updateSelectedConversation({conversation: value, type: 'createConversation'})
          )
 
-          setConver([value, ...conversations]);
+          // setConver([value, ...conversations]);
        }
     }
 
@@ -87,52 +97,68 @@ function ChatSidebar() {
     })
 
     useEffect(() => {
-        if(conversations) {
-          setConver(conversations)
+        if(type == "createConversation" && conversations) {
+          setConver([{...selectedConversation, type: 'createConversation' }, ...conversations])
+        }else {
+          setConver([...conversations]);
+          !isDesktop  && conversations.length > 0 &&  navigate(`/home/main/chat/conversation/${conversations[0].id}`)
         }
-    }, [conversations]);
+    }, [selectedConversation, conversations]);
 
     console.log(selectedConversation, type);
 
   return (
-          <div className='w-full md:basis-1/3 rounded-xl md:rounded-tr-none md:rounded-br-none bg-white py-2 border-r-2 border-[rgba(0 , 0, 0, 0.8)] lg:fixed lg:h-[90vh] lg:w-[30vw] lg:bottom-0 lg:left-0'> 
+          <div className='w-full min-h-[90vh] lg:basis-1/3 my-2 lg:rounded-tr-none lg:rounded-br-none bg-white pb-2 lg:border-r-[1px] lg:border-[rgba(0,0,0,0.2)] lg:fixed lg:h-[90vh] lg:w-[30vw] lg:bottom-0 lg:left-0'> 
              <div className="chat-friend-list h-full overflow-hidden ">
                <div className='w-full flex  flex-col justify-around relative'>
-                <div className='w-full flex justify-around '>
+                <div className='w-[90%] mx-auto flex justify-center '>
                   
-                  <div className='flex items-center justify-center hover:bg-screen px-3 py-2 rounded-xl'>
-                    <span className='mr-2'><BsChatDots size={20} color={!showCall && 'var(--primary)'} /></span>
-                  <span className={ !showCall ? 'font-bold xl:text-xl text-[var(--primary)]' : 'font-bold xl:text-xl'} onClick={() => setShowCall(false)}>Chat</span> 
-                  </div>
+                  {/* <div className='flex items-center justify-center hover:bg-screen px-1 py-2 rounded-md'> */}
+                    {/* <span className='mr-2'><BsChatDots size={20} color={!showCall && 'var(--primary)'} /></span> */}
+                     <Title order={1} fw={'700'} size={'h3'} >Chats</Title> 
+                  {/* </div> */}
 
-                 <div className='flex items-center justify-center hover:bg-screen px-3 py-2 rounded-xl'>
+                 {/* <div className='flex items-center justify-center hover:bg-screen px-3 py-2 rounded-xl'>
                    <span className='mr-2'><FiPhoneCall size={20} color={showCall && 'var(--primary)'} /></span>
                    <span  className={ showCall ? 'font-bold xl:text-xl text-[var(--primary)]' : 'font-bold xl:text-xl'} onClick={() => setShowCall(true)}>Call</span>
-                 </div>
+                 </div> */}
 
                  </div>
-                  <div className='xl:px-2 xl:py-2 my-2 mx-2'>
+                  <div className=' xl:py-1 my-1  z-20 w-[90%] mx-auto'>
                     <AsyncSelect
-                   placeholder="Search..."
+                   placeholder="Search Conversation"
                    onChange={handleChange} 
                    loadOptions={fetchConversation}
                    id="aysnc-select"
                    name="async-select"
                    value={searchValue}
+                   classNamePrefix={classNames({ 'react-select': true })}
                    components={{Option: OptionComponent}}
-     
-                    styles={{
-           control: (baseStyles, state) => ({
+                   styles={{
+           menuItemSelected: (provided, state) => ({
+             ...provided,
+             backgroundColor: 'var(--secondary)',
+          }),
+              control: (baseStyles, state) => ({
             ...baseStyles,
             // border: 'none',
-               backgroundColor: 'var(--screen)',
-              padding: '2px 5px',
+               
+              padding: '0px 4px',
               borderRadius: '20px',
               zIndex: '9999',
-            })}}
-                    />
+             
+                '& .react-select__indicator': {
+                  display: 'none',
+               },
+               '& .react-select__indicator-separator': {
+                 display: 'none',
+               }, 
 
-      
+               })
+              }}
+               />
+
+                {/* <Select creatable searchable icon={<AiOutlineSearch size={20} />} data={[]}  placeholder='Search ...'/>  */}
                  </div>
                 </div>
                 <div>
@@ -146,7 +172,7 @@ function ChatSidebar() {
                   </button> */}
                 </form>
                 </div>
-                <div className="chat-sidebar w-full px-2">
+                <div className="chat-sidebar lg:w-full px-2 md:w-[90%] mx-auto">
                  {
                   !showCall ? (
                      <ConversationBox conversations={conver} />

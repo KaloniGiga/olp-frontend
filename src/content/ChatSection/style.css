@@ -14,3 +14,17 @@
 .chat-sidebar::-webkit-scrollbar-thumb:hover {
   background: #555555c2;
 }
+
+.receiverAudio {
+  background-image: url('../../images/olp_avatar.avif');
+  background-size: cover;
+  background-color: center;
+  background-repeat: no-repeat;
+}
+
+.callerAudio {
+  background-image: url('../../images/olp_avatar.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

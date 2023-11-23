@@ -5,22 +5,29 @@ import { useParams } from 'react-router-dom'
 import { SocketContext } from '../../utils/context/SocketContext';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { fetchMessagesThunk } from '../../store/thunk/messagesThunk';
+import { fetchMessageAfterSeeMore, fetchMessagesThunk } from '../../store/thunk/messagesThunk';
 import { createMessage, editMessage } from '../../utils/api';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { createConversationThunk, selectConversationById } from '../../store/features/conversationSlice';
 import { RiSendPlaneFill } from "react-icons/ri";
 import { BsEmojiSmile } from "react-icons/bs";
 import { CiImageOn } from "react-icons/ci";
-import { IoIosCall, IoIosVideocam } from "react-icons/io";
+import { IoIosCall, IoIosSend, IoIosVideocam, IoMdSend } from "react-icons/io";
 import { selectConversationMessage } from '../../store/features/messageSlice';
 import Message from './Message';
-import { initiateCallState } from '../../store/features/callSlice';
+import { initiateCallState, resetState } from '../../store/features/callSlice';
 import ConversationVideoCall from './ConversationVideoCall';
 import ConversationAudioCall from './ConversationAudioCall';
 import profileAvatar from '../../images/olp_avatar.avif';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { useMediaQuery } from 'react-responsive';
+import noData from '../../images/noDataFound.png';
+import { resetSelectedConversation, updateSelectedConversation } from '../../store/features/selectedConversationSlice';
+import { addToast } from '../../store/features/toastSlice';
+import { Group, TextInput, Tooltip } from '@mantine/core';
+import { AiOutlineSend } from 'react-icons/ai';
+import { formatRelative } from 'date-fns';
 
 function ChatPanel() {
 
@@ -35,6 +42,8 @@ function ChatPanel() {
    const [content, setContent] = useState("");
    const [attachments, setAttachments] = useState([]);
    const ref = useRef(null);
+   const emojiRef = useRef(null);
+   const emojiContainRef = useRef(null);
    const fileRef = useRef(null);
    const [timer, setTimer] = useState(null);
    const [showContent, setShowContent] = useState(false);
@@ -47,11 +56,13 @@ function ChatPanel() {
    const showCallPanel = isCallInProgress || isCalling;
    
    const {selectedConversation, type} = useSelector((state) => state.selectedConversation);
-
+   const [page, setPage] = useState(0);
+   const [limit, setLimit] = useState(30);
+   const [initial, setInitial] = useState(true);
    const isRouteActive = activeConversationId == id
+   const isTablet = useMediaQuery({query: '(max-width: 992px)'})
 
   // console.log(showCallPanel, isRouteActive);
-
   // const handleButtonClick = () => {
   //   setShowContent(!showContent);
   // };
@@ -60,6 +71,20 @@ function ChatPanel() {
     console.log(emoji)
     setContent(content + emoji.native);
   };
+
+  const handleClickOutSide = (e) => {
+     if((emojiRef.current && !emojiRef.current.contains(e.target)) && (emojiContainRef.current && !emojiContainRef.current.contains(e.target))) {
+        setShowEmoji(false);
+     }
+  }
+
+  useEffect(() => {
+    window.addEventListener('click', handleClickOutSide)
+
+    return () => {
+      window.removeEventListener('click', handleClickOutSide);
+    }
+  }, [])
 
   const handleShowEmoji = () => {
     setShowEmoji((prev) => !prev)
@@ -74,9 +99,9 @@ function ChatPanel() {
   //    })
   //   }
   // }, [])
-
+  console.log(conversation);
    useEffect(() => {
-    console.log(conversation && conversation.creator)
+    // console.log(conversation && conversation.creator)
     setRecepient(conversation && user[0].id == conversation.creator.id
        ? conversation && conversation.recepient
        : conversation && conversation.creator
@@ -84,28 +109,47 @@ function ChatPanel() {
    }, [conversation])
 
    useEffect(() => {
-    if(!(type == 'createConversation')) {
-     dispatch(fetchMessagesThunk(id))
+    if(!(type == 'createConversation') && id && initial) {
+      dispatch(fetchMessagesThunk({id, page, limit}))
     }
    }, [id])
 
-    const conversationMessages = useSelector((state) => selectConversationMessage(state, id));
+   useEffect(() => {
+     if(!(type == 'createConversation') && id && !initial) {
+       dispatch(fetchMessageAfterSeeMore({id, page, limit}))
+     }
+   }, [page])
+   const handleLoadMore = () => {
+     
+      if(!(type == 'createConversation') && id) {
+        setInitial(false);
+        setPage((prev) => prev + 1);
+        // dispatch(fetchMessagesThunk({id, page + 1, limit}))
+      }
+   }
+
+    const conversationMessages =  useSelector((state) => selectConversationMessage(state, id));
+    console.log(conversationMessages)
 
     const sendTypingStatus = () => {
-     if(isTyping) {
+      console.log('sending typing status')
+      socket.emit('message')
+     if(isTyping && !(type == 'createConversation')) {
        clearTimeout(timer);
        setTimer(
          setTimeout(() => {
            console.log('user stopped typing');
-           socket.emit('onTypingStop', {conversationId: id})
+           socket.emit('onTypingStop', {conversationId: id, recepientId: recepient.id})
            setIsTyping(false);
          }, 2000)
        )
-     } else {
+     } else if(!(type == 'createConversation')) {
         setIsTyping(true);
-        socket.emit('onTypingStart', {conversationId: id})
+        console.log('sending typing start')
+        socket.emit('onTypingStart', {conversationId: id, recepientId: recepient.id})
      }
    }
+
    useEffect(() => {
       // socket.emit('onConversationJoin', { conversationId: id });
       // socket.on('userJoin', () => {
@@ -129,6 +173,11 @@ function ChatPanel() {
       socket.on('onMessageUpdate', (message) => {
         console.log('onMessageUpdate');
         dispatch(editMessage(message));
+      })
+
+      socket.on('onUserUnavailable', () => {
+        console.log('onUserUnavailable');
+        dispatch(resetState());
       })
 
       return () => {
@@ -158,7 +207,10 @@ function ChatPanel() {
     });
 
         try {
-       dispatch(createConversationThunk(formData))
+        dispatch(resetSelectedConversation())
+        dispatch(createConversationThunk(formData))
+      
+       
         setContent('');
         setAttachments([]);
     } catch (err) {
@@ -178,11 +230,12 @@ function ChatPanel() {
     });
 
     try {
-        console.log(formData);
+        // console.log(formData);
         await createMessage(id, formData);
         setContent('');
         setAttachments([]);
     } catch (err) {
+       dispatch(addToast({kind: 'ERROR', msg: 'No longer connected'}))
        console.log(err);
     }
    };
@@ -205,7 +258,7 @@ function ChatPanel() {
      if(e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
-        if(ref.current) ref.current.style.height = '21px'
+        // if(ref.current) ref.current.style.height = '21px'
      }
    };
 
@@ -217,6 +270,7 @@ function ChatPanel() {
           if(i === maxFilesDropped) break;
           setAttachments([...attachments, filesArray[i]]);
        }
+
    }
 
    const onDrop = (e) => {
@@ -271,12 +325,12 @@ function ChatPanel() {
       if(!recepient) return console.log('recepient is not defined');
       socket.emit('onVideoCallInitiate', {
         conversationId: conversation.id,
-        recepientId: recepient.id
+        recepientId: recepient.id,
       })
 
       const constraints = { video: true, audio: true }
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            console.log(stream);
+            // console.log(stream);
            const payload = conversation && {
           localStream: stream,
           caller: user[0],
@@ -289,38 +343,66 @@ function ChatPanel() {
         dispatch(initiateCallState(payload))
       }).catch((error) => {
         console.log(error);
-      });
-    
+      }); 
    }
+
+   const [isOnline, setIsOnline] = useState(false);
+   const {onlineConnections} = useSelector((state) => state.connection);
+
+   useEffect(() => {
+     console.log(recepient, 'online connecitons');
+      if(onlineConnections && recepient) {
+     
+        const isAvailable = onlineConnections.find((conn) =>  conn.sender.id == recepient.id || conn.receiver.id == recepient.id);
+        if(isAvailable) {
+          setIsOnline(true);
+        }
+      }
+   }, [onlineConnections, recepient])
+
+   const prevMessageDate = useRef(null);
+
+  console.log(recepient);
+
   return (
         <>
        {id || type == "createConversation" ? (
-            <div className='w-[70%] ml-auto min-h-[90vh] md:h-full rounded-xl overflow-hidden relative md:rounded-tl-none md:rounded-bl-none'>
-              <div className="w-full h-full">
-                <div className="flex justify-between items-center border-b-[1px] border-[rgba(0, 0, 0, 0.7)]">
-                  <div className="px-2 flex items-center justify-center basis-1/3">
-                    <div className='relative w-[50px] h-[50px] md:w-[70px] md:h-[70px]  rounded-[50%] '>
+            <div className='w-full lg:w-[70%] ml-auto h-[85vh] 2xl:h-[90vh] md:h-full rounded-xl overflow-hidden relative md:rounded-tl-none md:rounded-bl-none bg-white  '>
+              <div className="w-full h-[90vh] flex flex-col justify-between items-center ">
+                <div className="w-full lg:h-[11%] 2xl:h-[12%] border-b-[1px] border-[rgba(0,0,0,0.2)] flex justify-between lg:pr-4 m-0 py-2 items-center bg-white">
+                  <div className=" flex items-center justify-start basis-1/4 pl-4">
+                    <div className='relative  w-[30px] h-[30px] md:w-[40px] md:h-[40px] lg:w-[50px] lg:h-[50px] xl:w-[55px] xl:h-[55px] 2xl:w-[65px] 2xl:h-[65px]  rounded-[50%] '>
                     <img
                       className='w-full h-full object-cover object-center rounded-[50%]'
-                      src={profileAvatar}
+                      src={type == 'createConversation' ? (selectedConversation && `${import.meta.env.VITE_BASE_URL}/user-avatar/${selectedConversation.avatarId}`) : (recepient && `${import.meta.env.VITE_BASE_URL}/user-avatar/${recepient.avatarId}`)}
                       alt="chat-profile"
                     />
                     </div>
                     <div className="">
-                      <h5 className='font-semibold text-xl px-2 pt-2 pb-0'>
-                         {type === 'createConversation' ? selectedConversation && selectedConversation.username : recepient && recepient.username}
+                      <h5 className='font-semibold text-md lg:text-lg px-2 pt-1 pb-0 capitalize'>
+                         {type === 'createConversation' ? selectedConversation && selectedConversation.profile && selectedConversation.profile.fullname : recepient && recepient.profile && recepient.profile.fullname}
                       </h5> 
                       <div className='flex items-center ml-2'>
-                     <div className=" w-[10px] h-[10px] rounded-[50%] bg-green-500"></div>
+                     {/* <div className={`w-[7px] h-[7px] lg:w-[10px] lg:h-[10px] rounded-[50%] ${isOnline ? 'bg-green-500' : 'bg-[rgba(0,0,0,0.4)]'}`}></div> */}
                       {/* <p>{conversation && conversation.}</p> */}
-                      <div className='ml-2 text-lg'>Active</div>
+                      <div className='ml-1 text-sm lg:text-md font-semibold text-[rgba(0,0,0,0.5)]'>{isOnline? 'Active' : 'Offline'}</div>
                     </div>
                     </div>
                   </div>
                  {!showCallPanel ? (
-                   <div className="chat-name-icons mr-4">
-                    <IoIosCall className="chat-voice-icon cursor-pointer" onClick={() => voiceCallUser()} />
-                    <IoIosVideocam className="chat-video-icon cursor-pointer" onClick={() => videoCallUser()} />
+                   <div className="chat-name-icons">
+                      <Tooltip label="Voice Call" radius={'md'} withArrow> 
+                       <span className='lg:pl-2 pr-1 py-1 hover:bg-screen rounded-lg'>
+                       <IoIosCall size={isTablet ? 17 : 26} className="chat-voice-icon cursor-pointer" onClick={id ?  () => voiceCallUser() : null} />
+                      </span>
+                      </Tooltip>
+                      
+                  <Tooltip label="Video Call" radius={'md'} withArrow> 
+                     <span className='lg:pl-2 pr-1 py-1 hover:bg-screen rounded-lg'>
+                    <IoIosVideocam size={isTablet ? 17 : 26} className="chat-video-icon cursor-pointer" onClick={id ? () => videoCallUser() : null} />
+                     </span>
+                   </Tooltip>
+                    
                   </div>
                  ): (
                     <>
@@ -333,14 +415,40 @@ function ChatPanel() {
                  )
                   }
                 </div>
-                <div className="w-full h-[72vh]">
-                  <div className="chat-box w-full h-full flex flex-col-reverse overflow-y-auto">
-                     {conversationMessages && conversationMessages.length === 0 && (<span>NO Conversation</span>)}
-                     {conversationMessages && conversationMessages.messages.map((message, index) => {
+                <div className="w-full h-[78%] bg-white">
+                  
+                  <div className="chat-box bg-white max-w-[100vw] pl-3 pr-4  overflow-x-hidden w-full  h-full flex flex-col-reverse overflow-y-auto ">
+                   
+                     <span className={`${isRecipientTyping && 'px-3 py-2'} w-[50%] md:w-[40%] lg:w-[30%]  rounded-md text-md font-semibold`}>{isRecipientTyping ? `${recepient.username} is typing...`: ''}</span>
+                     {conversationMessages && conversationMessages.length === 0 && (<span>No Conversation</span>)}
+                     {/* {console.log(conversationMessages && conversationMessages.messages[0])} */}
+                     {conversationMessages && conversationMessages.messages.map((message, index, array) => {
+                         const nextElem = (index !== array.length - 1) ? array[index + 1] : null;
+                         let date = null;
+                           console.log(nextElem &&  new Date(nextElem.createdAt).getTime())
+
+                          if(nextElem && ((new Date(message.createdAt).getTime() - new Date(nextElem.createdAt).getTime()) > 1000 * 60 * 60)) {
+                            // console.log(prevElem)
+                              date = formatRelative(new Date(message.createdAt), new Date())
+                              console.log('greater than one hour')
+                          }else if(nextElem) {
+                            date = 1
+                          }
+                         
                          return (
-                          <Message key={index} message={message} isUserCreator={message.author.id == user[0].id ? true : false}/>
+                          <>
+
+        
+                           <Message key={index} videoCallUser={videoCallUser} voiceCallUser={voiceCallUser} message={message} isUserCreator={message.author.id == user[0].id ? true : false}/>
+                           {!date && <span className='w-full text-center py-2 text-xs lg:text-[0.75rem] font-semibold uppercase'>{formatRelative(new Date(message.createdAt), new Date())}</span>}
+                            {date && date !== 1 && <span className='w-full text-center text-xs  lg:text-[0.75rem] py-2 font-semibold uppercase'>{date}</span>}
+                             
+                            </>
                          )
                      })}
+                   {conversationMessages && conversationMessages.messages.length > 0 && conversationMessages.messages.length % 30 === 0 && <div className='w-full flex justify-center items-center rounded-3xl'>
+                    <button onClick={() => handleLoadMore()} className='px-4 py-2 rounded-3xl border-2 border-[var(--secondary)] hover:text-[var(--primary)]'>See More</button>
+                    </div>}
                   </div>
                 </div>
                 {/* {showContent && (
@@ -351,19 +459,31 @@ function ChatPanel() {
                     <button onClick={() => handleSelectEmoji("❤️")}>❤️</button>
                   </div>
                 )} */}
-                <span>{isRecipientTyping ? `${recepient.username} is typing...`: ''}</span>
-                <div className="chat-write absolute bg-screen bottom-2 left-0 mb-2 w-full ">
-                 <span className='cursor-pointer' onClick={() => handleSelectFileClick()}><CiImageOn className="photoIcon" /></span> 
+                <div className=" flex py-2 pl-3 pr-5 justify-between gap-2 items-center bg-white w-full ">
+
+              <Tooltip label="Image" radius={'md'} withArrow> 
+                 <span className='cursor-pointer relative' onClick={() => handleSelectFileClick()}>
+              
+                  <CiImageOn size={25} className="photoIcon" />
+                   
+                {attachments.length > 0 && <span className="bg-[var(--primary)] text-[11px] font-semibold z-50 text-white px-[8px] py-[2px] rounded-full absolute top-[-15px] right-[-5px]">{attachments && attachments.length}</span>}
+                  </span> 
+                  </Tooltip>
                  <input multiple type="file" accept='image/*' onChange={fileInputChange} className='hidden' ref={fileRef}/>
-                  <div className="relative">
+                <Tooltip label="Emoji" radius={'md'} withArrow>
+                  <div className="relative" ref={emojiContainRef}>
                     <BsEmojiSmile
+                      size={22}
                       className="emojiIcon"
                       onClick={() => handleShowEmoji()}
                     />
-                     {showEmoji && <div name="emoji-picker" className='absolute bottom-[200%] left-[-250%] md:left-0'><Picker data={data} onEmojiSelect={handleSelectEmoji} /></div>}
+                     {showEmoji && <div ref={emojiRef} name="emoji-picker" className='absolute bottom-[200%] left-[-250%] md:left-0'><Picker data={data} onEmojiSelect={handleSelectEmoji} /></div>}
                   </div>
-                  <input
-                    type="text"
+                </Tooltip>
+                  {/* <Group grow>
+                    <TextInput  color='second' placeholder='Send a Message' />
+                  </Group> */}
+                  <input 
                     ref={ref}
                     value={content}
                     onChange={(e) => onMessageChange(e)}
@@ -371,18 +491,23 @@ function ChatPanel() {
                     onKeyDown={onKeyDown}
                     onDrop={onDrop}
                     onPaste={onPaste}
-                    className='w-full px-2 pt-2 bg-white text-lg rounded-3xl align-middle bg-screen'
+                    className='w-full bg-screen px-3 py-[12px] text-md rounded-3xl border-none outline-none align-middle'
                   ></input>
-                  <span onClick={type == 'createConversation' ? () => createConversation() : () => sendMessage()}><RiSendPlaneFill className="sendIcon" /></span>
+                  <Tooltip label={'Send Message'} withArrow radius={'md'}>  
+                  <span onClick={type == 'createConversation' ? () => createConversation() : () => sendMessage()}><IoMdSend color='var(--secondary)' size={25}  /></span>
+                  </Tooltip>
                 </div>
           
                </div>
            </div>
        ) : (
            <div className='w-[70%] ml-auto min-h-[80vh] flex justify-center items-center text-xl font-semibold'>
-             <span className='text-center'>
-               No Conversation Selected
-             </span>
+             <div className='w-full h-[25vh] flex justify-center items-center rounded-xl '>
+          <div className='w-[100px] h-[100px] md:w-[150px]  md:h-[150px]  relative'>
+           <img src={noData} alt="" className='w-full h-full object-contain' />
+           <span className='absolute bottom-5 left-[30%] font-semibold'>No Data</span>
+          </div>
+            </div>
           </div>
        )}
   </>

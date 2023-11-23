@@ -16,6 +16,9 @@ import messageReducer from '../features/messageSlice';
 import recommendReducer from '../features/recommendSlice';
 import searchReducer from '../features/searchUser';
 import selectedConverstionReducer from '../features/selectedConversationSlice';
+import visitedProfileReducer from '../features/visitedProfile';
+import searchFromHomeReducer from '../features/searchFromHome';
+import notificationReducer from '../features/notificationSlice';
 
 const persistConfig = {
     key: 'root',
@@ -36,7 +39,10 @@ const combinedReducer = combineReducers({
     message: messageReducer,
     recommend: recommendReducer,
     search: searchReducer,
-    selectedConversation: selectedConverstionReducer
+    selectedConversation: selectedConverstionReducer,
+    visitProfile: visitedProfileReducer,
+    searchFromHome: searchFromHomeReducer,
+    notification: notificationReducer,
 });
 
 // const persistedReducer = persistReducer(persistConfig, combinedReducer);

@@ -3,13 +3,14 @@ import { useEffect } from 'react';
 import { VscDeviceCamera } from 'react-icons/vsc';
 import { AuthContext } from '../../utils/context/AuthContext';
 import profileAvatar from '../../images/olp_avatar.avif'
+import Search from '../../pages/InnerHome/InnerHeader/Search';
+import { AiFillFilter } from 'react-icons/ai';
 
 
-function ProfileBox() {
+function ProfileBox({showFilter, setShowFilter}) {
 
     const [imageUrl, setImageUrl] = useState(null);
     const user = useContext(AuthContext);
-    
 
     useEffect(() => {
       // console.log(user);
@@ -21,17 +22,24 @@ function ProfileBox() {
     console.log(user);
 
   return (
-    <div className='flex w-full  md:hidden md:justify-center rounded-xl md:items-center  md:py-8 bg-white my-2 md:mb-2 outline-none border-t-none'>
-        <div className='relative w-[80px] h-[80px] md:w-[150px] lg:w-[120px] lg:h-[120px] xl:w-[150px] xl:h-[150px] md:h-[150px] rounded-full my-2'>
-            <img src={user && user[0].avatarId ? `http://localhost:3000/v1/api/user-avatar/${user && user[0].id}` : profileAvatar} alt="" className='w-full h-full rounded-full object-cover object-center' />
+    <div className='w-full flex lg:hidden justify-around lg:justify-center items-center bg-white md:mb-2 outline-none border-t-2 border-[rgba(0,0,0,0.2)]'>
+      <div className='w-[90%] mx-auto flex justify-center items-center'>
+        <div className='relative w-[50px] h-[50px]  md:w-[70px] md:h-[70px] rounded-full my-2'>
+            <img src={user && user[0].avatarId ? `http://localhost:3000/user-avatar/${user && user[0].avatarId}` : profileAvatar} alt="" className='w-full h-full rounded-full object-cover object-center' />
             {/* <span className='absolute right-0 bottom-0'><VscDeviceCamera size={30} /></span> */}
         </div>
 
-        <div className='flex flex-col justify-center md:items-center mt-2 ml-3 md:ml-0'>
-            <h3 className='text-md font-semibold lg:text-lg xl:text-xl'>{user && user[0].username}</h3>
-            <h4 className='text-md font-semibold lg:text-sm'>{user && user[0].email}</h4>
+        <div className='md:w-[80%] mx-auto flex flex-col justify-center md:items-center mt-2 ml-3 md:ml-0'>
+            {/* <h3 className='text-md font-semibold lg:text-lg xl:text-xl'>{user && user[0].username}</h3> */}
+            {/* <h4 className='text-md font-semibold lg:text-sm'>{user && user[0].email}</h4> */}
             {/* <h4  className='text-md lg:text-lg'>{user && user[0].id}</h4> */}
+            <Search />
         </div>
+
+      <div  className='ml-6' onClick={() => setShowFilter(true)}>
+         <AiFillFilter size={25} color='var(--secondary)' />
+       </div>
+       </div>
     </div>
   )
 }

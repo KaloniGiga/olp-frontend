@@ -1,31 +1,61 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Input from '../Profile/Input';
 import InputSelect from '../Profile/Select';
-import Button from '../Profile/Button';
+import { BiEdit } from 'react-icons/bi';
+import { useState } from 'react';
+import { addToast } from '../../store/features/toastSlice';
+import { useDispatch } from 'react-redux';
+import { axiosInstance } from '../../http';
+import { setEducationDetail } from '../../store/features/educationDetailSlice';
+import { ActionIcon, Button, Group, Paper, Select, TextInput, Title, createStyles } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
-function ProfileThirdForm({setCurrentFormCount, currentFromCount}) {
+const useStyles = createStyles((theme) => ({
+    formWrapper: {
+      backgroundColor: 'white'
+    },
+    button: {
+      backgroundColor: 'var(--seondary)'
+    }
+}))
 
+function ProfileThirdForm({thirdFormValues, setThirdFormValues, isMe}) {
 
+  const [profileEdit, setProfileEdit] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {classes} = useStyles();
+  const largeDesktop = useMediaQuery('(min-width: 1750px)')
+  const mediumDesktop = useMediaQuery('(max-width: 1440px)')
 
      const handleSubmit = (event) => {
         event.preventDefault();
-
-         axiosInstance.post('/users/personal-detail', values)
+        if(!thirdFormValues.education_degree || !thirdFormValues.subject || !thirdFormValues.college || !thirdFormValues.occupation || !thirdFormValues.sector || !thirdFormValues.annualIncome || !thirdFormValues.companyName) {
+           dispatch(addToast({kind: 'ERROR', msg: 'Please fill all fields'}));
+        }
+         axiosInstance.post('/users/education-detail', thirdFormValues)
           .then((response) => {
             console.log('updated successfully')
             console.log(response.data);
             dispatch(
-              setPersonalDetail(response.data)
+              setEducationDetail(response.data)
             )
-            navigate('/contactdetails')
+            dispatch(
+              addToast({kind: 'SUCCESS', msg: 'Education detail updated!'})
+            )
+            // navigate('/contactdetails')
          }).catch((error) => {
            console.log(error);
+            dispatch(
+              addToast({kind: 'ERROR', msg: 'Failed to update'})
+            )
          })
   };
 
 
-    const handlePrevClick = () => {
+ const handlePrevClick = () => {
      setCurrentFormCount((prev) => prev-1)
   }
 
@@ -33,7 +63,7 @@ function ProfileThirdForm({setCurrentFormCount, currentFromCount}) {
     setCurrentFormCount((prev) => prev+1)
   }
 
-const profileOptions = [
+const [profileOptions, setProfileOptions ]= useState([
     { value: 'myself', label: 'MySelf' },
     { value: 'brother', label: 'Brother' },
     { value: 'sister', label: 'Sister' },
@@ -41,9 +71,9 @@ const profileOptions = [
     { value: 'daughter', label: 'Daughter' },
     { value: 'friend', label: 'Friend' },
     { value: 'relative', label: 'Relative' },
-  ]
+  ])
 
-  const religionOptions = [
+  const [religionOptions, setReligionOptions ]= useState([
     { value: 'hindu', label: 'Hinduism' },
     { value: 'buddhist', label: 'Buddhism' },
     { value: 'islam', label: 'Islam' },
@@ -53,7 +83,7 @@ const profileOptions = [
     { value: 'kirat', label: 'Kirat' },
     { value: 'no', label: 'Non-Religious'},
     {value: 'other', label: 'Other'},
-  ]
+  ])
 
 
   const genderOptions = [
@@ -62,7 +92,7 @@ const profileOptions = [
       {value: "other", label: "Other"},
   ]
 
-  const casteOptions = [
+  const [casteOptions, setCasteOptions ]= useState([
     {value: "brahmin", label: "Brahmin"},
     {value: "chhetri", label: "chhetri"},
     {value: 'thakuri', label: "Thakuri"},
@@ -70,26 +100,26 @@ const profileOptions = [
     {value: 'tamang', label: 'Tamang'},
     {value: 'sherpa', label: "Sherpa"},
     {value: "newar", label: "Newar"},
-  ]
+  ])
 
-  const educationQualificationOptions = [
+  const [educationQualificationOptions, setEducationQualificationOptions ]= useState([
     {value: "undergraduate", label: "Undergraduate"},
     {value: "graduate", label: "Graduate"},
     {value: "doctarate", label: "P.h.d/Doctorate"},
     {value: "highSchool", label: "High School"},
     {value: "literate", label: "Literate"},
     {value: "illiterate", label: "Illiterate"}
-  ]
+  ])
 
-  const subjectOptions = [
+  const [subjectOptions, setSubjectOptions ]= useState([
     {value: "engineering", label: 'Engineering/'},
     {value: "medical", label: "Medical"},
      {value: "business", label: "Business"},
      {value: "law", label: 'Law'},
      {value: "socialScience", label: "Social Science"},
      {value: "commerce", label: "Commerce/Finance"},
-     {value: "agriculture", label: "Agriculture"}
-  ]
+     {value: "agriculture", label: "Agriculture"},
+  ])
 
   const sectorOptions = [
     {value: 'private', label: 'Private Company'},
@@ -115,48 +145,103 @@ const profileOptions = [
      {value: 'abover30L', label: 'Above 30L'},
   ]
 
+  const handleInputChange = (e) => {
+    setThirdFormValues({...thirdFormValues, [e.target.name]: e.target.value})
+  }
+
+  const handleEducationalQualification = (values) => {
+      setThirdFormValues({...thirdFormValues, education_degree: values.value})
+  }
+
+  const handleSubjectChange = (values) => {
+    setThirdFormValues({...thirdFormValues, subject: values.value});
+}
+
+ const handleOccupationChange = (values) => {
+     setThirdFormValues({...thirdFormValues, occupation: values.value})
+ }
+
+ const handleSectorChange = (values) => {
+   setThirdFormValues({...thirdFormValues, sector: values.value});
+ }
+
+ const handleAnnualIncomeChange = (values) => {
+  setThirdFormValues({...thirdFormValues, annualIncome: values.value});
+ }
+
+ useEffect(() => {
+      const targetCaste = educationQualificationOptions.find((caste) => caste.value == thirdFormValues.education_degree);
+      console.log(targetCaste)
+      if(!targetCaste && thirdFormValues.education_degree) {
+         setEducationQualificationOptions([...educationQualificationOptions, {value: thirdFormValues.education_degree, label: thirdFormValues.education_degree}])
+      }
+  }, [thirdFormValues])
+
+   useEffect(() => {
+      const targetCaste = subjectOptions.find((caste) => caste.value == thirdFormValues.subject);
+      console.log(targetCaste)
+      if(!targetCaste && thirdFormValues.subject) {
+         setSubjectOptions([...subjectOptions, {value: thirdFormValues.subject, label: thirdFormValues.subject}])
+      }
+  }, [thirdFormValues])
+
   return (
 
-           <div className="md:mt-8 md:mb-8 px-2 py-4  w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%] bg-white rounded-lg mx-auto">
+           <div className="lg:mt-8 lg:mb-8 px-2 py-4 w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%] rounded-lg mx-auto">
            {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Let's setup your account.</h1> */}
       
-        
+         <Paper  className={classes.formWrapper} withBorder radius={2} py={30} px={30}>
           <form className=" mx-auto" onSubmit={handleSubmit}>
-            <h1 className='text-2xl font-semibold w-[90%] mx-auto'>Education and Profession Information</h1>
 
-            <div className="w-full flex justify-around items-center">
-               <InputSelect label="Education Qualification" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={educationQualificationOptions}/>
-               <InputSelect label="Field/Subject/Program" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={subjectOptions}/>
-           </div>
+            <Group position='apart' mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+             <Title order={largeDesktop ? 1 : (mediumDesktop ? 3 : 2)} >Education and Profession Information</Title>
+             {isMe && <ActionIcon onClick={() => setProfileEdit((prev) => !prev)}><BiEdit size={30}  className={`${!profileEdit ? 'text-[var(--secondary)]' : 'text-[var(--primary)]'} hover:text-[var(--primary)] cursor-pointer`} /></ActionIcon>}
+             </Group>
 
-            <div className="w-full flex justify-around items-center">
-              <Input label="Enter your College/University Name" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="College/University" />
+
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+               <Select
+                onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setEducationQualificationOptions([...educationQualificationOptions, item])
+                             return item;
+                         }} 
+                getCreateLabel={(query) => `+Create ${query}`}
+                onChange={handleEducationalQualification} value={thirdFormValues.education_degree} readOnly={profileEdit ? false : true} label="Education Qualification" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={educationQualificationOptions}/>
+               <Select
+                onCreate={(query) => {
+                             const item = { value: query, label: query};
+                               setSubjectOptions([...subjectOptions, item])
+                             return item;
+                         }} 
+                 getCreateLabel={(query) => `+Create ${query}`}
+                onChange={handleSubjectChange} value={thirdFormValues.subject} readOnly={profileEdit ? false : true} label="Field/Subject/Program" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={subjectOptions}/>
+            </Group>
+
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+              <TextInput onChange={handleInputChange} value={thirdFormValues.college} disabled={profileEdit ? false : true} label="Enter your College/University Name" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl font-semibold" type="text" placeholder="College/University" />
                {/* <Input label="Religo" classes3="basis-[40%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="text" placeholder="Enter full Name" /> */}
-               <InputSelect label="Current Profession and Position" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" />
-             </div>
-
-
-
-         
-
-            <div className="w-full flex justify-around items-center">
+               <TextInput onChange={handleOccupationChange} value={thirdFormValues.occupation} readOnly={profileEdit ? false : true} label="Current Profession and Position" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" />
+              </Group>
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
               
                {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-               <InputSelect label="Sector You are working in" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={casteOptions}/>
-               <Input label="Institution/Company Name ?" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Name of Employer" />
-               
-           </div>
+               <Select onChange={handleSectorChange} value={thirdFormValues.sector} readOnly={profileEdit ? false : true} label="Sector You are working in" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={sectorOptions}/>
+               <TextInput onChange={handleInputChange} value={thirdFormValues.companyName} disabled={profileEdit ? false : true} label="Institution/Company Name ?" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl font-semibold" type="text" placeholder="Name of Employer" />
+                
+              </Group>
 
-            <div className="w-[90%] mx-auto flex justify-start items-center">
+             <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
                {/* <Input label="Enter your Date of Birth" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
                {/* <Input label="Enter your Date Of Birth" classes3="w-[70%]" classes="px-2" classes2="block 2xl:text-2xl lg:text-2xl" type="date" placeholder="Enter full Name" /> */}
-               <InputSelect label="Annual Income" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[45%] basis-[45%]" options={annualIncomeOptions}/>
-           </div>
+               <Select onChange={handleAnnualIncomeChange} value={thirdFormValues.annualIncome} readOnly={profileEdit ? false : true} label="Annual Income" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[45%] basis-[45%]" data={annualIncomeOptions}/>
 
-           <div className="w-[90%] mx-auto flex justify-around">
+              </Group>
+         
+          {profileEdit && ( <Group position='right'>
              {/* <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} /> */}
-             <Button onClick={() => handleNextClick()} label="Save" classes="px-8 py-2 rounded-xl btnnext text-white" classes2="w-full flex justify-end py-2" />
-          </div>
+             <Button className={classes.button} style={{backgroundColor: 'var(--secondary)'}} variant='filled' size='md' type="submit">Save</Button>
+          </Group>)}
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>
             <HiChevronDoubleLeft /> Prev
@@ -167,6 +252,7 @@ const profileOptions = [
           {/* </button> */}
               
           </form>
+          </Paper>
         </div>
   )
 }

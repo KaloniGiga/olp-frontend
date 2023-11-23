@@ -8,6 +8,10 @@ import { SocketContext } from '../utils/context/SocketContext';
 import { useEffect } from 'react';
 import { fetchConnectionRequestThunk } from '../store/thunk/connectionsThunk';
 import RecommendSection from '../newComponent/RecommendSection/RecommendSection';
+import { fetchConnectionRequest } from '../utils/api';
+import { setConnectionRequest } from '../store/features/connectionSlice';
+import ProfileBox from '../newComponent/ProfileBox/ProfileBox';
+import { useOutletContext } from 'react-router-dom';
 
 function DashboardSection() {
 
@@ -16,14 +20,23 @@ function DashboardSection() {
   const {connections, connectionRequests}  = useSelector((state) => state.connection)
 
   useEffect(() => {
-    dispatch(fetchConnectionRequestThunk());
-  }, [dispatch]);
+    fetchConnectionRequest()
+    .then((res) => {
+       dispatch(setConnectionRequest(res.data));
+    }).catch((error) => {
+      console.log(error);
+    })
+  }, []);
+
+  const [showFilter, setShowFilter] = useOutletContext();
+ 
 
   return (
 
     <div className='min-h-[90vh] overflow-x-hidden'>
      {/* <ConnectionRequestSection />  */}
-     <RecommendSection />
+    
+      <RecommendSection />
     </div>
   )
 }

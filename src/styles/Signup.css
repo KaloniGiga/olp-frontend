@@ -1,13 +1,15 @@
 .signup-page {
-  background-color: rgb(222, 222, 222);
+  /* background-color: rgb(222, 222, 222); */
   display: flex;
   align-items: center;
   height: 100vh;
+
 }
 .login-signup {
   display: flex;
   border-radius: 10px;
   background-color: white;
+  /* background-color: var(--secondary); */
   width: min-content;
   margin-left: auto;
   margin-right: auto;
@@ -20,18 +22,29 @@
   height: 65vh;
   border-radius: 10px 0px 0px 10px;
 }
+
+@media  screen and (min-width: '1500px') {
+  .login {
+    width: 550px;
+  }
+}
+
+
 .signup {
   position: relative;
   display: flex;
   align-items: center;
   width: 350px;
+  background: var(--primary);
   border-radius: 0px 10px 10px 0px;
-  background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91);
+  /* background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91); */
 }
 .login.animated {
   transition: left 2s ease;
   border-radius: 0 10px 10px 0;
   left: 350px;
+  display: flex;
+  justify-content: center;
 }
 .signup.animated {
   transition: right 2s ease;
@@ -56,6 +69,7 @@
   border-bottom: 2px solid #ec1c24;
   background-color: rgba(208, 208, 208, 0.193);
   margin-bottom: 1rem;
+  
 }
 .input_field:focus {
   outline: none;
@@ -74,7 +88,7 @@
   color: white;
   border: none;
   border-radius: 10px;
-  background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91) !important;
+  /* background-image: linear-gradient(140deg, #ec1c24, #ff1f70, #ed177e, #662d91) !important; */
 }
 
 .login_btn {
@@ -84,6 +98,8 @@
   color: black;
   border: none;
   border-radius: 10px;
+  /* background-color: var(--secondary); */
+  /* color: white; */
   background-color: white;
 }
 .form_btn:hover {
@@ -150,3 +166,14 @@
   display: none;
 }
 } */
+
+@media screen and (max-width: 992px) {
+  .container {
+    width: 100%;
+  }
+  .login {
+    height: auto;
+    width: 90%;
+    border-radius: 15px;
+  }
+}

@@ -3,7 +3,9 @@ import { SocketContext } from "../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../utils/context/AuthContext";
 import { useEffect } from "react";
-import { setCallType, setCaller, setIsReceivingCall, setReceiver } from "../store/features/callSlice";
+import { setCallDetails, setCallType, setCaller, setIsReceivingCall, setReceiver } from "../store/features/callSlice";
+import { addCallMessage } from "../store/features/messageSlice";
+import { updateConversation } from "../store/features/conversationSlice";
 
 export function useVoiceCall() {
     const socket = useContext(SocketContext);
@@ -15,12 +17,16 @@ export function useVoiceCall() {
     useEffect(() => {
         socket.on('onVoiceCall', (data) => {
             console.log('receiving voice call');
+            console.log(data.callDetails);
             if(isReceivingCall) return;
 
             dispatch(setCaller(data.caller));
             dispatch(setReceiver(user));
             dispatch(setIsReceivingCall(true));
             dispatch(setCallType('audio'));
+            dispatch(addCallMessage(data.callDetails));
+            dispatch(setCallDetails(data.callDetails));
+            dispatch(updateConversation({...data.callDetails.conversation, lastMessageSent: { ...data.callDetails.conversation.lastMessageSent, call: data.callDetails.call } }));
         })
   
        return () => {

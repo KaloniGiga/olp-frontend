@@ -16,7 +16,7 @@ export const selectedConversationSlice = createSlice({
 
           resetSelectedConversation: (state, action) => {
             state.selectedConversation = {},
-            state.type = action.payload.type;
+            state.type = '';
           }
     }
 })

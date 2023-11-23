@@ -3,15 +3,19 @@ import { AuthContext } from "../utils/context/AuthContext"
 import { SocketContext } from "../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { setActiveConversationId, setCall, setConnection, setIsCallInProgress, setIsReceivingCall } from "../store/features/callSlice";
+import { setActiveConversationId, setCall, setCallDetails, setConnection, setIsCallInProgress, setIsReceivingCall } from "../store/features/callSlice";
+import { useNavigate } from "react-router-dom";
+import { addCallMessage, updateCallMessage } from "../store/features/messageSlice";
+import { updateConversation } from "../store/features/conversationSlice";
 
 export function useVoiceCallAccept(){
 
     const user = useContext(AuthContext);
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const { peer, localStream } = useSelector((state) => state.call);
+    const { peer, localStream, callDetails } = useSelector((state) => state.call);
 
     useEffect(() => {
       socket.on('onVoiceCallAccept', (data) => {
@@ -20,7 +24,15 @@ export function useVoiceCallAccept(){
          dispatch(setActiveConversationId(data.conversation.id));
          dispatch(setIsCallInProgress(true));
          dispatch(setIsReceivingCall(false));
-          
+         dispatch(setCallDetails(data.callDetail))
+         if(data.caller.id === user[0].id) {
+          dispatch(addCallMessage(data.callDetail))
+         } else {
+           dispatch(updateCallMessage(data.callDetail))
+         }
+         
+         dispatch(updateConversation({...data.callDetail.conversation, lastMessageSent: {...data.callDetail.conversation.lastMessageSent, call: data.callDetail.call}})); 
+         
          if(data.caller.id === user[0].id) {
             console.log('audio: connecting to peer now');
 
@@ -35,6 +47,8 @@ export function useVoiceCallAccept(){
                 dispatch(setCall(newCall));
             }
          }
+
+         navigate(`/home/chat/conversation/${data.conversation.id}`)
       });
 
       return () => {

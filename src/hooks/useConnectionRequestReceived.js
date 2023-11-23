@@ -15,7 +15,7 @@ export function useConnectionRequestReceived() {
        socket.on('onConnectionRequestReceived', (payload) => {
          console.log('onConnectionRequestReceived');
          dispatch(addConnectionRequest(payload));
-         dispatch(addToast({ kind: 'INFO', msg: `Incoming Connection Request from ${payload.sender.username}`}))
+        //  dispatch(addToast({ kind: 'INFO', msg: `Incoming Connection Request from ${payload.sender.username}`}))
        });
 
        return () => {

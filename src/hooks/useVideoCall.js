@@ -3,7 +3,9 @@ import { SocketContext } from "../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthContext } from "../utils/context/AuthContext";
 import { useEffect } from "react";
-import { setCallType, setCaller, setIsReceivingCall, setReceiver } from "../store/features/callSlice";
+import { setCallDetails, setCallType, setCaller, setIsReceivingCall, setReceiver } from "../store/features/callSlice";
+import { addCallMessage, addMessage } from "../store/features/messageSlice";
+import { updateConversation } from "../store/features/conversationSlice";
 
 export function useVideoCall() {
     const socket = useContext(SocketContext);
@@ -15,12 +17,16 @@ export function useVideoCall() {
     useEffect(() => {
        socket.on('onVideoCall', (data) => {
           console.log('receiving video call...');
+          console.log(data.callDetails)
           if(isReceivingCall) return;
 
           dispatch(setCaller(data.caller));
           dispatch(setReceiver(user));
           dispatch(setIsReceivingCall(true));
           dispatch(setCallType('video'));
+          dispatch(addCallMessage(data.callDetails));
+          dispatch(setCallDetails(data.callDetails));
+          dispatch(updateConversation({...data.callDetails.conversation, lastMessageSent: {...data.callDetails.conversation.lastMessageSent, call: data.callDetails.call}}));
        });
 
        return () => {

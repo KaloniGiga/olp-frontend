@@ -6,23 +6,16 @@ import AccountSetting from '../newComponent/AccountSetting/AccountSetting'
 function SettingSection() {
 
 
-
   return (
 
-
-    <div className='flex flex-col'>
-       <div className='flex '>
-         <span className='mr-4'><AiFillSetting size={35} /></span>
-         <h1 className='text-lg lg:text-xl'>Settings</h1>
-       </div>
+    <div className='flex flex-col w-[90%] lg:w-[80%] mx-auto'>
+       {/* <div className='flex pl-6'>
+         <span className='mr-4'><AiFillSetting size={35} color="var(--secondary)" /></span>
+         <h1 className='text-lg lg:text-xl font-bold'>Settings</h1>
+       </div> */}
+            <PasswordSetting />
+            <AccountSetting />
         
-        <div className='my-4'>
-          <PasswordSetting />
-        </div>
-
-        <div className='my-4'>
-           <AccountSetting />
-        </div>
     </div>
   )
 }

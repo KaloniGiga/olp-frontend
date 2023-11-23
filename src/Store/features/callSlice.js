@@ -15,6 +15,7 @@ const initialState = {
     activeConversationId: undefined,
     callType: undefined,
     peerId: undefined,
+    callDetails: undefined,
 }
 
 
@@ -71,6 +72,9 @@ export const callSlice = createSlice({
         setPeerId: (state, action) => {
             state.peerId = action.payload;
         }, 
+        setCallDetails: (state, action) => {
+           state.callDetails = action.payload;
+        },
         resetState: (state) => {
             state.isCalling = false,
             state.isCallInProgress = false,
@@ -83,6 +87,7 @@ export const callSlice = createSlice({
             state.activeConversationId = undefined;
             state.receiver = undefined;
             state.callType = undefined;
+            state.callDetails = undefined;
         },
 
         initiateCallState: (state, action) => ({
@@ -108,6 +113,7 @@ export const {
     initiateCallState,
     setCallType,
     setPeerId,
+    setCallDetails,
 } = callSlice.actions;
 
 export default callSlice.reducer;

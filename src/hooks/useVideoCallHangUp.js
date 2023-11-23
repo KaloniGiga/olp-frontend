@@ -2,6 +2,8 @@ import { useContext, useEffect } from "react";
 import { SocketContext } from "../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState } from "../store/features/callSlice";
+import { updateCallMessage } from "../store/features/messageSlice";
+import { updateConversation } from "../store/features/conversationSlice";
 
 export function useVideoCallHangUp() {
     const socket = useContext(SocketContext);
@@ -10,7 +12,7 @@ export function useVideoCallHangUp() {
     const { call, connection, localStream, remoteStream } = useSelector((state) => state.call);
 
     useEffect(() => {
-        socket.on('onVideoCallHangUp', () => {
+        socket.on('onVideoCallHangUp', (data) => {
             console.log('onVideoCallHangUp');
 
             localStream && localStream.getTracks().forEach((track) => {
@@ -26,9 +28,10 @@ export function useVideoCallHangUp() {
             call && call.close();
             connection && connection.close();
             dispatch(resetState())
-
+           console.log(data); 
+            data && dispatch(updateCallMessage(data));
+            data && dispatch(updateConversation({...data.conversation, lastMessageSent: {...data.conversation.lastMessageSent, call: data.call}}));
         });
-
         return () => {
             socket.off('onVideoCallHangUp');
         }

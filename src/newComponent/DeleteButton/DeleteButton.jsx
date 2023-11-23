@@ -6,8 +6,8 @@ function DeleteButton(props) {
   return (
 
     <div className={` ${props.classes2 && props.classes2}`}>
-        <button className={`flex justify-between ${props.classes1 && props.classes1}`}>
-            <span><AiOutlineDelete size={30} /></span>
+        <button className={`flex justify-between ${props.classes1 && props.classes1}`} onClick={props.onChange && props.onChange}>
+            <span><AiOutlineDelete size={25} /></span>
             <h2 className='font-semibold text-md xl:text-lg ml-4'>Delete</h2>
         </button> 
     </div>

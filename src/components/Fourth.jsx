@@ -4,6 +4,7 @@ import t1 from "../images/trust1.png";
 import t2 from "../images/trust2.png";
 import t3 from "../images/trust3.png";
 import simple from "../images/phone.png";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 const Fourth = () => {
   return (
     <>
@@ -41,7 +42,7 @@ const Fourth = () => {
                 </p>
               </div>
             </div>
-            <div className="row pb-5 pt-5 align-items-center">
+            <div className="row pb-5 pt-5 align-items-center w-full">
               <div className="col-lg-8 col-sm-12">
                 <p className="text-center fs-4 mb-4 fw-bold simple_guide">
                   Simple Guide
@@ -57,8 +58,11 @@ const Fourth = () => {
                         aria-expanded="true"
                         aria-controls="collapseOne"
                       >
-                        How does OurLifePartner operates?
+                        <span>How does OurLifePartner operates?</span>
                       </button>
+
+
+                        {/* <span><AiOutlinePlusCircle size={15} /></span> */}
                     </h2>
                     <div
                       id="collapseOne"

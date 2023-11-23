@@ -9,28 +9,32 @@ import NewFilter from '../../newComponent/NewFilter/NewFilter';
 import { useMediaQuery } from 'react-responsive';
 import Search from './InnerHeader/Search';
 import Footer from '../../components/Footer';
+import { useState } from 'react';
+import { BsFillArrowRightSquareFill } from 'react-icons/bs';
 
 function Dashboard() {
   
-   const isMobile = useMediaQuery({ query: '(max-width: 768px)'})
+   const isMobile = useMediaQuery({ query: '(max-width: 992px)'})
+   const [showFilter, setShowFilter] = useState(isMobile ? false : true);
 
   return (
     <div className='min-h-screen w-full flex md:flex-row flex-col md:justify-end md:bg-screen'>
-       <div className='flex flex-col mt-4 md:mt-0 md:mx-0  md:w-[23vw] md:bg-white fixed top-[6vh] left-0 bottom-0 h-full'>
-           {isMobile && <Search />}
-           <ProfileBox />
+       <div className={`flex z-30 flex-col lg:mt-4 md:mt-0 md:mx-0 w-[80vw] lg:w-[25vw] md:bg-white fixed top-[10vh] lg:top-[6vh] ${showFilter ? 'showFilter' : 'hideFilter' } bottom-0  h-full`}>
+           {/* {isMobile && <Search />} */}
+           {/* <ProfileBox /> */}
            {/* <MyProfilesSidebar /> */}
            {/* <ProfileFilter /> */}
            {/* <Filter /> */}
-           <NewFilter />
+           <NewFilter showFilter={showFilter} setShowFilter={setShowFilter} />
        </div>
-
-       <div className='h-full flex flex-col w-[100%] md:basis-[76%] md:mr-4 md:mt-20'>
-          <Outlet />
+       <div className={`h-full flex flex-col w-[100%] ${showFilter ? 'lg:basis-[76%]' : 'lg:basis-[100%]'}`}>
+          <span className={`hidden overflow-hidden ${showFilter ? 'hidden' : 'lg:inline-block hidden'} `} onClick={() => setShowFilter(true)}><BsFillArrowRightSquareFill color={'var(--secondary)'} size={30} /></span>
+          <ProfileBox showFilter={showFilter} setShowFilter={setShowFilter} />
+          <Outlet context={[showFilter, setShowFilter]} />
           <Footer />
        </div>
     </div>
   )
 }
 
-export default Dashboard
+export default Dashboard;

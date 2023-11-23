@@ -10,16 +10,19 @@ import FourthForm from '../newComponent/Forms/FourthForm';
 import ThirdForm from '../newComponent/Forms/ThirdForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import { useContext } from 'react';
+import { AuthContext } from '../utils/context/AuthContext';
 
 function FormLayout() {
-
   const {personalDetail} = useSelector((state) => state.personalDetail);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [currentFormCount, setCurrentFormCount] = useState(0)
+  const user = useContext(AuthContext);
 
-     const [firstFormValues, setFirstFormValues] = useState({
+  const [firstFormValues, setFirstFormValues] = useState({
     fullname: '',
     height: '',
     profileCreatedFor: '',
@@ -88,11 +91,11 @@ function FormLayout() {
 
 
   return (
-     <div className="w-full min-h-[100vh] bg-screen">
-      <NewHeader />
+     <div className="w-full min-h-[100vh] bg-screen pt-[4rem]">
+      {/* <Header /> */}
        <NewProgressBar currentFormCount={currentFormCount} setCurrentFormCount={setCurrentFormCount} />
          {allForms[currentFormCount]}
-       <Footer />
+       {/* <Footer /> */}
     </div>
   )
 }

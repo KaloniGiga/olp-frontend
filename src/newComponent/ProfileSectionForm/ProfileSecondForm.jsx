@@ -1,24 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Input from '../Profile/Input';
 import InputSelect from '../Profile/Select';
-import Button from '../Profile/Button';
+import { BiEdit } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
+import { addToast } from '../../store/features/toastSlice';
+import { axiosInstance } from '../../http';
+import { setFamilyDetail } from '../../store/features/familyDetailSlice';
+import { ActionIcon, Button, Group, NumberInput, Paper, Select, TextInput, Title, createStyles } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
-function ProfileSecondForm({setCurrentFormCount, currentFromCount}) {
+const useStyles = createStyles((theme) => ({
+    formWrapper: {
+      backgroundColor: 'white'
+    },
+    button: {
+      backgroundColor: 'var(--seondary)'
+    }
+}))
+function ProfileSecondForm({secondFormValues, setSecondFormValues, isMe}) {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const [profileEdit, setProfileEdit] = useState(false);
+   const {classes} = useStyles();
+  const largeDesktop = useMediaQuery('(min-width: 1750px)')
+  const mediumDesktop = useMediaQuery('(max-width: 1440px)')
+
 
   const handleSubmit = (event) => {
         event.preventDefault();
-
-         axiosInstance.post('/users/personal-detail', values)
+         if(!secondFormValues.familyType || !secondFormValues.noOfSiblings || !secondFormValues.noOfFamilyMember || !secondFormValues.noOfUnmarried || !secondFormValues.familyValues || !secondFormValues.parentStatus || !secondFormValues.familyAddress || !secondFormValues.nativePlace || !secondFormValues.motherTongue) {
+          return dispatch(addToast({kind: 'ERROR', msg: 'Please fill all fields.'}))
+        }
+         axiosInstance.post('/users/family-detail', secondFormValues)
           .then((response) => {
             console.log('updated successfully')
             console.log(response.data);
             dispatch(
-              setPersonalDetail(response.data)
+              setFamilyDetail(response.data)
             )
-            navigate('/contactdetails')
+            // navigate('/contactdetails')
+            dispatch(
+              addToast({kind: 'SUCCESS', msg: 'Family details updated!'})
+            )
          }).catch((error) => {
            console.log(error);
+            dispatch(addToast({kind: 'ERROR', msg: 'Failed to update!'}))
          })
   };
 
@@ -92,60 +120,80 @@ function ProfileSecondForm({setCurrentFormCount, currentFromCount}) {
     {value: "motherPassedAway", label: "Mother Passed Away"},
     {value: "bothPassedAway", label: "Both Passed Away"},
    ]
+
+ const handleInputChange = (e) => {
+      setSecondFormValues({...secondFormValues, [e.target.name]: e.target.value})
+   }
+
+   const handleFamilyTypeChange = (values) => {
+       setSecondFormValues({...secondFormValues, familyType: values.value})
+   }
+
+   const handleYouLiveWithFamilyChange = (values) => {
+      setSecondFormValues({...secondFormValues, liveWithFamily: values.value})
+   }
+
+   const handleFamilyValuesChange = (values) => {
+    setSecondFormValues({...secondFormValues, familyValues: values.value});
+   }
+   
+   const handleParentStatusChange = (values) => {
+    setSecondFormValues({...secondFormValues, parentStatus: values.value})
+   }
   return (
 
-    <div className="md:mt-8 md:mb-8 px-2 py-4  w-[100%] md:w-[1000%] lg:w-[100%] xl:w-[100%] bg-white rounded-lg mx-auto">
+    <div className="lg:mt-8 lg:mb-8 px-2 py-4 w-[100%] lg:w-[100%] xl:w-[100%] rounded-lg mx-auto ">
       {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Some Personal details</h1> */}
       
-        
+         <Paper className={classes.formWrapper} withBorder radius={2} py={30} px={30}>
           <form className=" mx-auto" onSubmit={handleSubmit}>
-            <h1 className='text-2xl font-bold w-[90%] mx-auto'>Family Information</h1>
 
-           <div className="w-full flex justify-around items-center">
-              <InputSelect label="Family Type" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={familytypeOptions}  />
-               <Input label="No of family Members" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Family Member Number" />
+            <Group position='apart' mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'lg')}>
+             <Title order={largeDesktop ? 1 : (mediumDesktop ? 3:2)}>Family Information</Title>
+             {isMe && <ActionIcon  onClick={() => setProfileEdit((prev) => !prev)}><BiEdit size={30}  className={`${!profileEdit ?  'text-[var(--secondary)]' : 'text-[var(--primary)]'} hover:text-[var(--primary)] cursor-pointer`} /></ActionIcon>}
+             </Group>
+           <Group grow mb={largeDesktop ? 'xl' : (mediumDesktop ? 'md' : 'ld')}>
+              <Select size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleFamilyTypeChange} value={secondFormValues.familyType} readOnly={profileEdit ? false : true} label="Family Type"  data={familytypeOptions}  />
+               <NumberInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} value={Number(secondFormValues.noOfFamilyMember)} disabled={profileEdit ? false : true} label="No of family Members"  placeholder="Family Member Number" />
                {/* <InputSelect label="Father's Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" /> */}
+           </Group>
 
-           </div>
-
-            <div className="w-full flex justify-around items-center">
+            <Group grow mb={largeDesktop ? 'md' : 'sm'} className="w-[90%] lg:w-full mx-auto flex flex-col lg:flex-row lg:justify-around items-center">
                {/* <Input label="No of sibling" type="number" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-                <Input label="No of Sibling" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
-                <InputSelect label="Do you live with your family" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={liveWithFamilyOptions} />
-           </div>
+                <NumberInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} value={Number(secondFormValues.noOfSiblings)} disabled={profileEdit ? false : true} label="No of Sibling" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md xl:text-xl lg:text-lg font-semibold" type="number" placeholder="Enter full Name" />
+                <Select size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleYouLiveWithFamilyChange} value={secondFormValues.liveWithFamily} readOnly={profileEdit ? false : true} label="Do you live with your family" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={liveWithFamilyOptions} />
+           </Group>
 
           
 
-           <div className="w-full flex justify-around items-center">
+           <Group grow mb={largeDesktop ? 'md' : 'sm'} className="w-[90%] lg:w-full mx-auto flex flex-col lg:flex-row lg:justify-around items-center">
               {/* <InputSelect label="N" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" options={familytypeOptions}  /> */}
-               <Input label="Native/Ancestors Place" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Native Place" />
+              {secondFormValues.nativePlace && <TextInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} disabled={profileEdit ? false : true} value={secondFormValues.nativePlace} label="Native/Ancestors Place" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg text-md font-semibold" type="text" placeholder="Native Place" /> }
                {/* <InputSelect label="Father's Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" /> */}
-                <Input label="Mother Tongue" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="number" placeholder="Enter your mother tongue" />
-           </div>
+               {secondFormValues.motherTongue &&  <TextInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} disabled={profileEdit ? false : true} label="Mother Tongue" value={secondFormValues.motherTongue} classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl text-md font-semibold" type="text" placeholder="Enter your mother tongue" />}
+           </Group>
 
-           <div className="w-full flex justify-around items-center">
+           <Group grow mb={largeDesktop ? 'md' : 'sm'} className="w-[90%] lg:w-full mx-auto flex flex-col lg:flex-row lg:justify-around items-center">
                {/* <Input label="Enter your Gotra" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-               <Input label="Enter your gotra" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Enter your gotra (if applied)" />
-                <InputSelect label="Family Values" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-40%]" options={familyValueOptions}/>
+               <TextInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} value={secondFormValues.gotra} disabled={profileEdit ? false : true} label="Enter your gotra" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl font-semibold" type="text" placeholder="Enter your gotra (if applied)" />
+                <Select size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleFamilyValuesChange} value={secondFormValues.familyValues} readOnly={profileEdit ? false : true} label="Family Values" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-40%]" data={familyValueOptions}/>
+               </Group>
+
+               <Group grow mb={largeDesktop ? 'md' : 'sm'} className='w-[90%] lg:w-full mx-auto flex flex-col lg:flex-row lg:justify-around items-center'>
+                   <Select size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleParentStatusChange} value={secondFormValues.parentStatus} readOnly={profileEdit ? false : true} label="Parent Status" classes1="block text-md lg:text-lg xl:text-xl my-1 font-semibold" classes2="w-full lg:w-[40%] basis-[40%]" data={parentStatusOptions}/>
+                   <NumberInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')}  onChange={handleInputChange} value={Number(secondFormValues.noOfUnmarried)} disabled={profileEdit ? false : true} label="No of Unmarried Sibling" classes3="w-full lg:w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg font-semibold" type="number" placeholder="Enter Number of unmarried Siblings" />
+               </Group>
+
+               <Group grow mb={largeDesktop ? 'md' : 'sm'}>
                
-               </div>
-
-               <div className='w-full flex justify-around items-center'>
-                   <InputSelect label="Parent Status" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={parentStatusOptions}/>
-                   <Input label="No of Unmarried Sibling" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
-                
-               </div>
-
-               <div className='w-[90%] mx-auto flex justify-between items-center'>
-               
-                 <Input label="Where do your family live ?" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="text" placeholder="Enter your family location" />
-               </div>
+                 <TextInput size={largeDesktop ? 'xl': (mediumDesktop ? 'sm' : 'lg')} onChange={handleInputChange} value={secondFormValues.familyAddress} disabled={profileEdit ? false : true} label="Where do your family live ?" type="text" placeholder="Enter your family location" />
+               </Group>
 
 
-            <div className="w-[90%] mx-auto flex justify-around">
+           {profileEdit && (<Group position='right'>
              {/* <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} /> */}
-             <Button onClick={() => handleNextClick()} label="Save" classes="px-8 py-2 rounded-xl btnnext text-white" classes2="w-full flex justify-end py-2" />
-          </div>
+             <Button className={classes.button} style={{backgroundColor: 'var(--secondary)'}} type="submit" >Save</Button>
+          </Group>)}
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>
             <HiChevronDoubleLeft /> Prev
@@ -156,6 +204,7 @@ function ProfileSecondForm({setCurrentFormCount, currentFromCount}) {
           {/* </button> */}
               
           </form>
+          </Paper>
         </div>
   )
 }

@@ -10,12 +10,7 @@ export const fetchConversationsThunk = createAsyncThunk('conversations/fetch', a
     return getConversations();
 });
 
-export const createConversationThunk = createAsyncThunk(
-    'conversations/create',
-    async (data) => {
-        return postNewConversation(data);
-    }
-);
+export const createConversationThunk = createAsyncThunk('conversations/create', (data) => postNewConversation(data));
 
 export const conversationsSlice = createSlice({
     name: 'conversations',
@@ -27,7 +22,6 @@ export const conversationsSlice = createSlice({
         updateConversation: (state, action) => {
             const conversation = action.payload;
             const index = state.conversations.findIndex((c) => c.id === conversation.id);
-
             state.conversations.splice(index, 1);
             state.conversations.unshift(conversation)
         },

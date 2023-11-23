@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setEducationDetail } from '../../store/features/educationDetailSlice';
 import { axiosInstance } from '../../http';
 import { setFamilyDetail } from '../../store/features/familyDetailSlice';
+import { addToast } from '../../store/features/toastSlice';
 
 function SecondForm({secondFormValues, setSecondFormValues, setCurrentFormCount, currentFromCount}) {
 
@@ -17,7 +18,10 @@ function SecondForm({secondFormValues, setSecondFormValues, setCurrentFormCount,
 
   const handleSubmit = (event) => {
         event.preventDefault();
-
+     
+        if(!secondFormValues.familyType || !secondFormValues.noOfSiblings || !secondFormValues.noOfFamilyMember || !secondFormValues.noOfUnmarried || !secondFormValues.familyValues || !secondFormValues.parentStatus || !secondFormValues.familyAddress || !secondFormValues.nativePlace || !secondFormValues.motherTongue) {
+          return dispatch(addToast({kind: 'ERROR', msg: 'Please fill all fields.'}))
+        }
         console.log(secondFormValues);
          axiosInstance.post('/users/family-detail', secondFormValues)
           .then((response) => {
@@ -131,53 +135,50 @@ function SecondForm({secondFormValues, setSecondFormValues, setCurrentFormCount,
 
   return (
 
-    <div className="mt-16 min-h-full mb-8 px-2 py-4  w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] bg-white rounded-lg mx-auto">
+    <div className="mt-16 min-h-full mb-8 px-2 py-4 w-[90%] md:w-[80%] lg:w-[70%] xl:w-[65%] rounded-lg mx-auto">
       {/* <h1 className="text-2xl w-full text-center font-semibold xl:text-4xl my-4">Some Personal details</h1> */}
       
           <form className=" mx-auto" onSubmit={handleSubmit}>
-            <h1 className='text-2xl font-bold w-[90%] mx-auto'>Family Information</h1>
+            <h1 className='text-xl pb-2 border-b-2 border-[rgba(0,0,0,0.2)] font-bold w-[90%] mx-auto'>Family Information</h1>
 
-            <div className="w-full flex justify-around items-center">
-              <InputSelect value={secondFormValues.familyType} onChange={handleFamilyTypeChange}  label="Family Type" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={familytypeOptions}  />
-               <Input value={secondFormValues.noOfFamilyMember} onChange={handleInputChange} name="noOfFamilyMember" label="No of family Members" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Family Member Number" />
+            <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around items-center">
+              <InputSelect value={secondFormValues.familyType} onChange={handleFamilyTypeChange}  label="Family Type" classes1="block text-xl font-semibold lg:text-lg xl:text-xl my-2" classes2="w-full lg:xl:w-[40%] lg:basis-[40%]" options={familytypeOptions}  />
+               <Input value={secondFormValues.noOfFamilyMember} onChange={handleInputChange} name="noOfFamilyMember" label="No of family Members" classes3="w-full lg:w-[40%]" classes="px-2 py-2 text-xl mt-2" classes2="block font-semibold mt-2 text-xl xl:text-xl lg:text-lg" type="number" placeholder="Family Member Number" />
                {/* <InputSelect label="Father's Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" /> */}
-
              </div>
 
-            <div className="w-full flex justify-around items-center">
+            <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around lg:items-center">
                {/* <Input label="No of sibling" type="number" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-                <Input value={secondFormValues.noOfSiblings} onChange={handleInputChange} name="noOfSiblings" label="No of Sibling" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
-                <InputSelect value={secondFormValues.liveWithFamily}  onChange={handleYouLiveWithFamilyChange} label="Do you live with your family" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={liveWithFamilyOptions} />
+                <Input value={secondFormValues.noOfSiblings} onChange={handleInputChange} name="noOfSiblings" label="No of Sibling" classes3="w-full lg:w-[40%]" classes="px-2 py-2 mt-2 text-xl" classes2="block font-semibold text-xl xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
+                <InputSelect value={secondFormValues.liveWithFamily}  onChange={handleYouLiveWithFamilyChange} label="Do you live with your family" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" options={liveWithFamilyOptions} />
            </div>
 
-          
-
-           <div className="w-full flex justify-around items-center">
+           <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row lg:justify-around items-center">
               {/* <InputSelect label="N" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" options={familytypeOptions}  /> */}
-               <Input value={secondFormValues.nativePlace} onChange={handleInputChange} name="nativePlace" label="Native/Ancestors Place" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="text" placeholder="Native Place" />
+               <Input value={secondFormValues.nativePlace} onChange={handleInputChange} name="nativePlace" label="Native/Ancestors Place" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl xl:text-xl lg:text-lg" type="text" placeholder="Native Place" />
                {/* <InputSelect label="Father's Status" classes1="block text-2xl my-2" classes2="xl:w-[70%] basis-[40%]" /> */}
-                <Input value={secondFormValues.motherTongue} onChange={handleInputChange} name="motherTongue" label="Mother Tongue" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Enter your mother tongue" />
+                <Input value={secondFormValues.motherTongue} onChange={handleInputChange} name="motherTongue" label="Mother Tongue" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl lg:text-lg xl:text-xl" type="text" placeholder="Enter your mother tongue" />
            </div>
 
-           <div className="w-full flex justify-around items-center">
+           <div className="w-[90%] mx-auto lg:w-full flex flex-col lg:flex-row  lg:justify-around items-center">
                {/* <Input label="Enter your Gotra" type="text" classes1="block text-2xl my-2" classes2="xl:w-[60%] basis-[40%]" options={genderOptions} /> */}
-               <Input value={secondFormValues.gotra} name="gotra" onChange={handleInputChange} label="Enter your gotra" classes3="w-[40%]" classes="px-2" classes2="block text-md lg:text-lg xl:text-xl" type="text" placeholder="Enter your gotra (if applied)" />
-               <InputSelect value={secondFormValues.familyValues} onChange={handleFamilyValuesChange} label="Family Values" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-40%]" options={familyValueOptions}/>
+               <Input value={secondFormValues.gotra} name="gotra" onChange={handleInputChange} label="Enter your gotra" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl lg:text-lg xl:text-xl" type="text" placeholder="Enter your gotra (if applied)" />
+               <InputSelect value={secondFormValues.familyValues} onChange={handleFamilyValuesChange} label="Family Values" classes1="block font-semibold text-xl lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-40%]" options={familyValueOptions}/>
                
                </div>
 
-               <div className='w-full flex justify-around items-center'>
-                   <InputSelect value={secondFormValues.parentStatus} onChange={handleParentStatusChange} label="Parent Status" classes1="block text-md lg:text-lg xl:text-xl my-2" classes2="xl:w-[40%] basis-[40%]" options={parentStatusOptions}/>
-                   <Input name="noOfUnmarried" value={secondFormValues.noOfUnmarried} onChange={handleInputChange} label="No of Unmarried Sibling" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
+               <div className='w-[90%] mx-auto flex-col lg:flex-row lg:w-full flex lg:justify-around items-center'>
+                   <InputSelect value={secondFormValues.parentStatus} onChange={handleParentStatusChange} label="Parent Status" classes1="block text-xl font-semibold lg:text-lg xl:text-xl my-2" classes2="w-full lg:w-[40%] basis-[40%]" options={parentStatusOptions}/>
+                   <Input name="noOfUnmarried" value={secondFormValues.noOfUnmarried} onChange={handleInputChange} label="No of Unmarried Sibling" classes3="w-full lg:w-[40%]" classes="px-2 text-xl" classes2="block font-semibold text-xl xl:text-xl lg:text-lg" type="number" placeholder="Enter full Name" />
                </div>
 
-               <div className='w-[90%] mx-auto flex justify-between items-center'>
-                 <Input name="familyAddress" value={secondFormValues.familyAddress} onChange={handleInputChange} label="Where do your family live ?" classes3="w-[40%]" classes="px-2" classes2="block xl:text-xl lg:text-lg" type="text" placeholder="Enter your family location" />
+               <div className='w-[90%] mx-auto flex flex-col lg:flex-row lg:justify-between items-center mt-2'>
+                 <Input name="familyAddress" value={secondFormValues.familyAddress} onChange={handleInputChange} label="Where do your family live ?" classes3="w-full lg:w-[45%]" classes="px-2 text-xl" classes2="block text-xl font-semibold xl:text-xl lg:text-lg" type="text" placeholder="Enter your family location" />
                </div>
 
             <div className="w-full flex justify-around">
-             <Button label="Previous" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" onClick={() => handlePrevClick()} />
-             <Button label="Next" classes="px-16 py-3 rounded-xl btnnext text-white" classes2="w-full flex justify-center py-4" />
+             <Button label="Previous" classes="px-8 py-2 rounded-xl bg-[var(--secondary)] text-white " classes2="flex justify-center py-2" onClick={() => handlePrevClick()} />
+             <Button type="submit" label="Next" classes="px-8 py-2 rounded-xl bg-[var(--primary)] text-white" classes2=" flex justify-center py-2" />
           </div>
 
           {/* <button className="btnprev" onClick={() => handlePrevClick()}>

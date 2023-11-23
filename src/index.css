@@ -11,11 +11,11 @@
     --secondary-light: #9569b6;
     --black: #000000;
     --white: #ffffff;
-    --mitr: "Mitr", sans-serif;
-    --raleway: "Raleway", sans-serif;
+    --mitr:  'Montserrat', sans-serif;
+    --raleway: 'Montserrat', sans-serif;
     --screen: #F0F2F5;
     --delete: #ff5191;
-    --filter: #f2f4f8;
+    --filter: #f5f9ff;
 }
 
 * {
@@ -33,6 +33,9 @@
     font-size: 16px;
     width: 100vw;
     overflow-x: hidden; 
+    /* font-family: 'Minomu', sans-serif !important; */
+    /* font-family: "Montserrat", sans-serif !important; */
+    font-family: 'Satoshi', sans-serif !important;
   }
   
   body {
@@ -45,6 +48,9 @@
     -moz-osx-font-smoothing: grayscale;
     word-wrap: break-word !important;
     box-sizing: border-box;
+    font-family: 'Satoshi', sans-serif !important;
+    /* font-family: 'Minomu', sans-serif !important; */
+    /* font-family: "Montserrat", sans-serif !important; */
   }
 
   body::-webkit-scrollbar {

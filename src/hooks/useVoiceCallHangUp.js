@@ -3,6 +3,8 @@ import { SocketContext } from "../utils/context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { resetState } from "../store/features/callSlice";
+import { updateCallMessage } from "../store/features/messageSlice";
+import { updateConversation } from "../store/features/conversationSlice";
 
 export function useVoiceCallHangUp() {
     const socket = useContext(SocketContext);
@@ -10,7 +12,7 @@ export function useVoiceCallHangUp() {
     const { call, connection, localStream, remoteStream } = useSelector((state) => state.call);
 
     useEffect(() => {
-        socket.on('onVoiceCallHangUp', () => {
+        socket.on('onVoiceCallHangUp', (data) => {
             console.log('onvoiceCall Hangup');
 
             localStream && localStream.getTracks().forEach((track) => {
@@ -24,6 +26,9 @@ export function useVoiceCallHangUp() {
             call && call.close();
             connection && connection.close();
             dispatch(resetState());
+            console.log(data);
+            data && dispatch(updateCallMessage(data));
+            data && dispatch(updateConversation({...data.conversation, lastMessageSent: {...data.conversation.lastMessageSent, call: data.call}}));
         });
 
         return () => {

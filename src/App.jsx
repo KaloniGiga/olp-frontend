@@ -53,10 +53,26 @@ import SearchResultSection from "./Section/SearchResultSection";
 import { useMediaQuery } from "react-responsive";
 import ConnectionLayout from "./Section/ConnectionLayout";
 import PricingSection from "./Section/PricingSection";
+import ViewUserProfile from "./newComponent/NewProfileSection/ViewUserProfile";
+import AboutUser from "./newComponent/NewProfileSection/AboutUser";
+import UserPhoto from "./newComponent/NewProfileSection/UserPhoto";
+import LetsBegin from "./Section/LetsBegin";
+import EmailNotVerified from "./pages/EmailVerification/EmailNotVerified";
+import VerifyEmail from "./pages/EmailVerification/VerifyEmail";
+import ForgetPassword from "./pages/ForgetPassword/ForgetPassword";
+import ResetPassword from "./pages/ForgetPassword/ResetPassword";
+import Login from "./components/Login/Login";
+import { PrivateFormRoute } from "./layout/PrivateFormLayout";
+import { EmailVerifyLayout } from "./layout/EmailVerifyLayout";
+import Authentication from "./components/Authentication";
+import NewFormLayout from "./layout/NewFormLayout";
+import NewUploadAvatar from "./components/NewForm/NewUploadAvatar";
+import NewFirstForm from "./components/NewForm/NewFirstForm";
 
 const App = () => {
-   const isMobile = useMediaQuery({query: '(max-width: 768px)'});
+   const isMobile = useMediaQuery({query: '(max-width: 992px)'});
   const [user, setUser] = useState();
+  const isTablet = useMediaQuery({query: '(max-width: 992px)'});
 
   return (
     <>
@@ -68,15 +84,17 @@ const App = () => {
         <Homebtn />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Authentication />} />
+          <Route path="/form" element={<PrivateFormRoute><NewFormLayout /></PrivateFormRoute>} />
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/login" element={<Signup />} />
+          <Route path="/login" element={isTablet ? <Login /> : <Signup />} />
           <Route path="/register" element={<RegisterPage />} />
-
+          <Route path="/avatar/upload" element={<NewUploadAvatar />} />
           <Route path="/profile/info" element={
-            <PrivateRoute>
+            <PrivateFormRoute>
               <FormLayout />
-            </PrivateRoute>} />
+            </PrivateFormRoute>} />
 
              <Route path="/secondform" element={
                <PrivateRoute>
@@ -102,19 +120,29 @@ const App = () => {
           <Route path="/uploadprofile" element={<PrivateRoute><UploadProfileSection /></PrivateRoute>} />
           <Route path="/preferencedetails" element={<PrivateRoute><PreferenceDetails /></PrivateRoute>} />
           <Route path="/myprofile" element={<MyProfilesSidebar />} />
+          <Route path="/email/verify/:resetToken" element={<VerifyEmail />} />
+          <Route path="/password/forget" element={<ForgetPassword />} />
+          <Route path="/reset/password/:token" element={<ResetPassword />} /> 
 
-          <Route path="/home" element={<PrivateRoute><AppLayout><HomeLayout /></AppLayout></PrivateRoute>}>
+          <Route path="/home" element={<PrivateFormRoute />}>
+            <Route path="resend/email" element={<EmailVerifyLayout><EmailNotVerified /></EmailVerifyLayout>} />
+            <Route path="form" element={<NewFormLayout />}></Route>
+             <Route path="avatar/upload" element={<NewUploadAvatar /> } />
+
+            <Route path="main" element={<AppLayout><HomeLayout /></AppLayout>}>
+ 
             <Route path="dashboard" element={<Dashboard />} >
                 <Route path="" element={<DashboardSection />} />
-                <Route path="search" element={<SearchResultSection />} />
+                <Route path="search/:name" element={<SearchResultSection />} />
+                <Route path="letsBegin" element={<LetsBegin />} />
                  {/* <Route path="profile" element={<UserProfileSection />} /> */}
             </Route>
       
             <Route path="connection"  element={<ConnectionLayout />} />
             <Route path="notification" element={<NotificationSection />} />
             <Route path="pricing" element={<PricingSection />} />
-
             <Route path="settings" element={<SettingSection />} />
+            
            {!isMobile ? 
            (<Route path="chat" element={<ChatLayout />} >
               <Route path="conversation" element={<ChatPanel />} >
@@ -130,17 +158,18 @@ const App = () => {
             
             <Route path="profiles" element={<Profile_Page />} />
             <Route path="search" element={<Searchedlist />} />
+
             <Route path="profile/me" element={<NewProfileSection />} >
               <Route path="about" element={<AboutMe />} />
               <Route path="photos" element={<Photos />} />
               <Route path="connections" element={<Connections />} />
             </Route>
-            
-            
-            <Route path="profile/:id" element={<NewProfileSection />} >
-              <Route path="about" element={<AboutMe />} />
-              <Route path="photos" element={<Photos />} />
+             
+            <Route path="profile/:id" element={<ViewUserProfile />} >
+              <Route path="about" element={<AboutUser />} />
+              <Route path="photos" element={<UserPhoto />} />
               <Route path="connections" element={<Connections />} />
+            </Route>
             </Route>
             </Route>
           <Route path="*" element={<Page_Not_Found />} />

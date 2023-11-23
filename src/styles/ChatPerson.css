@@ -33,9 +33,7 @@
   height: 3rem;
   border-radius: 50%;
 }
-.chat-person-name {
-  flex-basis: 45%;
-}
+
 .chat-person-name h6 {
   font-size: 15px;
   line-height: 1.1rem;
@@ -46,7 +44,7 @@
   opacity: 0.9;
 }
 .chat-person-date-notification {
-  flex-basis: 20%;
+  flex-basis: 25%;
 }
 .chat-person-date-notification h6 {
   font-size: 13px;

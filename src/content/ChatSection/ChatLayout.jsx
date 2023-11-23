@@ -10,6 +10,10 @@ import { addConversation, fetchConversationsThunk, updateConversation } from '..
 import { addMessage } from '../../store/features/messageSlice';
 import { deleteMessage } from '../../utils/api';
 import { useMediaQuery } from 'react-responsive';
+import { setOfflineConnections, setOnlineConnections } from '../../store/features/connectionSlice';
+import CallReceiveDialog from '../../newComponent/Call/CallReceiveDialog';
+import ConversationAudioCall from './ConversationAudioCall';
+import ConversationVideoCall from './ConversationVideoCall';
 
 function ChatLayout() {
       
@@ -17,11 +21,37 @@ function ChatLayout() {
    const dispatch = useDispatch();
    const socket = useContext(SocketContext);
 
-   const isMobile = useMediaQuery({query: '(max-width: 768px)'});
+   const isMobile = useMediaQuery({query: '(max-width: 992px)'});
   
    useEffect(() => {
       dispatch(fetchConversationsThunk());
    }, []);
+
+     useEffect(() => {
+          socket.emit('getConnectionOnline');
+
+         const interval = setInterval(() => {
+           socket.emit('getConnectionOnline');
+          }, 10000)
+
+       
+
+          return () => {
+               clearInterval(interval);
+               socket.off('getConnectionOnline');
+          }
+     }, [])
+
+
+       useEffect(() => {
+         socket.on('getConnectionOnline', (connections)  => {
+            console.log('connections online')
+            dispatch(setOnlineConnections(connections));
+            dispatch(setOfflineConnections());
+         })
+     }, [])
+
+
 
    useEffect(() => {
      socket.on('onMessage', (payload) => {
@@ -51,11 +81,14 @@ function ChatLayout() {
    }, [id]);
 
   return (
-      <div className="w-full min-h-[100vh] md:h-[90vh] md:bg-screen pt-[10vh]">
-          <div className="chatsection md:py-5 md:px-4">
+      <div className="w-full  lg:h-[90vh] md:bg-screen">
+          <div className="chatsection ">
             <div className="messagesection">
                     <ChatSidebar />
-                 {!isMobile &&   <Outlet />}
+                    {/* <ConversationVideoCall /> */}
+                      {/* <ConversationAudioCall /> */}
+                    {/* <CallReceiveDialog /> */}
+                 {!isMobile && <Outlet />}
             </div>
           </div>
      </div>
